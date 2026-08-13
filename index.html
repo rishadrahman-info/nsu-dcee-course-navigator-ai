@@ -1,0 +1,2493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSU DCEE Course Navigator AI</title>
+<style>
+:root {
+  --navy:#061d3a;
+  --navy2:#0b3f70;
+  --blue:#11679e;
+  --cyan:#20a6c3;
+  --cyan2:#7dd9e8;
+  --ink:#10253a;
+  --muted:#63778b;
+  --line:#d9e7ef;
+  --bg:#eef8fb;
+  --card:rgba(255,255,255,.96);
+  --ok:#13705d;
+  --okbg:#e8f7f1;
+  --warn:#8a5c07;
+  --warnbg:#fff6dc;
+  --danger:#944343;
+  --dangerbg:#fff0f0;
+  --purple:#67538c;
+  --purplebg:#f2effa;
+  --shadow:0 18px 46px rgba(6,29,58,.09);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    linear-gradient(rgba(6,29,58,.032) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(6,29,58,.032) 1px,transparent 1px),
+    radial-gradient(circle at 8% 7%,rgba(32,166,195,.14),transparent 29%),
+    radial-gradient(circle at 92% 13%,rgba(17,103,158,.10),transparent 26%),
+    var(--bg);
+  background-size:30px 30px,30px 30px,auto,auto,auto;
+  min-height:100vh;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.shell{width:min(1190px,calc(100% - 28px));margin:0 auto}
+
+.topbar{padding:20px 0 12px}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{
+  width:68px;height:68px;padding:6px;border-radius:18px;background:white;
+  border:1px solid rgba(6,29,58,.08);box-shadow:0 9px 24px rgba(6,29,58,.07);
+  flex:0 0 68px;
+}
+.logo img{width:100%;height:100%;object-fit:contain}
+.brand h1{margin:0;color:var(--navy);font-size:clamp(22px,3.1vw,34px);letter-spacing:-.035em}
+.brand p{margin:4px 0 0;color:var(--muted);font-size:13px}
+
+.hero{
+  position:relative;overflow:hidden;margin-top:14px;padding:clamp(28px,5.5vw,60px);
+  border-radius:30px;color:#fff;
+  background:linear-gradient(120deg,var(--navy) 0%,#0c4e82 57%,var(--cyan) 100%);
+  box-shadow:0 24px 64px rgba(6,29,58,.22);
+}
+.hero::before{
+  content:"";position:absolute;width:430px;height:430px;border-radius:50%;
+  right:-100px;top:-250px;border:1px solid rgba(255,255,255,.17);
+  box-shadow:0 0 0 40px rgba(255,255,255,.05),0 0 0 80px rgba(255,255,255,.04),0 0 0 120px rgba(255,255,255,.028);
+}
+.hero::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:110px;opacity:.10;
+  background:
+    linear-gradient(155deg,transparent 0 18%,#fff 18% 20%,transparent 20% 37%,#fff 37% 39%,transparent 39% 56%,#fff 56% 58%,transparent 58% 75%,#fff 75% 77%,transparent 77%);
+}
+.hero-inner{position:relative;z-index:2;max-width:930px}
+.eyebrow{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.18em;color:#a9eff9}
+.hero h2{margin:10px 0 13px;max-width:880px;font-size:clamp(37px,6vw,66px);line-height:.98;letter-spacing:-.06em}
+.hero p{margin:0;max-width:780px;color:rgba(255,255,255,.82);line-height:1.65;font-size:15px}
+
+.ask-label{margin-top:25px;font-size:12px;font-weight:850;color:#c5f4fa}
+.search-wrap{position:relative;margin-top:8px;max-width:930px}
+.searchbar{
+  display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px;background:white;border-radius:18px;
+  box-shadow:0 15px 40px rgba(0,0,0,.18);
+}
+.searchbar input{border:0;outline:0;padding:15px 16px;border-radius:13px;color:var(--navy);font-size:16px}
+.searchbar button{border:0;border-radius:13px;padding:0 24px;background:var(--navy);color:#fff;font-weight:900}
+.searchbar button:hover{background:#0c3156}
+.examples{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+.example{
+  border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;
+  border-radius:999px;padding:7px 10px;font-size:11.5px
+}
+.suggestions{
+  display:none;position:absolute;z-index:30;left:0;right:0;top:74px;background:#fff;color:var(--ink);
+  border:1px solid var(--line);border-radius:15px;box-shadow:0 17px 38px rgba(6,29,58,.19);
+  max-height:310px;overflow:auto
+}
+.suggestions.show{display:block}
+.suggestion{display:grid;grid-template-columns:100px 1fr;gap:10px;padding:11px 13px;border-bottom:1px solid #edf2f5}
+.suggestion:last-child{border-bottom:0}
+.suggestion:hover{background:#f3fafc}
+.suggestion b{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--blue)}
+.suggestion span{font-size:12.5px;color:#53687b}
+
+main{padding:20px 0 42px}
+
+.dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:16px}
+.metric{
+  background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px 16px;
+  box-shadow:0 8px 24px rgba(6,29,58,.05)
+}
+.metric span{display:block;font-size:10.5px;font-weight:850;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.metric b{display:inline-block;margin-top:7px;color:var(--navy);font-size:27px;letter-spacing:-.04em}
+.metric small{margin-left:5px;color:var(--muted);font-size:10.5px}
+
+.toolbar{
+  display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:16px;padding:12px 14px;
+  background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:16px
+}
+.toolbar-copy b{display:block;color:var(--navy);font-size:12px}
+.toolbar-copy span{display:block;margin-top:2px;color:var(--muted);font-size:10.5px}
+.toolbar-actions{display:flex;gap:7px;flex-wrap:wrap}
+.btn{
+  border:1px solid #cfe0e9;background:#fff;color:var(--navy);border-radius:10px;
+  padding:8px 10px;font-size:11px;font-weight:850
+}
+.btn:hover{background:#f1f8fa}
+.btn.primary{background:var(--navy);color:white;border-color:var(--navy)}
+
+.answer{
+  display:none;background:var(--card);border:1px solid var(--line);border-radius:23px;
+  box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px
+}
+.answer.show{display:block}
+.answer-head{
+  padding:19px 21px;background:linear-gradient(90deg,#f3fafc,#fff);border-bottom:1px solid var(--line)
+}
+.answer-kicker{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);font-weight:900}
+.answer-text{margin-top:6px;color:var(--navy);font-size:18px;font-weight:850;line-height:1.45}
+.answer-sub{margin-top:5px;color:var(--muted);font-size:11.5px;line-height:1.5}
+
+.course-card{padding:20px 21px}
+.course-title-row{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.course-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:34px;color:var(--navy);font-weight:950;letter-spacing:-.05em}
+.course-name{font-size:16px;font-weight:850;margin-top:2px}
+.badge{display:inline-flex;border-radius:999px;padding:7px 9px;font-size:10.5px;font-weight:900;background:#eaf5fa;color:var(--blue);border:1px solid #d4e8f1}
+.status-badge.completed{background:#eaf3fa;color:#245f83}
+.status-badge.eligible{background:var(--okbg);color:var(--ok)}
+.status-badge.almost{background:var(--warnbg);color:var(--warn)}
+.status-badge.locked{background:var(--dangerbg);color:var(--danger)}
+.status-badge.manual{background:var(--purplebg);color:var(--purple)}
+
+.overview{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px}
+.overview div{border:1px solid #e2ebf0;border-radius:12px;padding:10px;background:#fbfdfe}
+.overview span{display:block;font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.overview b{display:block;margin-top:4px;color:var(--navy);font-size:12.5px}
+
+.desc{margin-top:14px;color:#465e73;font-size:13px;line-height:1.7}
+
+.path-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.path-box{border:1px solid #e1e9ef;border-radius:15px;padding:14px;background:#fbfdfe}
+.label{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:900;margin-bottom:8px}
+.prereq-text{color:var(--navy);font-weight:850;font-size:13px;line-height:1.55}
+.good{color:var(--ok)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{
+  border:1px solid #d6e6ef;background:#eef6fa;color:var(--blue);border-radius:9px;padding:6px 8px;
+  font-size:10.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:850
+}
+.chip.done{opacity:.55;text-decoration:line-through}
+.unlock-empty{font-size:11px;color:var(--muted);line-height:1.5}
+
+.chain{margin-top:15px;border-top:1px solid #e5edf1;padding-top:13px}
+.chain-level{display:flex;gap:8px;align-items:flex-start;margin:7px 0;flex-wrap:wrap}
+.chain-level strong{min-width:75px;font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+
+.next-box{
+  margin-top:15px;border:1px solid #d4e8f0;background:#edf8fb;border-radius:14px;padding:12px 13px;
+  color:#315e72;font-size:12px;line-height:1.55
+}
+
+.panel{
+  background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;
+  box-shadow:0 10px 30px rgba(6,29,58,.055);margin-bottom:16px
+}
+.panel-head{display:flex;justify-content:space-between;gap:13px;align-items:flex-start;margin-bottom:13px}
+.panel-head h3{margin:0;color:var(--navy);font-size:17px}
+.panel-head p{margin:4px 0 0;color:var(--muted);font-size:10.8px;line-height:1.45}
+
+.eligible-grid,.area-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.small-course{
+  border:1px solid #e2eaf0;background:#fbfdfe;border-radius:12px;padding:10px;text-align:left
+}
+.small-course:hover{border-color:#b7d9e6;background:#f3fafc}
+.small-course b{display:block;color:var(--navy);font-size:11px}
+.small-course span{display:block;color:var(--muted);font-size:9.8px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.small-course small{display:block;color:var(--blue);font-size:9px;margin-top:5px}
+
+.area-btn{
+  border:1px solid #dfe9ee;background:#fbfdfe;border-radius:13px;padding:12px;text-align:left
+}
+.area-btn:hover{background:#f2f9fb;border-color:#b8d9e5}
+.area-btn b{display:block;color:var(--navy);font-size:11.5px}
+.area-btn span{display:block;color:var(--muted);font-size:9.8px;line-height:1.45;margin-top:4px}
+
+.ged-box{display:grid;grid-template-columns:220px 1fr;gap:12px}
+.ged-box select{width:100%;border:1px solid var(--line);border-radius:11px;padding:10px;background:white;color:var(--navy);outline:none}
+.ged-rule{border:1px solid #e1e9ef;border-radius:13px;padding:12px;background:#fbfdfe;color:#4b6174;font-size:11px;line-height:1.55}
+.ged-rule b{color:var(--navy)}
+
+.modal-backdrop{
+  display:none;position:fixed;z-index:100;inset:0;background:rgba(3,18,34,.62);padding:24px;overflow:auto
+}
+.modal-backdrop.show{display:block}
+.modal{
+  width:min(980px,100%);margin:20px auto;background:#fff;border-radius:22px;overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.28)
+}
+.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:17px 19px;border-bottom:1px solid var(--line)}
+.modal-head h3{margin:0;color:var(--navy);font-size:18px}
+.modal-head p{margin:4px 0 0;color:var(--muted);font-size:10.5px}
+.modal-body{padding:15px 19px 20px}
+.progress-search{width:100%;border:1px solid var(--line);border-radius:11px;padding:10px 11px;outline:none;margin-bottom:10px}
+.progress-list{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;max-height:58vh;overflow:auto}
+.progress-row{
+  display:grid;grid-template-columns:18px 78px 1fr 43px;gap:7px;align-items:center;
+  border:1px solid #e3ebef;border-radius:10px;padding:8px;background:#fbfdfe;font-size:10.5px
+}
+.progress-row input{width:15px;height:15px;accent-color:var(--blue)}
+.progress-row code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:850;color:var(--blue)}
+.progress-row span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#52677a}
+.progress-row small{text-align:right;color:var(--muted)}
+.progress-row.hidden{display:none}
+.modal-actions{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:11px}
+.modal-actions span{font-size:10.5px;color:var(--muted)}
+
+.references details{border-top:1px solid #e6edf1;padding-top:10px;margin-top:10px}
+.references summary{cursor:pointer;font-size:10.5px;font-weight:850;color:var(--blue)}
+.references a{color:var(--blue);word-break:break-all}
+
+footer{padding:16px 0 30px}
+.footer-card{
+  display:grid;grid-template-columns:1fr 1fr;gap:18px;padding-top:16px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:10.5px;line-height:1.65
+}
+.footer-card strong{color:var(--navy)}
+.footer-right{text-align:right}
+
+@media(max-width:900px){
+  .dashboard{grid-template-columns:repeat(2,1fr)}
+  .eligible-grid,.area-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:700px){
+  .brand{align-items:flex-start}
+  .logo{width:56px;height:56px;flex-basis:56px}
+  .searchbar{grid-template-columns:1fr}
+  .searchbar button{padding:13px}
+  .suggestions{top:120px}
+  .toolbar{align-items:flex-start;flex-direction:column}
+  .overview,.path-grid{grid-template-columns:1fr}
+  .eligible-grid,.area-grid{grid-template-columns:1fr}
+  .ged-box{grid-template-columns:1fr}
+  .progress-list{grid-template-columns:1fr}
+  .footer-card{grid-template-columns:1fr}
+  .footer-right{text-align:left}
+}
+
+/* Refined glassmorphism and public-facing polish */
+.brand {
+  padding: 10px 12px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.62);
+  border: 1px solid rgba(255,255,255,.72);
+  backdrop-filter: blur(18px) saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+  box-shadow: 0 12px 34px rgba(6,29,58,.07);
+}
+.hero {
+  border: 1px solid rgba(255,255,255,.15);
+}
+.metric,
+.toolbar,
+.panel,
+.answer {
+  background: rgba(255,255,255,.76);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-color: rgba(255,255,255,.72);
+}
+.path-box,
+.overview div,
+.small-course,
+.area-btn,
+.ged-rule,
+.description-card {
+  background: rgba(255,255,255,.66);
+  backdrop-filter: blur(14px) saturate(135%);
+  -webkit-backdrop-filter: blur(14px) saturate(135%);
+}
+.ask-label {
+  margin-top: 25px;
+  color: rgba(255,255,255,.92);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.description-card {
+  margin-top: 15px;
+  border: 1px solid rgba(210,228,237,.9);
+  border-radius: 15px;
+  padding: 14px;
+}
+.description-card .desc {
+  margin-top: 0;
+}
+.ged-summary {
+  color: var(--navy);
+  font-size: 12px;
+  margin-bottom: 9px;
+}
+.ged-block {
+  margin-top: 8px;
+  color: #486075;
+  line-height: 1.6;
+}
+.ged-note {
+  margin-top: 9px;
+  padding: 8px 9px;
+  border-radius: 9px;
+  background: #eef7fb;
+  color: #315e72;
+}
+.batch-examples {
+  margin-top: 9px;
+  color: var(--muted);
+  font-size: 10px;
+}
+footer {
+  padding: 24px 0 34px;
+}
+.author-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(255,255,255,.82), rgba(238,248,251,.74));
+  border: 1px solid rgba(255,255,255,.85);
+  backdrop-filter: blur(22px) saturate(145%);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  box-shadow: 0 16px 42px rgba(6,29,58,.08);
+}
+.author-mark {
+  width: 56px;
+  height: 56px;
+  border-radius: 17px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 56px;
+  color: white;
+  font-weight: 950;
+  letter-spacing: -.03em;
+  background: linear-gradient(135deg, var(--navy), var(--cyan));
+  box-shadow: 0 10px 24px rgba(17,103,158,.22);
+}
+.author-label {
+  color: var(--muted);
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-weight: 900;
+}
+.author-name {
+  margin-top: 3px;
+  color: var(--navy);
+  font-size: 19px;
+  font-weight: 950;
+  letter-spacing: -.02em;
+}
+.author-meta {
+  margin-top: 2px;
+  color: #52697d;
+  font-size: 10.8px;
+  line-height: 1.45;
+}
+
+
+/* ===== Creative Liquid Glass Theme ===== */
+:root{
+  --glass-bg: rgba(255,255,255,.58);
+  --glass-bg-strong: rgba(255,255,255,.72);
+  --glass-border: rgba(255,255,255,.78);
+  --glass-shadow: 0 18px 55px rgba(5,31,57,.13);
+  --glass-inner: inset 0 1px 0 rgba(255,255,255,.68);
+}
+
+body{
+  background:
+    radial-gradient(circle at 12% 8%, rgba(45,190,216,.20), transparent 27%),
+    radial-gradient(circle at 88% 14%, rgba(38,112,185,.16), transparent 24%),
+    radial-gradient(circle at 50% 90%, rgba(118,210,226,.13), transparent 32%),
+    linear-gradient(180deg,#eefaff 0%,#f7fbfd 42%,#eef6fa 100%);
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(7,39,69,.026) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(7,39,69,.026) 1px,transparent 1px);
+  background-size:32px 32px;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.85),transparent 88%);
+}
+
+.brand{
+  position:relative;
+  padding:13px 15px;
+  background:linear-gradient(135deg,rgba(255,255,255,.76),rgba(255,255,255,.50));
+  border:1px solid var(--glass-border);
+  box-shadow:var(--glass-shadow),var(--glass-inner);
+  backdrop-filter:blur(26px) saturate(170%);
+  -webkit-backdrop-filter:blur(26px) saturate(170%);
+}
+.brand::after{
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:18px;
+  pointer-events:none;
+  background:linear-gradient(120deg,rgba(255,255,255,.42),transparent 35%,rgba(255,255,255,.10));
+}
+
+.logo{
+  box-shadow:0 12px 28px rgba(6,29,58,.12),inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+.hero{
+  border-radius:34px;
+  background:
+    radial-gradient(circle at 82% 20%,rgba(57,204,229,.52),transparent 30%),
+    radial-gradient(circle at 66% 82%,rgba(18,116,179,.38),transparent 30%),
+    linear-gradient(125deg,#061b36 0%,#0c4779 52%,#1399ba 100%);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 30px 80px rgba(7,40,71,.24), inset 0 1px 0 rgba(255,255,255,.16);
+}
+.hero::before{
+  width:520px;height:520px;right:-135px;top:-330px;
+  border:1px solid rgba(255,255,255,.20);
+  box-shadow:
+    0 0 0 42px rgba(255,255,255,.055),
+    0 0 0 84px rgba(255,255,255,.042),
+    0 0 0 126px rgba(255,255,255,.028);
+}
+.hero::after{
+  height:150px;
+  opacity:.12;
+  background:
+    linear-gradient(155deg,transparent 0 16%,#fff 16% 18%,transparent 18% 34%,#fff 34% 36%,transparent 36% 52%,#fff 52% 54%,transparent 54% 70%,#fff 70% 72%,transparent 72%),
+    linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+}
+
+.eyebrow{
+  color:#bcf4fb;
+  letter-spacing:.22em;
+}
+
+.ask-label{
+  color:rgba(255,255,255,.96);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.searchbar{
+  background:rgba(255,255,255,.82);
+  border:1px solid rgba(255,255,255,.78);
+  box-shadow:0 18px 44px rgba(2,20,36,.22),inset 0 1px 0 rgba(255,255,255,.88);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+}
+.searchbar input{
+  background:transparent;
+}
+.searchbar button{
+  background:linear-gradient(135deg,#061d3a,#0c4f82);
+  box-shadow:0 9px 20px rgba(7,49,84,.24),inset 0 1px 0 rgba(255,255,255,.16);
+}
+
+.example{
+  background:rgba(255,255,255,.10);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  transition:.2s ease;
+}
+.example:hover{
+  transform:translateY(-1px);
+  background:rgba(255,255,255,.17);
+}
+
+.metric,
+.toolbar,
+.panel,
+.answer{
+  background:linear-gradient(135deg,rgba(255,255,255,.72),rgba(255,255,255,.50));
+  border:1px solid var(--glass-border);
+  box-shadow:var(--glass-shadow),var(--glass-inner);
+  backdrop-filter:blur(26px) saturate(170%);
+  -webkit-backdrop-filter:blur(26px) saturate(170%);
+}
+
+.metric{
+  position:relative;
+  overflow:hidden;
+}
+.metric::after{
+  content:"";
+  position:absolute;
+  width:90px;height:90px;border-radius:50%;
+  right:-28px;top:-45px;
+  background:radial-gradient(circle,rgba(40,174,205,.17),transparent 68%);
+}
+
+.small-course,
+.area-btn,
+.path-box,
+.overview div,
+.description-card,
+.ged-rule,
+.next-box{
+  background:linear-gradient(135deg,rgba(255,255,255,.66),rgba(247,252,254,.52));
+  border:1px solid rgba(216,232,240,.86);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.72),0 8px 22px rgba(6,29,58,.045);
+  backdrop-filter:blur(16px) saturate(150%);
+  -webkit-backdrop-filter:blur(16px) saturate(150%);
+}
+
+.small-course,
+.area-btn,
+.chip,
+.btn{
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease;
+}
+.small-course:hover,
+.area-btn:hover,
+.chip:hover,
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 26px rgba(6,29,58,.08);
+}
+
+.answer-head{
+  background:linear-gradient(135deg,rgba(241,251,254,.88),rgba(255,255,255,.66));
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+}
+
+.course-code{
+  background:linear-gradient(135deg,#061d3a,#0f6d9d);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.suggestions{
+  background:rgba(255,255,255,.86);
+  backdrop-filter:blur(24px) saturate(170%);
+  -webkit-backdrop-filter:blur(24px) saturate(170%);
+  border:1px solid rgba(255,255,255,.80);
+}
+
+.modal-backdrop{
+  background:rgba(5,20,35,.40);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.modal{
+  background:linear-gradient(135deg,rgba(255,255,255,.90),rgba(247,252,254,.78));
+  border:1px solid rgba(255,255,255,.82);
+  backdrop-filter:blur(28px) saturate(170%);
+  -webkit-backdrop-filter:blur(28px) saturate(170%);
+  box-shadow:0 35px 90px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.82);
+}
+
+footer{
+  padding:26px 0 38px;
+}
+.footer-glass{
+  display:grid;
+  grid-template-columns:minmax(280px,.9fr) minmax(340px,1.25fr);
+  gap:22px;
+  align-items:center;
+  padding:22px 24px;
+  border-radius:26px;
+  background:
+    radial-gradient(circle at 8% 15%,rgba(48,185,213,.14),transparent 30%),
+    linear-gradient(135deg,rgba(255,255,255,.80),rgba(244,251,253,.60));
+  border:1px solid rgba(255,255,255,.86);
+  box-shadow:0 20px 58px rgba(6,29,58,.10),inset 0 1px 0 rgba(255,255,255,.9);
+  backdrop-filter:blur(28px) saturate(175%);
+  -webkit-backdrop-filter:blur(28px) saturate(175%);
+}
+.footer-author{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.footer-overline{
+  color:var(--muted);
+  font-size:9.5px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-weight:900;
+}
+.footer-name{
+  margin-top:3px;
+  color:var(--navy);
+  font-size:21px;
+  font-weight:950;
+  letter-spacing:-.025em;
+}
+.footer-meta{
+  margin-top:2px;
+  color:#52697d;
+  font-size:10.8px;
+  line-height:1.5;
+}
+.footer-note{
+  padding-left:22px;
+  border-left:1px solid rgba(123,158,180,.22);
+}
+.footer-note-title{
+  color:var(--navy);
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:6px;
+}
+.footer-note p{
+  margin:0;
+  color:#63778b;
+  font-size:10.7px;
+  line-height:1.65;
+}
+.author-mark{
+  width:62px;
+  height:62px;
+  flex:0 0 62px;
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 25% 20%,rgba(78,211,231,.75),transparent 30%),
+    linear-gradient(135deg,#061d3a,#0b5c92 64%,#1aa6c4);
+  box-shadow:0 14px 30px rgba(11,80,127,.24),inset 0 1px 0 rgba(255,255,255,.20);
+}
+
+@media(max-width:760px){
+  .footer-glass{grid-template-columns:1fr}
+  .footer-note{padding-left:0;padding-top:16px;border-left:0;border-top:1px solid rgba(123,158,180,.22)}
+}
+
+
+/* ===== Cleaner student sections ===== */
+.compact-panel{
+  padding:18px 20px;
+}
+.compact-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  margin-bottom:12px;
+}
+.compact-head h3{
+  margin:0;
+  color:var(--navy);
+  font-size:17px;
+  letter-spacing:-.02em;
+}
+.compact-head p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:10.5px;
+}
+.compact-actions{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.count-pill{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  padding:7px 10px;
+  background:rgba(232,246,251,.82);
+  border:1px solid rgba(201,226,236,.9);
+  color:var(--blue);
+  font-size:10.5px;
+  font-weight:900;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.eligible-compact{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:7px;
+}
+.eligible-pill{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  width:100%;
+  min-width:0;
+  border:1px solid rgba(216,231,239,.92);
+  border-radius:12px;
+  padding:9px 11px;
+  background:linear-gradient(135deg,rgba(255,255,255,.67),rgba(248,252,254,.54));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.78);
+  backdrop-filter:blur(14px) saturate(150%);
+  -webkit-backdrop-filter:blur(14px) saturate(150%);
+  text-align:left;
+  transition:.18s ease;
+}
+.eligible-pill:hover{
+  transform:translateY(-1px);
+  border-color:#bad9e5;
+  box-shadow:0 8px 20px rgba(6,29,58,.06);
+}
+.eligible-pill code{
+  flex:0 0 auto;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  color:var(--blue);
+  font-weight:900;
+  font-size:10.5px;
+}
+.eligible-pill span{
+  min-width:0;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  color:#425a70;
+  font-size:10.5px;
+}
+.eligible-pill small{
+  margin-left:auto;
+  flex:0 0 auto;
+  color:var(--muted);
+  font-size:9px;
+}
+.eligible-pill.hidden-extra{
+  display:none;
+}
+.eligible-compact.expanded .eligible-pill.hidden-extra{
+  display:flex;
+}
+
+.area-pills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.area-pill{
+  border:1px solid rgba(214,231,239,.92);
+  border-radius:999px;
+  padding:9px 13px;
+  background:linear-gradient(135deg,rgba(255,255,255,.72),rgba(244,251,253,.58));
+  color:var(--navy);
+  font-size:10.8px;
+  font-weight:850;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.78);
+  backdrop-filter:blur(14px) saturate(150%);
+  -webkit-backdrop-filter:blur(14px) saturate(150%);
+  transition:.18s ease;
+}
+.area-pill:hover{
+  transform:translateY(-1px);
+  background:rgba(239,249,252,.88);
+  border-color:#b9d9e5;
+}
+@media(max-width:700px){
+  .compact-head{align-items:flex-start;flex-direction:column}
+  .eligible-compact{grid-template-columns:1fr}
+}
+
+
+/* ===== Crisp header refinement ===== */
+.brand{
+  background:rgba(255,255,255,.96) !important;
+  border:1px solid rgba(8,42,72,.10) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  box-shadow:0 10px 28px rgba(6,29,58,.07) !important;
+}
+.brand::after{
+  display:none !important;
+}
+.brand h1{
+  color:#061d3a !important;
+  text-shadow:none !important;
+}
+.brand p{
+  color:#5f7387 !important;
+  text-shadow:none !important;
+}
+.logo{
+  background:#fff !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  filter:none !important;
+}
+.logo img{
+  filter:none !important;
+  opacity:1 !important;
+}
+
+
+.footer-note p{
+  margin:0;
+  color:#596f83;
+  font-size:11px;
+  line-height:1.75;
+  font-weight:600;
+}
+
+
+/* Simple author-name typography */
+.footer-name{
+  margin-top:4px !important;
+  color:var(--navy) !important;
+  font-size:18px !important;
+  font-weight:700 !important;
+  letter-spacing:0 !important;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif !important;
+}
+
+
+/* ===== Degree progress ===== */
+.degree-progress{
+  margin-bottom:16px;
+  padding:18px 20px;
+  border-radius:22px;
+  background:linear-gradient(135deg,rgba(255,255,255,.76),rgba(246,252,254,.58));
+  border:1px solid rgba(255,255,255,.82);
+  box-shadow:0 16px 44px rgba(6,29,58,.08),inset 0 1px 0 rgba(255,255,255,.84);
+  backdrop-filter:blur(22px) saturate(165%);
+  -webkit-backdrop-filter:blur(22px) saturate(165%);
+}
+.degree-top{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:14px;
+}
+.degree-kicker{
+  color:var(--blue);
+  font-size:9.5px;
+  font-weight:900;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+.degree-top h3{
+  margin:4px 0 0;
+  color:var(--navy);
+  font-size:17px;
+  letter-spacing:-.02em;
+}
+.degree-total{
+  display:flex;
+  align-items:baseline;
+  gap:4px;
+  white-space:nowrap;
+}
+.degree-total b{
+  color:var(--navy);
+  font-size:24px;
+  letter-spacing:-.04em;
+}
+.degree-total span{
+  color:var(--muted);
+  font-size:10.5px;
+}
+.progress-track{
+  height:9px;
+  margin-top:13px;
+  border-radius:999px;
+  overflow:hidden;
+  background:rgba(11,72,111,.08);
+  box-shadow:inset 0 1px 2px rgba(6,29,58,.08);
+}
+.progress-fill{
+  width:0;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#0b4f82,#1aa6c4);
+  box-shadow:0 0 18px rgba(26,166,196,.28);
+  transition:width .35s ease;
+}
+.requirement-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin-top:13px;
+}
+.requirement-card{
+  padding:11px 12px;
+  border-radius:13px;
+  border:1px solid rgba(215,231,239,.9);
+  background:rgba(255,255,255,.58);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.78);
+}
+.req-label{
+  color:var(--muted);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.req-value{
+  margin-top:5px;
+  color:var(--navy);
+  font-size:12.5px;
+  font-weight:900;
+}
+.req-value.complete{color:var(--ok)}
+.req-value.pending{color:var(--warn)}
+.req-detail{
+  margin-top:4px;
+  color:#607589;
+  font-size:9.5px;
+  line-height:1.45;
+}
+@media(max-width:900px){
+  .requirement-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .degree-top{align-items:flex-start;flex-direction:column}
+  .requirement-grid{grid-template-columns:1fr}
+}
+
+
+/* ===== Refined BSCEE Degree Progress ===== */
+.degree-progress{
+  padding:20px 22px !important;
+  border-radius:26px !important;
+  background:
+    radial-gradient(circle at 92% 8%, rgba(48,188,214,.10), transparent 28%),
+    linear-gradient(135deg,rgba(255,255,255,.82),rgba(247,252,254,.66)) !important;
+  border:1px solid rgba(255,255,255,.88) !important;
+  box-shadow:0 18px 52px rgba(6,29,58,.09), inset 0 1px 0 rgba(255,255,255,.9) !important;
+}
+.degree-title-wrap{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.degree-title{
+  color:#0e6a9f;
+  font-size:14px;
+  font-weight:950;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.degree-subtitle{
+  color:var(--muted);
+  font-size:10.5px;
+  line-height:1.5;
+}
+.degree-total{
+  padding:8px 12px;
+  border-radius:14px;
+  background:rgba(255,255,255,.66);
+  border:1px solid rgba(213,230,239,.9);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.82);
+  backdrop-filter:blur(14px) saturate(150%);
+  -webkit-backdrop-filter:blur(14px) saturate(150%);
+}
+.degree-total b{
+  font-size:28px !important;
+}
+.progress-track{
+  height:10px !important;
+  margin-top:15px !important;
+  background:rgba(12,76,118,.08) !important;
+}
+.progress-fill{
+  background:linear-gradient(90deg,#0d5d93 0%,#1aa6c4 100%) !important;
+}
+.requirement-grid{
+  gap:10px !important;
+  margin-top:15px !important;
+}
+.requirement-card{
+  border-radius:16px !important;
+  padding:13px 14px !important;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.74),rgba(248,252,254,.60)) !important;
+  border:1px solid rgba(212,229,238,.92) !important;
+  box-shadow:0 8px 20px rgba(6,29,58,.04), inset 0 1px 0 rgba(255,255,255,.84) !important;
+}
+.req-label{
+  color:#5f7488 !important;
+  font-size:9.5px !important;
+}
+.req-value{
+  margin-top:6px !important;
+  font-size:13px !important;
+}
+.req-detail{
+  margin-top:5px !important;
+  line-height:1.55 !important;
+}
+
+/* ===== Cleaner author icon ===== */
+.author-mark{
+  color:#ffffff !important;
+  display:grid !important;
+  place-items:center !important;
+  background:
+    radial-gradient(circle at 28% 20%,rgba(72,211,232,.65),transparent 32%),
+    linear-gradient(135deg,#08233f,#0e6a9f 72%,#1aa6c4) !important;
+}
+.author-mark svg{
+  display:block;
+}
+
+
+/* ===== Responsive layout for laptop, tablet and phone ===== */
+html, body{
+  width:100%;
+  overflow-x:hidden;
+}
+img, svg{
+  max-width:100%;
+}
+.shell{
+  width:min(1190px, calc(100% - 28px));
+}
+
+/* Medium screens / tablets */
+@media (max-width: 1024px){
+  .shell{
+    width:min(100% - 24px, 980px);
+  }
+
+  .dashboard{
+    grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+  }
+
+  .requirement-grid{
+    grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+  }
+
+  .eligible-compact{
+    grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+  }
+
+  .overview{
+    grid-template-columns:repeat(3, minmax(0,1fr)) !important;
+  }
+
+  .path-grid{
+    grid-template-columns:1fr 1fr !important;
+  }
+
+  .hero{
+    padding:42px 34px !important;
+  }
+
+  .hero h2{
+    font-size:clamp(38px,6vw,58px) !important;
+  }
+}
+
+/* Phones and small tablets */
+@media (max-width: 720px){
+  .shell{
+    width:calc(100% - 18px) !important;
+  }
+
+  .topbar{
+    padding:10px 0 8px !important;
+  }
+
+  .brand{
+    gap:10px !important;
+    padding:10px 11px !important;
+    border-radius:16px !important;
+    align-items:center !important;
+  }
+
+  .logo{
+    width:50px !important;
+    height:50px !important;
+    flex:0 0 50px !important;
+    border-radius:13px !important;
+    padding:5px !important;
+  }
+
+  .brand h1{
+    font-size:19px !important;
+    line-height:1.12 !important;
+    letter-spacing:-.025em !important;
+  }
+
+  .brand p{
+    font-size:10.5px !important;
+    line-height:1.35 !important;
+    margin-top:3px !important;
+  }
+
+  .hero{
+    margin-top:8px !important;
+    padding:28px 18px 24px !important;
+    border-radius:22px !important;
+  }
+
+  .hero::before{
+    width:300px !important;
+    height:300px !important;
+    right:-125px !important;
+    top:-180px !important;
+  }
+
+  .hero h2{
+    font-size:37px !important;
+    line-height:1.00 !important;
+    max-width:100% !important;
+  }
+
+  .hero p{
+    font-size:12.5px !important;
+    line-height:1.55 !important;
+  }
+
+  .search-wrap{
+    margin-top:20px !important;
+  }
+
+  .searchbar{
+    grid-template-columns:1fr !important;
+    gap:6px !important;
+    border-radius:15px !important;
+    padding:6px !important;
+  }
+
+  .searchbar input{
+    width:100% !important;
+    min-width:0 !important;
+    font-size:14px !important;
+    padding:13px 12px !important;
+  }
+
+  .searchbar button{
+    width:100% !important;
+    padding:12px 14px !important;
+  }
+
+  .suggestions{
+    top:104px !important;
+    max-height:260px !important;
+  }
+
+  .suggestion{
+    grid-template-columns:82px 1fr !important;
+    gap:7px !important;
+    padding:10px !important;
+  }
+
+  .examples{
+    gap:6px !important;
+  }
+
+  .example{
+    font-size:10px !important;
+    padding:6px 8px !important;
+  }
+
+  main{
+    padding:14px 0 28px !important;
+  }
+
+  .dashboard{
+    grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+    gap:8px !important;
+  }
+
+  .metric{
+    padding:12px !important;
+    border-radius:15px !important;
+  }
+
+  .metric span{
+    font-size:8.5px !important;
+  }
+
+  .metric b{
+    font-size:23px !important;
+  }
+
+  .metric small{
+    display:block !important;
+    margin:2px 0 0 !important;
+    font-size:9px !important;
+  }
+
+  .toolbar{
+    flex-direction:column !important;
+    align-items:stretch !important;
+    padding:12px !important;
+  }
+
+  .toolbar-actions{
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+  }
+
+  .toolbar .btn{
+    width:100% !important;
+  }
+
+  .degree-progress{
+    padding:15px !important;
+    border-radius:19px !important;
+  }
+
+  .degree-top{
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:10px !important;
+  }
+
+  .degree-total{
+    align-self:flex-start !important;
+  }
+
+  .degree-title{
+    font-size:12px !important;
+  }
+
+  .degree-subtitle{
+    font-size:9.5px !important;
+  }
+
+  .requirement-grid{
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+  }
+
+  .requirement-card{
+    padding:11px 12px !important;
+  }
+
+  .answer,
+  .panel{
+    border-radius:18px !important;
+  }
+
+  .answer-head,
+  .course-card,
+  .panel{
+    padding-left:14px !important;
+    padding-right:14px !important;
+  }
+
+  .course-title-row{
+    flex-direction:column !important;
+    gap:9px !important;
+  }
+
+  .course-code{
+    font-size:28px !important;
+  }
+
+  .course-name{
+    font-size:14px !important;
+  }
+
+  .overview{
+    grid-template-columns:1fr !important;
+  }
+
+  .path-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .chain-level{
+    display:block !important;
+  }
+
+  .chain-level strong{
+    display:block !important;
+    margin-bottom:6px !important;
+  }
+
+  .chips{
+    gap:6px !important;
+  }
+
+  .chip{
+    max-width:100% !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+
+  .compact-head{
+    flex-direction:column !important;
+    align-items:flex-start !important;
+  }
+
+  .compact-actions{
+    width:100% !important;
+    justify-content:space-between !important;
+  }
+
+  .eligible-compact{
+    grid-template-columns:1fr !important;
+  }
+
+  .eligible-pill{
+    display:grid !important;
+    grid-template-columns:72px minmax(0,1fr) 36px !important;
+    gap:7px !important;
+  }
+
+  .eligible-pill code{
+    font-size:10px !important;
+  }
+
+  .eligible-pill span{
+    font-size:10px !important;
+  }
+
+  .area-pills{
+    gap:6px !important;
+  }
+
+  .area-pill{
+    font-size:10px !important;
+    padding:8px 10px !important;
+  }
+
+  .ged-box{
+    grid-template-columns:1fr !important;
+  }
+
+  .ged-box select{
+    width:100% !important;
+  }
+
+  .progress-list{
+    grid-template-columns:1fr !important;
+  }
+
+  .modal-backdrop{
+    padding:10px !important;
+  }
+
+  .modal{
+    margin:4px auto !important;
+    border-radius:17px !important;
+  }
+
+  .modal-head{
+    padding:14px !important;
+  }
+
+  .modal-body{
+    padding:12px !important;
+  }
+
+  .progress-row{
+    grid-template-columns:18px 72px minmax(0,1fr) 38px !important;
+  }
+
+  .footer-glass{
+    grid-template-columns:1fr !important;
+    padding:16px !important;
+    border-radius:20px !important;
+    gap:15px !important;
+  }
+
+  .footer-author{
+    align-items:flex-start !important;
+  }
+
+  .author-mark{
+    width:50px !important;
+    height:50px !important;
+    flex:0 0 50px !important;
+    border-radius:15px !important;
+  }
+
+  .footer-name{
+    font-size:17px !important;
+  }
+
+  .footer-meta{
+    font-size:10px !important;
+  }
+
+  .footer-note{
+    border-left:0 !important;
+    border-top:1px solid rgba(123,158,180,.22) !important;
+    padding-left:0 !important;
+    padding-top:13px !important;
+  }
+
+  .footer-note p{
+    font-size:10px !important;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 420px){
+  .shell{
+    width:calc(100% - 14px) !important;
+  }
+
+  .brand h1{
+    font-size:17px !important;
+  }
+
+  .brand p{
+    font-size:9.5px !important;
+  }
+
+  .hero{
+    padding:24px 14px 20px !important;
+  }
+
+  .hero h2{
+    font-size:32px !important;
+  }
+
+  .hero p{
+    font-size:11.5px !important;
+  }
+
+  .dashboard{
+    grid-template-columns:1fr 1fr !important;
+    gap:6px !important;
+  }
+
+  .metric{
+    padding:10px !important;
+  }
+
+  .metric b{
+    font-size:21px !important;
+  }
+
+  .toolbar-actions{
+    grid-template-columns:1fr !important;
+  }
+
+  .degree-total b{
+    font-size:24px !important;
+  }
+
+  .eligible-pill{
+    grid-template-columns:66px minmax(0,1fr) 32px !important;
+    padding:8px !important;
+  }
+
+  .author-mark{
+    display:none !important;
+  }
+}
+
+
+/* Keyboard and accessibility polish */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+summary:focus-visible{
+  outline:3px solid rgba(26,166,196,.30);
+  outline-offset:2px;
+}
+
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="shell brand">
+    <div class="logo"><img src="data:image/png;base64,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" alt="North South University logo"></div>
+    <div>
+      <h1>NSU DCEE Course Navigator AI</h1>
+<p>Smart course assistant for Civil &amp; Environmental Engineering students</p>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Student course planning assistant</div>
+      <h2>Find prerequisites.<br>Plan your next move.</h2>
+      <p>Track your completed courses, understand what each course requires, and discover which courses may become available next as you progress through the curriculum.</p>
+<div class="search-wrap">
+        <div class="searchbar">
+          <input id="query" autocomplete="off" placeholder="Try: cee340, soil mechanics, what do I need for CEE430...">
+          <button id="askBtn">Ask</button>
+        </div>
+        <div id="suggestions" class="suggestions"></div>
+      </div>
+
+      <div class="examples">
+        <button class="example" data-q="cee340">cee340</button>
+        <button class="example" data-q="soil mechanics">soil mechanics</button>
+        <button class="example" data-q="what do I need for CEE430">what do I need for CEE430?</button>
+        <button class="example" data-q="after CEE350 what can I take">after CEE350 what can I take?</button>
+        <button class="example" data-q="what can I take now">what can I take now?</button>
+        <button class="example" data-q="GED for batch 261">GED for batch 261</button>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="dashboard">
+      <div class="metric"><span>Completed</span><b id="mCompleted">0</b><small>courses</small></div>
+      <div class="metric"><span>Eligible now</span><b id="mEligible">0</b><small>courses</small></div>
+      <div class="metric"><span>Credits completed</span><b id="mCredits">0</b><small>of 158</small></div>
+      <div class="metric"><span>Credits remaining</span><b id="mCreditsRemaining">158</b><small>to 158</small></div>
+    </section>
+
+    <div class="toolbar">
+      <div class="toolbar-copy">
+        <b>Personalize your course planning</b>
+        <span>Mark completed courses once. Your progress stays saved in this browser.</span>
+      </div>
+      <div class="toolbar-actions">
+        <button class="btn primary" id="manageProgress">Manage completed courses</button>
+        <button class="btn" id="showEligible">Show eligible courses</button>
+      </div>
+    </div>
+
+    <section class="degree-progress">
+      <div class="degree-top">
+        <div class="degree-title-wrap">
+          <div class="degree-title">BSCEE Degree Progress</div>
+          <div class="degree-subtitle">Track your academic progress toward graduation.</div>
+        </div>
+        <div class="degree-total">
+          <b id="degreeCredits">0</b>
+          <span>/ 158 credits</span>
+        </div>
+      </div>
+
+      <div class="progress-track">
+        <div id="degreeProgressBar" class="progress-fill"></div>
+      </div>
+
+      <div class="requirement-grid">
+        <div class="requirement-card">
+          <div class="req-label">Group A–E electives</div>
+          <div class="req-value" id="electiveProgress">0 / 4 courses</div>
+          <div class="req-detail" id="electiveDetail">Complete 2 electives from one group and 2 from other group(s).</div>
+        </div>
+
+        <div class="requirement-card">
+          <div class="req-label">Internship</div>
+          <div class="req-value" id="internshipProgress">Not completed</div>
+          <div class="req-detail">CEE 498 is mandatory and carries 0 credit.</div>
+        </div>
+
+        <div class="requirement-card">
+          <div class="req-label">Capstone sequence</div>
+          <div class="req-value" id="capstoneProgress">0 / 3 credits</div>
+          <div class="req-detail">CEE 499A → CEE 499B → CEE 499C, 1 credit each.</div>
+        </div>
+
+        <div class="requirement-card">
+          <div class="req-label">CEE 499A readiness</div>
+          <div class="req-value" id="capstoneReadiness">Not ready yet</div>
+          <div class="req-detail">Requires all 300-level core courses or 100 completed credits.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="answer" class="answer">
+      <div class="answer-head">
+        <div class="answer-kicker">Assistant answer</div>
+        <div id="answerText" class="answer-text"></div>
+        <div id="answerSub" class="answer-sub"></div>
+      </div>
+      <div id="answerContent"></div>
+    </section>
+
+    
+    <section class="panel compact-panel" id="eligiblePanel">
+      <div class="compact-head">
+        <div>
+          <h3>What can I take now?</h3>
+          <p>Courses that match your completed-course progress.</p>
+        </div>
+        <div class="compact-actions">
+          <span class="count-pill" id="eligibleCountBadge">0 courses</span>
+          <button class="btn" id="toggleEligible">View all</button>
+        </div>
+      </div>
+      <div id="eligibleGrid" class="eligible-compact"></div>
+    </section>
+
+    <section class="panel compact-panel">
+      <div class="compact-head">
+        <div>
+          <h3>Browse by area</h3>
+          <p>Choose a civil engineering area to explore related courses.</p>
+        </div>
+      </div>
+      <div id="areaGrid" class="area-pills"></div>
+    </section>
+
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h3>Arts and Social Sciences GED Requirement</h3>
+          <p>Select your batch group to see the mandatory and elective GED structure.</p>
+        </div>
+      </div>
+      <div class="ged-box">
+        <select id="batchSelect">
+          <option value="">Select batch group</option>
+          <option value="upto253">Up to Batch 253</option>
+          <option value="261plus">Batch 261 onward</option>
+        </select>
+        <div id="gedRule" class="ged-rule">Select a batch group to see the GED requirement.</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="progressModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h3>My completed courses</h3>
+        <p>Tick the courses you have already completed. This information is stored only in your browser.</p>
+      </div>
+      <button id="closeModalTop" class="btn">Close</button>
+    </div>
+    <div class="modal-body">
+      <input id="progressSearch" class="progress-search" placeholder="Filter by course code or title">
+      <div id="progressList" class="progress-list"></div>
+      <div class="modal-actions">
+        <span id="progressSummary">0 courses selected</span>
+        <div>
+          <button id="resetProgress" class="btn">Clear all</button>
+          <button id="closeModal" class="btn primary">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="shell">
+    <div class="footer-glass">
+      <div class="footer-author">
+        <div class="author-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 12.2C14.3748 12.2 16.3 10.2748 16.3 7.9C16.3 5.52518 14.3748 3.6 12 3.6C9.62518 3.6 7.7 5.52518 7.7 7.9C7.7 10.2748 9.62518 12.2 12 12.2Z" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M4.8 20.1C5.45 16.9 8.2 14.9 12 14.9C15.8 14.9 18.55 16.9 19.2 20.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M17.8 5.7L20.2 7.1L17.8 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+          </svg>
+        </div>
+        <div>
+          <div class="footer-overline">Designed and developed by</div>
+          <div class="footer-name">Rishad Ur Rahman</div>
+          <div class="footer-meta">Email: rishad.rahman.232@northsouth.edu</div>
+          <div class="footer-meta">Department of Civil and Environmental Engineering</div>
+          <div class="footer-meta">North South University</div>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        <p>
+          Academic helper only. The BSCEE program requires 158 total credits. Prerequisites and program requirements can change by curriculum, batch, waiver, or departmental decision.
+          Always verify with the current NSU advising system / DCEE office before registration.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const COURSES = [{"Course Code": "CEE 100", "Course Title": "Introduction to Civil and Environmental Engineering", "Credit": 0, "Category": "Orientation", "Prerequisite": "None", "Description": "An introduction to the civil and environmental engineering profession, its major branches, professional responsibilities, ethics, codes, and sustainability."}, {"Course Code": "CEE 110", "Course Title": "Computer Aided Drawing (CAD) for Engineers", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "None", "Description": "Engineering drawing fundamentals, projections, sections, structural details, and an introduction to CAD."}, {"Course Code": "MAT 116", "Course Title": "Pre-Calculus", "Credit": 0, "Category": "Mathematics", "Prerequisite": "None", "Description": "Algebra, functions, polynomial and logarithmic topics, trigonometry, sequences, induction, and the binomial theorem."}, {"Course Code": "ENG 102", "Course Title": "Introduction to Composition", "Credit": 3, "Category": "General Education", "Prerequisite": "None", "Description": "Academic reading and writing with emphasis on planning, organization, cohesion, coherence, and clear expression."}, {"Course Code": "ENV 107", "Course Title": "Environmental Science", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "None", "Description": "Environmental systems, ecology, population, pollution, waste management, climate issues, water, energy, and sustainable development."}, {"Course Code": "CHE 101", "Course Title": "Chemistry I", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "None", "Description": "Fundamental chemistry including atomic structure, bonding, stoichiometry, thermochemistry, equilibrium, kinetics, gases, and solutions."}, {"Course Code": "CHE 101L", "Course Title": "Chemistry Lab I", "Credit": 1, "Category": "Basic & Applied Sciences", "Prerequisite": "CHE 101", "Description": "Introductory laboratory work covering measurement, chemical proportions, titration, density, and basic analytical techniques."}, {"Course Code": "ENG 103", "Course Title": "Intermediate Composition", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Develops analytical reading and academic writing through expressive, persuasive, and referential writing, with emphasis on planning, organization, cohesion, and coherence."}, {"Course Code": "MAT 120", "Course Title": "Calculus & Analytical Geometry I", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 116", "Description": "Limits, differentiation, applications of derivatives, integration, analytic geometry, and exponential/logarithmic functions."}, {"Course Code": "MAT 125", "Course Title": "Introduction to Linear Algebra", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 120", "Description": "Covers systems of linear equations, Gaussian elimination, determinants, matrices and matrix operations, vector spaces, linear combinations, independence, basis, dimension, null space, rank, and related linear-algebra methods."}, {"Course Code": "PHY 107", "Course Title": "General Physics I", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "MAT 120", "Description": "Mechanics, energy, momentum, rotation, gravitation, oscillations, waves, and introductory thermodynamics."}, {"Course Code": "PHY 107L", "Course Title": "Physics I Lab", "Credit": 1, "Category": "Basic & Applied Sciences", "Prerequisite": "PHY 107", "Description": "Laboratory experiments in measurement, forces, oscillation, pendulums, springs, and static equilibrium."}, {"Course Code": "MAT 130", "Course Title": "Calculus & Analytical Geometry II", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 120", "Description": "Advanced integration, hyperbolic functions, improper integrals, polar coordinates, parametric equations, and analytic geometry."}, {"Course Code": "PHY 108", "Course Title": "General Physics II", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "PHY 107; MAT 130", "Description": "Electricity and magnetism, electric fields, circuits, magnetic forces, induction, AC systems, and Maxwell-related concepts."}, {"Course Code": "PHY 108L", "Course Title": "Physics II Lab", "Credit": 1, "Category": "Basic & Applied Sciences", "Prerequisite": "PHY 108", "Description": "Experiments with electrical equipment, Ohm’s law, capacitors, RC time constants, and magnetic induction."}, {"Course Code": "MAT 250", "Course Title": "Calculus III / Advanced Calculus", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 130", "Description": "Multivariable calculus, multiple integrals, vector fields, line and surface integrals, and major vector-calculus theorems."}, {"Course Code": "MAT 350", "Course Title": "Engineering Mathematics", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 250", "Description": "Ordinary differential equations, Laplace transforms, power-series solutions, and Bessel functions."}, {"Course Code": "MAT 361", "Course Title": "Probability and Statistics", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 250", "Description": "Probability, random variables, statistical distributions, estimation, hypothesis testing, regression, and correlation."}, {"Course Code": "ENV 311", "Course Title": "Geology and Geomorphology", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "None", "Description": "Covers rocks and minerals, structural geology, faults and folds, erosional landforms, the geology of Bangladesh, fluvial geomorphology, floodplains, deltas, alluvial fans, river basins, and the geomorphic characteristics of rivers in Bangladesh."}, {"Course Code": "ENV 373", "Course Title": "Environmental Impact Assessment", "Credit": 3, "Category": "Engineering Tools / Environment", "Prerequisite": "None", "Description": "Environmental and social impact assessment methods, scoping, alternatives, impact prediction, mitigation, monitoring, participation, and EIA reporting."}, {"Course Code": "CEE 209", "Course Title": "Environmental Chemistry", "Credit": 3, "Category": "Environmental Engineering", "Prerequisite": "ENV 107; CHE 101", "Description": "Chemical processes in air, water, and soil, pollutant behavior, environmental sampling, monitoring, and analytical techniques."}, {"Course Code": "CEE 271L", "Course Title": "Environmental Engineering Lab I", "Credit": 1, "Category": "Environmental Engineering", "Prerequisite": "CEE 209", "Description": "Laboratory measurement of important water-quality parameters and interpretation of results for environmental engineering applications."}, {"Course Code": "CEE 213", "Course Title": "Surveying & Introduction to GIS", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 110", "Description": "Surveying methods, leveling, traversing, curves, areas and volumes, GPS, remote sensing, hydrographic surveying, and GIS fundamentals."}, {"Course Code": "CEE 213L", "Course Title": "Surveying & Introduction to GIS Lab", "Credit": 1, "Category": "Engineering Tools", "Prerequisite": "CEE 110", "Description": "Field-survey practice and introductory GIS software applications."}, {"Course Code": "CEE 210", "Course Title": "Engineering Mechanics", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "MAT 120", "Description": "Statics and dynamics including forces, moments, equilibrium, trusses, friction, centroids, inertia, work, energy, and momentum."}, {"Course Code": "CEE 214", "Course Title": "Engineering Materials", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CHE 101; CEE 210", "Description": "Properties and engineering use of concrete, steel, aggregates, asphalt, masonry, wood, coatings, and composites."}, {"Course Code": "CEE 214L", "Course Title": "Engineering Materials Lab", "Credit": 1, "Category": "Engineering Tools", "Prerequisite": "CEE 214", "Description": "Laboratory characterization of aggregates, cement, concrete, and other common civil engineering materials."}, {"Course Code": "CEE 310", "Course Title": "Quantity Survey and Cost Analysis", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 213; CEE 214", "Description": "Quantity estimation, rate analysis, detailed building estimates, specifications, and cost analysis for civil engineering works."}, {"Course Code": "CEE 215", "Course Title": "Numerical Analysis & Computer Programming", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "MAT 130", "Description": "Numerical methods for engineering problems and introductory structured/object-oriented programming, including MATLAB-based work."}, {"Course Code": "CEE 211", "Course Title": "Fluid Mechanics", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 210; MAT 130", "Description": "Fluid properties, hydrostatics, conservation laws, flow equations, pipe flow, dimensional analysis, and flow measurement."}, {"Course Code": "CEE 211L", "Course Title": "Fluid Mechanics Lab", "Credit": 1, "Category": "Engineering Tools", "Prerequisite": "CEE 210; MAT 130", "Description": "Hands-on experiments involving pressure, Bernoulli’s principle, flow measurement, weirs, pipe losses, and fluid friction."}, {"Course Code": "CEE 212", "Course Title": "Solid Mechanics", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 210; MAT 130", "Description": "Internal forces, stress and strain, beams, deflection, torsion, stress transformation, and column stability."}, {"Course Code": "CEE 212L", "Course Title": "Solid Mechanics Lab", "Credit": 1, "Category": "Engineering Tools", "Prerequisite": "CEE 212", "Description": "Material and structural tests including tension, compression, impact, bending, hardness, springs, and column buckling."}, {"Course Code": "CEE 260", "Course Title": "Hydrology", "Credit": 3, "Category": "Water Resources", "Prerequisite": "CEE 211", "Description": "Hydrologic processes including precipitation, evaporation, infiltration, runoff, hydrographs, groundwater flow, wells, and risk analysis."}, {"Course Code": "CEE 240", "Course Title": "Introduction to Soil Mechanics and Foundation Engineering", "Credit": 3, "Category": "Geotechnical Engineering", "Prerequisite": "CEE 212; CEE 214", "Description": "Soil classification, compaction, permeability, seepage, effective stress, consolidation, shear strength, and lateral earth pressure."}, {"Course Code": "CEE 240L", "Course Title": "Soil Mechanics Lab", "Credit": 1, "Category": "Geotechnical Engineering", "Prerequisite": "CEE 240", "Description": "Laboratory testing of soils including grain-size analysis, Atterberg limits, compaction, shear, permeability, and consolidation."}, {"Course Code": "CEE 340", "Course Title": "Advanced Foundation Engineering", "Credit": 3, "Category": "Geotechnical Engineering", "Prerequisite": "CEE 240L", "Description": "Subsoil investigation, shallow and deep foundations, bearing capacity, settlement, slope stability, and retaining structures."}, {"Course Code": "CEE 250", "Course Title": "Introduction to Transportation Engineering", "Credit": 3, "Category": "Transportation Engineering", "Prerequisite": "CEE 212", "Description": "Transportation systems, geometric design, pavement materials and design, traffic loading, railways, waterways, construction, and maintenance."}, {"Course Code": "CEE 250L", "Course Title": "Transportation Engineering Lab", "Credit": 1, "Category": "Transportation Engineering", "Prerequisite": "CEE 250", "Description": "Laboratory work on highway materials, aggregates, asphalt, mix design, and material characterization."}, {"Course Code": "CEE 350", "Course Title": "Traffic Analysis and Design", "Credit": 3, "Category": "Transportation Engineering", "Prerequisite": "CEE 250", "Description": "Traffic flow, capacity analysis, roadway and intersection design, control devices, planning, transit systems, and safety."}, {"Course Code": "CEE 330", "Course Title": "Structural Analysis and Design I", "Credit": 3, "Category": "Structural Engineering", "Prerequisite": "CEE 212", "Description": "Structural determinacy, arches, cables, influence lines, moving loads, indeterminate analysis, energy methods, and virtual work."}, {"Course Code": "CEE 330L", "Course Title": "Structural Analysis and Design Lab", "Credit": 1, "Category": "Structural Engineering", "Prerequisite": "CEE 330", "Description": "Computer-based structural analysis using stiffness methods and professional analysis software."}, {"Course Code": "CEE 331", "Course Title": "Structural Analysis and Design II", "Credit": 3, "Category": "Structural Engineering", "Prerequisite": "CEE 330L", "Description": "Indeterminate structural analysis using moment distribution, flexibility, stiffness, and matrix methods."}, {"Course Code": "CEE 335", "Course Title": "Reinforced Concrete Design I", "Credit": 3, "Category": "Structural Engineering", "Prerequisite": "CEE 212", "Description": "Fundamentals of reinforced-concrete behavior and design of beams, slabs, shear, anchorage, and common RC systems."}, {"Course Code": "CEE 335L", "Course Title": "Reinforced Concrete Design Lab", "Credit": 1, "Category": "Structural Engineering", "Prerequisite": "CEE 335", "Description": "Software-based analysis and design of concrete structures and components using major structural design codes."}, {"Course Code": "CEE 430", "Course Title": "Reinforced Concrete Design II", "Credit": 3, "Category": "Structural Engineering", "Prerequisite": "CEE 330; CEE 335L", "Description": "Design of columns, footings, rafts, pile caps, retaining walls, seismic detailing, shear walls, and prestressed-concrete concepts."}, {"Course Code": "CEE 360", "Course Title": "Open-Channel Hydraulics", "Credit": 3, "Category": "Water Resources", "Prerequisite": "CEE 260", "Description": "Free-surface flow, gradually and rapidly varied flow, unsteady flow, channel networks, and hydraulic structure design."}, {"Course Code": "CEE 360L", "Course Title": "Open-Channel Hydraulics Lab", "Credit": 1, "Category": "Water Resources", "Prerequisite": "CEE 360", "Description": "Open-channel experiments and numerical/modeling work including hydraulic jumps, weirs, GVF, and HEC-RAS applications."}, {"Course Code": "CEE 460", "Course Title": "Groundwater Hydraulics", "Credit": 3, "Category": "Water Resources", "Prerequisite": "CEE 360", "Description": "Aquifers, porous-media flow, well hydraulics, pumping tests, groundwater quality, contamination, and transport."}, {"Course Code": "CEE 370", "Course Title": "Water Supply and Treatment", "Credit": 3, "Category": "Environmental Engineering", "Prerequisite": "CEE 209; CEE 271L; CEE 211", "Description": "Water sources, water demand, pipelines and pumps, water quality, treatment processes, and municipal distribution-system design."}, {"Course Code": "CEE 373", "Course Title": "Sanitation and Wastewater Engineering", "Credit": 3, "Category": "Environmental Engineering", "Prerequisite": "CEE 370", "Description": "Wastewater collection, sewer systems, treatment processes, sludge handling, drainage, and sanitation engineering."}, {"Course Code": "CEE 371L", "Course Title": "Environmental Engineering Lab II", "Credit": 1, "Category": "Environmental Engineering", "Prerequisite": "CEE 271L; CEE 370; CEE 373", "Description": "Advanced environmental engineering laboratory and applied work related to wastewater, sanitation, and environmental management."}, {"Course Code": "CEE 470", "Course Title": "Solid and Hazardous Waste Engineering", "Credit": 3, "Category": "Environmental Engineering", "Prerequisite": "CEE 373", "Description": "Solid-waste generation, storage, collection, transport, treatment, disposal, resource recovery, and hazardous-waste management."}, {"Course Code": "CEE 415", "Course Title": "Socioeconomic Aspects of Development Projects", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 350; ENV 373; CEE 310", "Description": "Development paradigms, socio-economic indicators, participatory planning, community involvement, gender, and institutional issues."}, {"Course Code": "CEE 431", "Course Title": "Introduction to Structural Dynamics", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331", "Description": "Dynamic response of single- and multi-degree-of-freedom structural systems, including vibration and earthquake response."}, {"Course Code": "CEE 432", "Course Title": "Composite Structures", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331; CEE 430", "Description": "Steel-concrete composite construction, shear connectors, composite beams, columns, and interaction behavior."}, {"Course Code": "CEE 433", "Course Title": "Finite Element Methods", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331", "Description": "Finite-element modeling for structural mechanics, including truss, beam, frame, plate, and shell-type problems."}, {"Course Code": "CEE 434", "Course Title": "Advanced Reinforced Concrete Design", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331; CEE 430", "Description": "Advanced RC design topics such as strut-and-tie models, slabs, shear walls, serviceability, and water-retaining structures."}, {"Course Code": "CEE 435", "Course Title": "Prestressed Concrete", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 430", "Description": "Prestressing systems, losses, flexure, shear, bond, bearing, deflection, cable layout, and prestressed-section design."}, {"Course Code": "CEE 437", "Course Title": "Behavior and Design of Metal Structures", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331", "Description": "Steel design principles, tension and compression members, connections, beams, stability, and plate girders."}, {"Course Code": "CEE 439", "Course Title": "Earthquake-Resistant Design", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331; CEE 340", "Description": "Structural dynamics, earthquake ground motion, design spectra, seismic load paths, proportioning, and ductile detailing."}, {"Course Code": "CEE 441", "Course Title": "Advanced Geotechnical Engineering", "Credit": 3, "Category": "Group B: Geotechnical Engineering", "Prerequisite": "CEE 340", "Description": "Advanced foundation case studies, seismic geotechnics, soil-structure interaction, liquefaction, retaining systems, and vibration."}, {"Course Code": "CEE 423", "Course Title": "Earth Retaining Structures", "Credit": 3, "Category": "Group B: Geotechnical Engineering", "Prerequisite": "CEE 340", "Description": "Retaining walls, sheet piles, braced cuts, cofferdams, caissons, dewatering, and lateral-load foundation problems."}, {"Course Code": "CEE 442", "Course Title": "Earthen Dam and Slope Stability", "Credit": 3, "Category": "Group B: Geotechnical Engineering", "Prerequisite": "CEE 340", "Description": "Slope stability methods, seepage, earthen dams, uplift, piping, filters, and static/dynamic stability assessment."}, {"Course Code": "CEE 424", "Course Title": "Advanced Soil Mechanics", "Credit": 3, "Category": "Group B: Geotechnical Engineering", "Prerequisite": "CEE 340", "Description": "Unsaturated soil behavior, consolidation, shear strength, soil dynamics, earthquake effects, and liquefaction."}, {"Course Code": "CEE 450", "Course Title": "Road and Traffic Safety Engineering", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Road-safety policy, audits, crash data, black-spot analysis, pedestrian/cyclist safety, traffic calming, and engineering countermeasures."}, {"Course Code": "CEE 452", "Course Title": "Pavement Analysis, Design and Construction", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Pavement response, materials, distresses, performance, maintenance, flexible/rigid design, drainage, overlays, and construction methods."}, {"Course Code": "CEE 454", "Course Title": "Advanced Traffic Engineering", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Advanced traffic-flow, capacity, control, intersection design, traffic studies, data collection, and statistical analysis."}, {"Course Code": "CEE 458", "Course Title": "Transportation Systems Engineering and Planning", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Transportation-system modeling, demand analysis, transit, urban planning, management, safety, and Bangladesh-focused case studies."}, {"Course Code": "CEE 459", "Course Title": "Geometric Analysis and Design of Roads", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Geometric roadway design including visible elements, intersections, freeways, interchanges, and design-software applications."}, {"Course Code": "CEE 463", "Course Title": "Integrated Water Resources Planning and Management", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 360", "Description": "Integrated water-resource planning with economic, environmental, institutional, participatory, operational, and systems-analysis perspectives."}, {"Course Code": "CEE 465", "Course Title": "River Engineering", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 360", "Description": "Alluvial-river behavior, morphology, river training, bank protection, sediment transport, dredging, flooding, forecasting, and flood management."}, {"Course Code": "CEE 467", "Course Title": "Irrigation and Drainage Engineering", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 460", "Description": "Irrigation-water requirements, canal design, irrigation structures, pumps, water management, drainage systems, and land drainage."}, {"Course Code": "CEE 473", "Course Title": "Coastal and Estuarine Analysis", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 360", "Description": "Coastal processes, waves, currents, sediment transport, estuarine systems, pollution transport, and Bangladesh coastal-zone applications."}, {"Course Code": "CEE 475", "Course Title": "Water Resources and Environmental Modelling", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 215; CEE 360", "Description": "Environmental-system modeling, calibration, validation, prediction, mass/energy balances, reactors, and contaminant fate and transport."}, {"Course Code": "CEE 471", "Course Title": "Pollution Control", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 470", "Description": "Pollution sources and impacts plus engineering methods to prevent and control air, water, soil, noise, radioactive, and hazardous pollution."}, {"Course Code": "CEE 472", "Course Title": "Climate Change and Disaster Management", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 470", "Description": "Climate change, mitigation, hazards, vulnerability, resilience, disaster risk management, preparedness, recovery, and community-based approaches."}, {"Course Code": "CEE 474", "Course Title": "Green Building and Infrastructure", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 335; CEE 350; CEE 470", "Description": "Sustainable building and infrastructure design covering site, transport, energy, materials, water, indoor quality, waste, durability, and climate adaptation."}, {"Course Code": "CEE 477", "Course Title": "Ecological Engineering", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 215; CEE 373; CEE 360", "Description": "Ecological principles applied to engineering, conservation, ecosystem management, ecological impacts, and restoration."}, {"Course Code": "CEE 479", "Course Title": "Air Quality Engineering", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 209; CEE 370", "Description": "Air pollutants, emissions, atmospheric chemistry, dispersion, health impacts, regulations, control technologies, and global air-quality issues."}, {"Course Code": "CEE 410", "Course Title": "Construction Engineering", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "CEE 310; CEE 430", "Description": "Construction processes, contracting, scheduling, resource allocation, project organization, documentation, management, and control."}, {"Course Code": "CEE 427", "Course Title": "Advanced Procurement Systems", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "CEE 410", "Description": "Construction procurement methods, public procurement rules, e-GP, international procurement, and sustainable/strategic procurement."}, {"Course Code": "CEE 425", "Course Title": "GIS and Remote Sensing", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "CEE 213; CEE 350", "Description": "GIS data models and analysis, spatial data capture, remote-sensing basics, sensors, and engineering applications."}, {"Course Code": "CEE 466", "Course Title": "Urban Planning", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "CEE 335; CEE 250; CEE 415", "Description": "Urban-planning concepts, planning processes, surveys, analysis, objectives, constraints, policy, evaluation, and implementation."}, {"Course Code": "CEE 490", "Course Title": "Special Topic", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "None specified", "Description": "A department-approved special topic selected according to current student and faculty needs."}, {"Course Code": "CEE 492", "Course Title": "Undergraduate Research", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "90 credits completed", "Description": "A supervised research/thesis course involving a substantial civil-engineering or closely related research problem."}, {"Course Code": "CEE 498", "Course Title": "Internship", "Credit": 0, "Category": "Internship", "Prerequisite": "All BSCEE Core CEE courses", "Description": "A mandatory internship providing supervised practical experience in a professional engineering work environment."}, {"Course Code": "CEE 499A", "Course Title": "Engineering Project I", "Credit": 1, "Category": "Capstone Project", "Prerequisite": "All 300-level core courses completed OR 100 credits", "Description": "First stage of a year-long civil/environmental engineering capstone design project."}, {"Course Code": "CEE 499B", "Course Title": "Engineering Project II", "Credit": 1, "Category": "Capstone Project", "Prerequisite": "CEE 499A", "Description": "Second stage of the capstone design sequence, continuing analysis, design, implementation, and project development."}, {"Course Code": "CEE 499C", "Course Title": "Engineering Project III", "Credit": 1, "Category": "Capstone Project", "Prerequisite": "CEE 499B", "Description": "Final stage of the capstone design sequence, completing design work, documentation, and presentation."}, {"Course Code": "ECO 101", "Course Title": "Introduction to Microeconomics", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Introduces the methods and principles of microeconomics, including markets, consumer behavior, production, costs, market structures, and efficiency in allocation and production."}, {"Course Code": "ECO 104", "Course Title": "Introduction to Macroeconomics", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Introduces macroeconomic analysis through national income accounting, unemployment, inflation, output and price determination, money and banking, fiscal and monetary policy, trade deficits, and exchange rates."}, {"Course Code": "ACT 201", "Course Title": "Introduction to Financial Accounting", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Introduces the accounting model and financial statements, including accounting processes, assets and liabilities, stockholders' equity, revenues and expenses, depreciation, inventory pricing, and the accounting cycle."}, {"Course Code": "MGT 210", "Course Title": "Principles of Management", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Covers the environment, approaches, principles, and processes of management, including planning, organizing, control, motivation, teamwork, group dynamics, and leadership."}, {"Course Code": "SOC 101", "Course Title": "Introduction to Sociology", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Introduces key sociological concepts and explains how societies grow and change, how major institutions influence one another and individual life, and how social conflict and planned or unplanned change occur."}, {"Course Code": "PSY 210", "Course Title": "Psychology", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "An approved Arts and Social Sciences GED option in Psychology for DCEE students. Students should check the current NSU course outline for the detailed topic list."}, {"Course Code": "POL 210", "Course Title": "Human Rights & Politics", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Examines the history and development of human-rights ideas, fundamental rights, comparative perspectives, national and international law, and political, economic, social, cultural, individual, and collective rights."}, {"Course Code": "PHI 101", "Course Title": "Introduction to Philosophy", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Explores basic philosophical questions about mind and brain, knowledge, free will, justice, the existence of God, mortality, and the nature and function of philosophy."}, {"Course Code": "LAW 200", "Course Title": "Legal Environment of Business", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Introduces the role and application of law in business, including the legal environment of commerce, taxation, competition, labor-management relations, contracts, dispute resolution, and related business-law issues."}, {"Course Code": "BEN 205", "Course Title": "Bangla Language and Literature", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Develops Bengali language skills through prose styles, grammar, syntax, vocabulary, and integrated language practice, while introducing major trends and writers in modern Bengali literature."}, {"Course Code": "HIS 103", "Course Title": "Emergence of Bangladesh", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Studies the political and historical development of Bangladesh, including the partition of India, Language Movement, major constitutional and political developments, autonomy movements, and the background to Bangladesh's emergence."}, {"Course Code": "ENG 105", "Course Title": "Advanced Composition", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Builds advanced analytical reading and writing skills with emphasis on sentence structure, organization, coherence, technical reports, project proposals, presentations, and effective written, oral, and visual communication."}];
+const GED_RULES = [{"Batch Group": "Up to Batch 253", "Mandatory Courses": "ENG 103", "Choose From": "ECO 101; ECO 104; ACT 201; MGT 210; SOC 101; PSY 210; POL 210; PHI 101; LAW 200; BEN 205; HIS 103; ENG 105", "Total GED Courses": 4, "Total GED Credits": 12, "Rule": "ENG 103 is mandatory. Choose any 3 courses from the listed GED options. BEN 205 and HIS 103 are elective, not mandatory."}, {"Batch Group": "Batch 254–260", "Mandatory Courses": "Not specified", "Choose From": "Not specified", "Total GED Courses": null, "Total GED Credits": null, "Rule": "The chairman's email provided does not state the GED rule for this batch range. Confirm with DCEE before publishing a rule."}, {"Batch Group": "Batch 261 onward", "Mandatory Courses": "ENG 103; ECO 101; ACT 201", "Choose From": "ECO 104; MGT 210; SOC 101; PSY 210; POL 210; PHI 101; LAW 200; BEN 205; HIS 103; ENG 105", "Total GED Courses": 4, "Total GED Credits": 12, "Rule": "ENG 103, ECO 101, and ACT 201 are mandatory. Choose 1 additional GED course from the listed options."}];
+const CATEGORY_INFO = {"Structural Engineering": "Structural courses focus on how buildings, bridges, frames, and other structures carry loads safely and efficiently.", "Geotechnical Engineering": "Geotechnical courses focus on soil behavior, foundations, slopes, retaining systems, and the interaction between structures and the ground.", "Transportation Engineering": "Transportation courses cover highways, traffic, pavement, mobility, planning, geometric design, and transportation systems.", "Water Resources": "Water-resources courses cover hydrology, hydraulics, rivers, groundwater, irrigation, drainage, and water-management systems.", "Environmental Engineering": "Environmental courses cover water and wastewater treatment, sanitation, solid waste, pollution control, environmental assessment, and sustainability.", "Engineering Tools": "Engineering-tool courses build the mechanics, computing, surveying, materials, drawing, and analysis skills used across civil engineering.", "Mathematics": "Mathematics courses build the quantitative foundation used in engineering analysis, modelling, statistics, and design.", "Basic & Applied Sciences": "Basic and applied science courses provide the physics, chemistry, geology, and environmental-science foundation needed for civil engineering.", "Arts and Social Sciences (GED)": "GED courses broaden communication, social-science, humanities, management, and general analytical skills alongside engineering study."};
+
+const PREFIXES = ["CEE","MAT","PHY","CHE","ENV","ENG","ECO","ACT","MGT","SOC","PSY","POL","PHI","LAW","BEN","HIS"];
+const STORAGE_KEY = "nsu_cee_offline_completed_v2";
+
+function rawCourseKey(c) {
+  return compact(codeOf(c)) + "::" + normalize(titleOf(c));
+}
+
+function migrateCompletedProgress() {
+  const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  if (current.length) return new Set(current);
+
+  const old = JSON.parse(localStorage.getItem("nsu_cee_offline_completed_v1") || "[]");
+  const migrated = [];
+
+  old.forEach(oldKey => {
+    const matches = COURSES.filter(c => compact(codeOf(c)) === compact(oldKey));
+    if (matches.length === 1) migrated.push(rawCourseKey(matches[0]));
+    // If an old saved code maps to more than one course, do not guess which one.
+  });
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+  return new Set(migrated);
+}
+
+const completed = migrateCompletedProgress();
+
+const queryInput = document.getElementById("query");
+const suggestions = document.getElementById("suggestions");
+const answer = document.getElementById("answer");
+
+function normalize(s) {
+  return String(s || "")
+    .toUpperCase()
+    .replace(/[‐‑–—-]/g, " ")
+    .replace(/[^A-Z0-9 ]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+function compact(s) { return normalize(s).replace(/\s+/g,""); }
+function codeOf(c) { return c["Course Code"]; }
+function titleOf(c) { return c["Course Title"]; }
+function creditOf(c) { return Number(c["Credit"]) || 0; }
+function categoryOf(c) { return c["Category"]; }
+function prereqOf(c) { return c["Prerequisite"]; }
+function descriptionOf(c) { return c["Description"]; }
+
+function courseKey(c) {
+  return rawCourseKey(c);
+}
+
+function isCourseCompleted(c) {
+  return completed.has(courseKey(c));
+}
+
+function isCodeCompleted(code) {
+  const target = compact(code);
+  return COURSES.some(c =>
+    compact(codeOf(c)) === target &&
+    completed.has(courseKey(c))
+  );
+}
+
+function saveCompletedProgress() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...completed]));
+}
+
+function prettyCode(s) {
+  const x = compact(s);
+  const m = x.match(/^([A-Z]+)(\d{3}[A-Z]?)$/);
+  return m ? m[1] + " " + m[2] : s;
+}
+
+function courseByCode(code) {
+  const key = compact(code);
+  return COURSES.find(c => compact(codeOf(c)) === key);
+}
+
+function coursesByCode(code) {
+  const key = compact(code);
+  return COURSES.filter(c => compact(codeOf(c)) === key);
+}
+
+function parsePrereqCodes(text) {
+  const raw = String(text || "");
+  if (!raw || /^(none|none shown)$/i.test(raw.trim())) return [];
+  const re = new RegExp("(?:"
+    + PREFIXES.join("|")
+    + ")\\s*\\d{3}[A-Z]?", "g");
+  const found = raw.toUpperCase().match(re) || [];
+  return [...new Set(found.map(prettyCode))];
+}
+
+function specialRequirement(c) {
+  const p = normalize(prereqOf(c));
+  if (p === "NONE" || p === "NONE SHOWN" || p === "") return null;
+  if (parsePrereqCodes(prereqOf(c)).length) return null;
+  return prereqOf(c);
+}
+
+function isElectiveCategory(c) {
+  return /^GROUP [A-F]:/i.test(categoryOf(c));
+}
+
+function core300Courses() {
+  return COURSES.filter(c =>
+    /^CEE 3\d{2}[A-Z]?$/i.test(codeOf(c)) &&
+    !isElectiveCategory(c)
+  );
+}
+
+function coreCEEForInternship() {
+  return COURSES.filter(c =>
+    /^CEE \d{3}[A-Z]?$/i.test(codeOf(c)) &&
+    !isElectiveCategory(c) &&
+    !["CEE 490","CEE 492","CEE 498","CEE 499A","CEE 499B","CEE 499C"].includes(codeOf(c))
+  );
+}
+
+function completedCredits() {
+  return COURSES
+    .filter(c => isCourseCompleted(c))
+    .reduce((sum,c) => sum + creditOf(c), 0);
+}
+
+function courseStatus(c) {
+  if (isCourseCompleted(c)) return {type:"completed",label:"Completed",missing:[]};
+
+  const special = specialRequirement(c);
+  if (special) {
+    const norm = normalize(special);
+    if (norm.includes("90 CREDITS")) {
+      return completedCredits() >= 90
+        ? {type:"eligible",label:"Eligible by credit rule",missing:[]}
+        : {type:"manual",label:"Credit requirement",missing:["90 credits completed"]};
+    }
+    if (norm.includes("100 CREDITS") || norm.includes("300 LEVEL CORE")) {
+      const byCredit = completedCredits() >= 100;
+      const byCore = core300Courses().every(x => isCourseCompleted(x));
+      return (byCredit || byCore)
+        ? {type:"eligible",label:"Eligible by program rule",missing:[]}
+        : {type:"manual",label:"Program requirement",missing:["All 300-level core courses or 100 credits"]};
+    }
+    if (norm.includes("ALL BSCEE CORE CEE COURSES")) {
+      const ok = coreCEEForInternship().every(x => isCourseCompleted(x));
+      return ok
+        ? {type:"eligible",label:"Eligible by core-course rule",missing:[]}
+        : {type:"manual",label:"Core-course requirement",missing:["All BSCEE Core CEE courses"]};
+    }
+    return {type:"manual",label:"Manual verification needed",missing:[special]};
+  }
+
+  const reqs = parsePrereqCodes(prereqOf(c));
+  if (!reqs.length) return {type:"eligible",label:"Eligible now",missing:[]};
+  const missing = reqs.filter(x => !isCodeCompleted(x));
+  if (!missing.length) return {type:"eligible",label:"Eligible now",missing:[]};
+  if (missing.length === 1) return {type:"almost",label:"One prerequisite left",missing};
+  return {type:"locked",label:"Prerequisites pending",missing};
+}
+
+function unlocksFor(code) {
+  const key = compact(code);
+  return COURSES.filter(c => parsePrereqCodes(prereqOf(c)).some(x => compact(x) === key));
+}
+
+function prerequisiteLevels(course) {
+  const levels = [];
+  let frontier = parsePrereqCodes(prereqOf(course));
+  const seen = new Set([compact(codeOf(course))]);
+
+  while (frontier.length && levels.length < 8) {
+    const level = [...new Set(frontier)].filter(x => !seen.has(compact(x)));
+    if (!level.length) break;
+    levels.push(level);
+    level.forEach(x => seen.add(compact(x)));
+    frontier = level.flatMap(code => {
+      const c = courseByCode(code);
+      return c ? parsePrereqCodes(prereqOf(c)) : [];
+    });
+  }
+  return levels;
+}
+
+function directDependentsText(course) {
+  const list = unlocksFor(codeOf(course));
+  if (!list.length) return "No direct next-course dependency is listed.";
+  return list.map(codeOf).join(", ");
+}
+
+function rankMatches(q) {
+  const raw = normalize(q);
+  const cmp = compact(q);
+  if (!raw) return [];
+
+  const explicit = extractCode(q);
+
+  return COURSES.map(c => {
+    const code = normalize(codeOf(c));
+    const codeCmp = compact(codeOf(c));
+    const title = normalize(titleOf(c));
+    const cat = normalize(categoryOf(c));
+    let score = 0;
+
+    if (explicit && codeCmp === compact(explicit)) score += 600;
+    if (cmp === codeCmp) score += 400;
+    if (cmp && codeCmp.startsWith(cmp)) score += 170;
+    if (title === raw) score += 280;
+    if (title.includes(raw)) score += 180;
+
+    const stop = new Set(["WHAT","DO","I","NEED","FOR","AFTER","CAN","TAKE","NOW","COURSE","SHOW","ME","THE","PREREQUISITE","PREREQUISITES","CREDIT","CREDITS","ABOUT","DESCRIBE"]);
+    raw.split(" ").filter(w => w.length > 2 && !stop.has(w)).forEach(w => {
+      if (title.includes(w)) score += 28;
+      if (cat.includes(w)) score += 9;
+    });
+
+    return {c,score};
+  }).filter(x => x.score > 0).sort((a,b)=>b.score-a.score).map(x=>x.c);
+}
+
+function extractCode(q) {
+  const raw = normalize(q);
+  const re = new RegExp("\\b(" + PREFIXES.join("|") + ")\\s*(\\d{3}[A-Z]?)\\b");
+  const m = raw.match(re);
+  return m ? m[1] + " " + m[2] : null;
+}
+
+function detectArea(q) {
+  const raw = normalize(q);
+  if (raw.includes("STRUCTURAL")) return "Structural Engineering";
+  if (raw.includes("GEOTECH") || raw.includes("SOIL") || raw.includes("FOUNDATION")) return "Geotechnical Engineering";
+  if (raw.includes("TRANSPORT") || raw.includes("TRAFFIC") || raw.includes("PAVEMENT")) return "Transportation Engineering";
+  if (raw.includes("WATER RESOURCE") || raw.includes("HYDROLOGY") || raw.includes("HYDRAULIC") || raw.includes("GROUNDWATER") || raw.includes("RIVER")) return "Water Resources";
+  if (raw.includes("ENVIRONMENTAL") || raw.includes("WASTEWATER") || raw.includes("POLLUTION") || raw.includes("SANITATION")) return "Environmental Engineering";
+  return null;
+}
+
+function detectIntent(q) {
+  const raw = normalize(q);
+  return {
+    eligibleNow: /WHAT CAN I TAKE|ELIGIBLE NOW|AVAILABLE NOW|COURSES CAN I TAKE/.test(raw),
+    after: /AFTER|UNLOCK|WHAT COMES NEXT|NEXT COURSE/.test(raw),
+    need: /WHAT DO I NEED|PREREQ|PREREQUISITE|REQUIRE|BEFORE/.test(raw),
+    credits: /CREDIT|CREDITS/.test(raw),
+    description: /DESCRIBE|DESCRIPTION|WHAT IS|ABOUT/.test(raw),
+    ged: raw.includes("GED"),
+    area: detectArea(q),
+  };
+}
+
+function answerHeader(text,sub="") {
+  document.getElementById("answerText").textContent = text;
+  document.getElementById("answerSub").textContent = sub;
+}
+
+function statusBadgeHTML(st) {
+  return `<span class="badge status-badge ${st.type}">${st.label}</span>`;
+}
+
+function chipHTML(code) {
+  const done = isCodeCompleted(code);
+  return `<button class="chip${done ? " done" : ""}" data-code="${code}">${code}</button>`;
+}
+
+function bindCourseChips(container) {
+  container.querySelectorAll("[data-code]").forEach(btn => {
+    btn.onclick = () => {
+      const matches = coursesByCode(btn.dataset.code);
+      if (matches.length === 1) renderCourseAnswer(matches[0], {need:false,after:false});
+      else if (matches.length > 1) renderDuplicateChoices(btn.dataset.code, matches);
+    };
+  });
+}
+
+function renderDuplicateChoices(code,matches) {
+  answer.classList.add("show");
+  answerHeader(`${code} has more than one entry in this curriculum database.`, "Choose the course title you want.");
+  document.getElementById("answerContent").innerHTML = `
+    <div class="course-card">
+      <div class="eligible-grid">
+        ${matches.map((c,i)=>`
+          <button class="small-course duplicate-choice" data-i="${i}">
+            <b>${codeOf(c)} · ${titleOf(c)}</b>
+            <span>${categoryOf(c)}</span>
+            <small>${creditOf(c)} credit${creditOf(c)===1?"":"s"}</small>
+          </button>
+        `).join("")}
+      </div>
+    </div>`;
+  document.querySelectorAll(".duplicate-choice").forEach((b,i)=>b.onclick=()=>renderCourseAnswer(matches[i],{}));
+  answer.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function renderCourseAnswer(c,intent={}) {
+  const st = courseStatus(c);
+  const reqs = parsePrereqCodes(prereqOf(c));
+  const unlocks = unlocksFor(codeOf(c));
+  const levels = prerequisiteLevels(c);
+  const special = specialRequirement(c);
+
+  let headline = `${codeOf(c)} — ${titleOf(c)}`;
+  let sub = "";
+
+  if (intent.after) {
+    headline = unlocks.length
+      ? `After ${codeOf(c)}, the listed direct unlocks are ${unlocks.map(codeOf).join(", ")}.`
+      : `No direct next-course dependency is listed after ${codeOf(c)}.`;
+    sub = titleOf(c);
+  } else if (intent.need) {
+    if (special) headline = `${codeOf(c)} has a program-level requirement: ${special}.`;
+    else if (!reqs.length) headline = `${codeOf(c)} has no listed prerequisite.`;
+    else headline = `For ${codeOf(c)}, you need ${reqs.join(", ")} first.`;
+    sub = titleOf(c);
+  } else if (intent.credits) {
+    headline = `${codeOf(c)} is a ${creditOf(c)}-credit course.`;
+    sub = titleOf(c);
+  } else {
+    sub = `${creditOf(c)} credit${creditOf(c)===1?"":"s"} · ${categoryOf(c)}`;
+  }
+
+  answer.classList.add("show");
+  answerHeader(headline,sub);
+
+  let next = "";
+  if (st.type === "completed") {
+    next = unlocks.length
+      ? `You marked this course completed. Review the courses it unlocks and choose your next target.`
+      : `You marked this course completed. Search another course to continue planning.`;
+  } else if (st.type === "eligible") {
+    next = `Based on your saved progress, the listed prerequisite requirement is satisfied. Check current advising and course offering before registration.`;
+  } else if (st.type === "almost") {
+    next = `Complete ${st.missing[0]} first. Then update your completed-course list to refresh eligibility.`;
+  } else if (st.type === "locked") {
+    next = `Complete the missing prerequisite courses first: ${st.missing.join(", ")}.`;
+  } else {
+    next = `This course has a credit/program/special requirement that needs confirmation: ${st.missing.join(", ")}.`;
+  }
+
+  const chainHtml = levels.length ? `
+    <div class="chain">
+      <div class="label">Full prerequisite path</div>
+      ${levels.map((level,i)=>`
+        <div class="chain-level">
+          <strong>${i===0 ? "Direct" : "Earlier " + i}</strong>
+          <div class="chips">${level.map(chipHTML).join("")}</div>
+        </div>`).join("")}
+    </div>` : "";
+
+  document.getElementById("answerContent").innerHTML = `
+    <div class="course-card">
+      <div class="course-title-row">
+        <div>
+          <div class="course-code">${codeOf(c)}</div>
+          <div class="course-name">${titleOf(c)}</div>
+        </div>
+        ${statusBadgeHTML(st)}
+      </div>
+
+      <div class="overview">
+        <div><span>Credit</span><b>${creditOf(c)}</b></div>
+        <div><span>Category</span><b>${categoryOf(c)}</b></div>
+        <div><span>Your status</span><b>${st.label}</b></div>
+      </div>
+
+      <div class="description-card">
+        <div class="label">Course description</div>
+        <div class="desc">${descriptionOf(c) || "No description is currently available."}</div>
+      </div>
+
+      <div class="path-grid">
+        <div class="path-box">
+          <div class="label">What you need first</div>
+          ${special
+              ? `<div class="prereq-text">${special}</div>`
+              : reqs.length
+                ? `<div class="chips">${reqs.map(chipHTML).join("")}</div>`
+                : `<div class="prereq-text good">No listed prerequisite</div>`}
+          ${st.missing.length ? `<div style="margin-top:9px;font-size:10.5px;color:var(--warn)">Still missing: ${st.missing.join(", ")}</div>` : ""}
+        </div>
+
+        <div class="path-box">
+          <div class="label">After this course</div>
+          ${unlocks.length
+              ? `<div class="chips">${unlocks.map(x=>chipHTML(codeOf(x))).join("")}</div>`
+              : `<div class="unlock-empty">No direct next-course dependency is listed.</div>`}
+        </div>
+      </div>
+
+      ${chainHtml}
+
+      <div class="next-box"><b>Next step:</b> ${next}</div>
+    </div>`;
+
+  bindCourseChips(document.getElementById("answerContent"));
+  answer.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function renderEligibleAnswer() {
+  const grid = document.getElementById("eligibleGrid");
+  const btn = document.getElementById("toggleEligible");
+
+  answer.classList.remove("show");
+
+  if (grid) {
+    grid.classList.add("expanded");
+  }
+  if (btn && btn.style.display !== "none") {
+    btn.textContent = "Show less";
+  }
+
+  document.getElementById("eligiblePanel").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+function renderAreaAnswer(area) {
+  const list = COURSES.filter(c => {
+    const cat = categoryOf(c);
+    if (area === "Structural Engineering") return cat.includes("Structural");
+    if (area === "Geotechnical Engineering") return cat.includes("Geotechnical");
+    if (area === "Transportation Engineering") return cat.includes("Transportation");
+    if (area === "Water Resources") return cat.includes("Water Resources");
+    if (area === "Environmental Engineering") return cat.includes("Environmental");
+    return false;
+  });
+
+  answer.classList.add("show");
+  answerHeader(`${area} courses`, CATEGORY_INFO[area] || "");
+  document.getElementById("answerContent").innerHTML = `
+    <div class="course-card">
+      <div class="eligible-grid">
+        ${list.map((c,i)=>`
+          <button class="small-course area-answer" data-i="${i}">
+            <b>${codeOf(c)} · ${titleOf(c)}</b>
+            <span>${categoryOf(c)}</span>
+            <small>${creditOf(c)} credit${creditOf(c)===1?"":"s"}</small>
+          </button>`).join("")}
+      </div>
+    </div>`;
+  document.querySelectorAll(".area-answer").forEach((b,i)=>b.onclick=()=>renderCourseAnswer(list[i],{}));
+  answer.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function batchRuleFromNumber(n) {
+  if (!Number.isFinite(n)) return null;
+  if (n <= 253) return {group:"upto253"};
+  if (n >= 261) return {group:"261plus"};
+  return null;
+}
+
+function renderGEDAnswerFromQuery(q) {
+  const m = normalize(q).match(/\b(\d{3})\b/);
+  const n = m ? Number(m[1]) : NaN;
+  const rule = batchRuleFromNumber(n);
+
+  answer.classList.add("show");
+
+  if (!rule) {
+    answerHeader("Select or include a supported batch number to see the GED requirement.", "Enter your batch number to see the applicable GED requirement.");
+    document.getElementById("answerContent").innerHTML = `
+      <div class="course-card">
+        <div class="unlock-empty">The available GED notice in this tool covers batches up to 253 and batches 261 onward.</div>
+      </div>`;
+    answer.scrollIntoView({behavior:"smooth",block:"start"});
+    return;
+  }
+
+  if (rule.group === "upto253") {
+    answerHeader("GED requirement for students up to Batch 253", "4 courses · 12 credits");
+    document.getElementById("answerContent").innerHTML = `
+      <div class="course-card">
+        <div class="path-grid">
+          <div class="path-box">
+            <div class="label">Mandatory</div>
+            <div class="prereq-text">ENG 103</div>
+          </div>
+          <div class="path-box">
+            <div class="label">Choose any 3 from</div>
+            <div class="prereq-text" style="font-size:11px">
+              ECO 101, ECO 104, ACT 201, MGT 210, SOC 101, PSY 210, POL 210, PHI 101, LAW 200, BEN 205, HIS 103, ENG 105
+            </div>
+          </div>
+        </div>
+        <div class="next-box">BEN 205 and HIS 103 are elective options and are not mandatory.</div>
+      </div>`;
+  } else {
+    answerHeader("GED requirement for Batch 261 onward", "4 courses · 12 credits");
+    document.getElementById("answerContent").innerHTML = `
+      <div class="course-card">
+        <div class="path-grid">
+          <div class="path-box">
+            <div class="label">Mandatory</div>
+            <div class="prereq-text">ENG 103, ECO 101, ACT 201</div>
+          </div>
+          <div class="path-box">
+            <div class="label">Choose 1 additional course from</div>
+            <div class="prereq-text" style="font-size:11px">
+              ECO 104, MGT 210, SOC 101, PSY 210, POL 210, PHI 101, LAW 200, BEN 205, HIS 103, ENG 105
+            </div>
+          </div>
+        </div>
+        <div class="next-box"></div>
+      </div>`;
+  }
+
+  answer.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function ask() {
+  const q = queryInput.value.trim();
+  if (!q) return;
+
+  suggestions.classList.remove("show");
+  const intent = detectIntent(q);
+
+  if (intent.eligibleNow) return renderEligibleAnswer();
+  if (intent.ged) return renderGEDAnswerFromQuery(q);
+  if (intent.area && !extractCode(q)) return renderAreaAnswer(intent.area);
+
+  const code = extractCode(q);
+  if (code) {
+    const matches = coursesByCode(code);
+    if (matches.length === 1) return renderCourseAnswer(matches[0],intent);
+    if (matches.length > 1) return renderDuplicateChoices(code,matches);
+  }
+
+  const matches = rankMatches(q);
+  if (matches.length) return renderCourseAnswer(matches[0],intent);
+
+  answer.classList.add("show");
+  answerHeader("I could not find a matching course.", "Try a course code such as CEE 340, a course title such as Soil Mechanics, or ask what you can take now.");
+  document.getElementById("answerContent").innerHTML = "";
+  answer.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function showSuggestions(q) {
+  if (!q.trim()) {
+    suggestions.classList.remove("show");
+    return;
+  }
+  const matches = rankMatches(q).slice(0,7);
+  if (!matches.length) {
+    suggestions.classList.remove("show");
+    return;
+  }
+  suggestions.innerHTML = matches.map((c,i)=>`
+    <div class="suggestion" data-i="${i}">
+      <b>${codeOf(c)}</b><span>${titleOf(c)}</span>
+    </div>`).join("");
+  suggestions.classList.add("show");
+  suggestions.querySelectorAll(".suggestion").forEach((el,i)=>el.onclick=()=>{
+    queryInput.value = codeOf(matches[i]);
+    suggestions.classList.remove("show");
+    renderCourseAnswer(matches[i],{});
+  });
+}
+
+function eligibleCourses() {
+  return COURSES.filter(c => {
+    if (isCourseCompleted(c)) return false;
+    if (categoryOf(c) === "Arts and Social Sciences (GED)") return false;
+    return courseStatus(c).type === "eligible";
+  });
+}
+
+
+const DEGREE_CREDIT_TARGET = 158;
+
+function uniqueCompletedCourses() {
+  return COURSES.filter(c => isCourseCompleted(c));
+}
+
+function electiveRequirementStatus() {
+  const completedElectives = uniqueCompletedCourses().filter(c => electiveGroupLetter(c));
+  const counts = {A:0,B:0,C:0,D:0,E:0};
+
+  completedElectives.forEach(c => {
+    const g = electiveGroupLetter(c);
+    if (g) counts[g] += 1;
+  });
+
+  let primary = "A";
+  Object.keys(counts).forEach(g => {
+    if (counts[g] > counts[primary]) primary = g;
+  });
+
+  const primaryCount = counts[primary] || 0;
+  const otherCount = Object.keys(counts)
+    .filter(g => g !== primary)
+    .reduce((sum,g) => sum + counts[g], 0);
+
+  const total = completedElectives.length;
+  const satisfied = primaryCount >= 2 && otherCount >= 2;
+
+  return {counts, primary, primaryCount, otherCount, total, satisfied};
+}
+
+function updateDegreeProgress() {
+  const credits = completedCredits();
+  const remaining = Math.max(DEGREE_CREDIT_TARGET - credits, 0);
+  const pct = Math.min((credits / DEGREE_CREDIT_TARGET) * 100, 100);
+
+  document.getElementById("degreeCredits").textContent = credits;
+  document.getElementById("degreeProgressBar").style.width = pct + "%";
+  document.getElementById("mCreditsRemaining").textContent = remaining;
+
+  const elective = electiveRequirementStatus();
+  const electiveValue = document.getElementById("electiveProgress");
+  const electiveDetail = document.getElementById("electiveDetail");
+
+  electiveValue.textContent = `${Math.min(elective.total,4)} / 4 courses`;
+  electiveValue.className = "req-value " + (elective.satisfied ? "complete" : "pending");
+
+  if (elective.total === 0) {
+    electiveDetail.textContent = "Complete 2 electives from one Group A–E area and 2 from other group(s).";
+  } else {
+    electiveDetail.textContent =
+      `Strongest group: Group ${elective.primary} (${elective.primaryCount}/2). Other groups: ${elective.otherCount}/2.`;
+  }
+
+  const internshipDone = isCodeCompleted("CEE 498");
+  const internship = document.getElementById("internshipProgress");
+  internship.textContent = internshipDone ? "Completed" : "Not completed";
+  internship.className = "req-value " + (internshipDone ? "complete" : "pending");
+
+  const capstoneCodes = ["CEE 499A","CEE 499B","CEE 499C"];
+  const capstoneDone = capstoneCodes.filter(code => isCodeCompleted(code)).length;
+  const capstone = document.getElementById("capstoneProgress");
+  capstone.textContent = `${capstoneDone} / 3 credits`;
+  capstone.className = "req-value " + (capstoneDone === 3 ? "complete" : "pending");
+
+  const capstoneA = courseByCode("CEE 499A");
+  const capstoneStatus = capstoneA ? courseStatus(capstoneA) : {type:"manual",label:"Not ready yet"};
+  const readiness = document.getElementById("capstoneReadiness");
+  const ready = ["eligible","completed"].includes(capstoneStatus.type);
+  readiness.textContent = ready ? "Requirement satisfied" : "Not ready yet";
+  readiness.className = "req-value " + (ready ? "complete" : "pending");
+}
+
+function updateDashboard() {
+  const done = uniqueCompletedCourses();
+  const eligible = eligibleCourses();
+
+  document.getElementById("mCompleted").textContent = done.length;
+  document.getElementById("mEligible").textContent = eligible.length;
+  document.getElementById("mCredits").textContent = completedCredits();
+
+  updateDegreeProgress();
+
+  document.getElementById("eligibleCountBadge").textContent = `${eligible.length} course${eligible.length===1?"":"s"}`;
+
+  const grid = document.getElementById("eligibleGrid");
+  const limit = 8;
+  grid.innerHTML = eligible.length
+    ? eligible.map((c,i)=>`
+      <button class="eligible-pill${i >= limit ? " hidden-extra" : ""}" data-i="${i}">
+        <code>${codeOf(c)}</code>
+        <span title="${titleOf(c).replace(/"/g,"&quot;")}">${titleOf(c)}</span>
+        <small>${creditOf(c)} cr</small>
+      </button>`).join("")
+    : `<div class="unlock-empty">Mark completed courses to see what may be available next.</div>`;
+
+  grid.querySelectorAll(".eligible-pill").forEach((b,i)=>b.onclick=()=>renderCourseAnswer(eligible[i],{}));
+
+  const toggle = document.getElementById("toggleEligible");
+  if (eligible.length <= limit) {
+    toggle.style.display = "none";
+    grid.classList.remove("expanded");
+  } else {
+    toggle.style.display = "";
+    if (!grid.classList.contains("expanded")) toggle.textContent = "View all";
+  }
+}
+
+function buildAreaGrid() {
+  const areas = [
+    "Structural Engineering",
+    "Geotechnical Engineering",
+    "Transportation Engineering",
+    "Water Resources",
+    "Environmental Engineering",
+    "Engineering Tools"
+  ];
+  const grid = document.getElementById("areaGrid");
+  grid.innerHTML = areas.map(area => `
+    <button class="area-pill" data-area="${area}">${area}</button>
+  `).join("");
+  grid.querySelectorAll(".area-pill").forEach(btn=>btn.onclick=()=>renderAreaAnswer(btn.dataset.area));
+}
+
+function openProgress() {
+  document.getElementById("progressModal").classList.add("show");
+  renderProgress();
+}
+function closeProgress() {
+  document.getElementById("progressModal").classList.remove("show");
+}
+
+function renderProgress(filter="") {
+  const q = normalize(filter);
+  const list = document.getElementById("progressList");
+  const sorted = [...COURSES].sort((a,b)=>{
+    const codeCompare = codeOf(a).localeCompare(codeOf(b));
+    return codeCompare || titleOf(a).localeCompare(titleOf(b));
+  });
+
+  list.innerHTML = sorted.map(c=>{
+    const hay = normalize(codeOf(c)+" "+titleOf(c)+" "+categoryOf(c));
+    const hidden = q && !hay.includes(q);
+    const key = courseKey(c);
+
+    return `<label class="progress-row${hidden?" hidden":""}">
+      <input type="checkbox" data-key="${key.replace(/"/g,"&quot;")}" ${completed.has(key)?"checked":""}>
+      <code>${codeOf(c)}</code>
+      <span title="${titleOf(c).replace(/"/g,"&quot;")}">${titleOf(c)}</span>
+      <small>${creditOf(c)} cr</small>
+    </label>`;
+  }).join("");
+
+  list.querySelectorAll("input[type=checkbox]").forEach(cb=>cb.onchange=()=>{
+    if (cb.checked) completed.add(cb.dataset.key);
+    else completed.delete(cb.dataset.key);
+    saveCompletedProgress();
+    updateDashboard();
+    updateProgressSummary();
+  });
+
+  updateProgressSummary();
+}
+
+function updateProgressSummary() {
+  document.getElementById("progressSummary").textContent = `${completed.size} course${completed.size===1?"":"s"} selected · ${completedCredits()} credits`;
+}
+
+function showGEDRule(value) {
+  const box = document.getElementById("gedRule");
+
+  if (!value) {
+    box.innerHTML = `Select a batch group to see the GED requirement.
+      `;
+    return;
+  }
+
+  if (value === "upto253") {
+    box.innerHTML = `
+      <div class="ged-summary"><b>Total requirement:</b> 4 courses / 12 credits</div>
+      <div class="ged-block"><b>Mandatory:</b> ENG 103 (3 credits)</div>
+      <div class="ged-block"><b>Choose any 3 courses (9 credits) from:</b><br>
+        ECO 101, ECO 104, ACT 201, MGT 210, SOC 101, PSY 210, POL 210, PHI 101, LAW 200, BEN 205, HIS 103, ENG 105
+      </div>
+      <div class="ged-note">BEN 205 and HIS 103 are elective options and are not mandatory.</div>
+      `;
+    return;
+  }
+
+  if (value === "261plus") {
+    box.innerHTML = `
+      <div class="ged-summary"><b>Total requirement:</b> 4 courses / 12 credits</div>
+      <div class="ged-block"><b>Mandatory:</b> ENG 103, ECO 101, ACT 201</div>
+      <div class="ged-block"><b>Choose 1 additional course from:</b><br>
+        ECO 104, MGT 210, SOC 101, PSY 210, POL 210, PHI 101, LAW 200, BEN 205, HIS 103, ENG 105
+      </div>
+      `;
+  }
+}
+
+document.getElementById("askBtn").onclick = ask;
+queryInput.addEventListener("keydown",e=>{if(e.key==="Enter") ask();});
+queryInput.addEventListener("input",e=>showSuggestions(e.target.value));
+document.querySelectorAll(".example").forEach(btn=>btn.onclick=()=>{queryInput.value=btn.dataset.q;ask();});
+document.addEventListener("click",e=>{if(!e.target.closest(".search-wrap")) suggestions.classList.remove("show");});
+
+document.getElementById("manageProgress").onclick = openProgress;
+document.getElementById("closeModal").onclick = closeProgress;
+document.getElementById("closeModalTop").onclick = closeProgress;
+document.getElementById("progressModal").addEventListener("click",e=>{if(e.target.id==="progressModal") closeProgress();});
+document.getElementById("progressSearch").addEventListener("input",e=>renderProgress(e.target.value));
+document.getElementById("resetProgress").onclick = ()=>{
+  if (!confirm("Clear all completed-course selections?")) return;
+  completed.clear();
+  localStorage.setItem(STORAGE_KEY,"[]");
+  renderProgress(document.getElementById("progressSearch").value);
+  updateDashboard();
+};
+document.getElementById("showEligible").onclick = renderEligibleAnswer;
+document.getElementById("toggleEligible").onclick = () => {
+  const grid = document.getElementById("eligibleGrid");
+  const btn = document.getElementById("toggleEligible");
+  const expanded = grid.classList.toggle("expanded");
+  btn.textContent = expanded ? "Show less" : "View all";
+};
+document.getElementById("batchSelect").onchange = e=>showGEDRule(e.target.value);
+
+buildAreaGrid();
+updateDashboard();
+</script>
+</body>
+</html>
