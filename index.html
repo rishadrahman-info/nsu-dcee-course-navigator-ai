@@ -1481,6 +1481,161 @@ summary:focus-visible{
   outline-offset:2px;
 }
 
+
+/* ===== PDF-structured Course Group Browser ===== */
+.pdf-group-browser{display:grid;gap:12px}
+.curriculum-block{
+  border:1px solid rgba(213,230,239,.92);
+  border-radius:17px;
+  padding:13px;
+  background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(247,252,254,.58));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 8px 22px rgba(6,29,58,.04);
+}
+.curriculum-block-title{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  margin-bottom:9px;
+}
+.curriculum-block-title b{color:var(--navy);font-size:11.5px}
+.curriculum-block-title span{
+  color:var(--blue);font-size:9.5px;font-weight:900;
+  padding:5px 8px;border-radius:999px;background:rgba(232,246,251,.82);
+}
+.curriculum-group-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.curriculum-group-btn{
+  display:flex;justify-content:space-between;align-items:center;gap:9px;
+  width:100%;text-align:left;border:1px solid rgba(216,231,239,.92);
+  border-radius:11px;padding:9px 10px;background:rgba(255,255,255,.62);
+  color:var(--navy);transition:.18s ease;
+}
+.curriculum-group-btn:hover{transform:translateY(-1px);border-color:#b8d9e5;box-shadow:0 8px 18px rgba(6,29,58,.05)}
+.curriculum-group-btn b{font-size:10.5px;line-height:1.35}
+.curriculum-group-btn small{white-space:nowrap;color:var(--blue);font-size:9px;font-weight:850}
+@media(max-width:700px){.curriculum-group-list{grid-template-columns:1fr}}
+
+
+/* ===== Clean curriculum browser ===== */
+.clean-group-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.clean-group-btn{
+  min-height:64px;
+  width:100%;
+  border:1px solid rgba(215,231,239,.94);
+  border-radius:14px;
+  padding:11px 12px;
+  background:linear-gradient(145deg,rgba(255,255,255,.73),rgba(247,252,254,.58));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.84);
+  text-align:left;
+  transition:.18s ease;
+}
+.clean-group-btn:hover{
+  transform:translateY(-1px);
+  border-color:#b7d9e5;
+  box-shadow:0 8px 20px rgba(6,29,58,.055);
+}
+.clean-group-btn b{
+  display:block;
+  color:var(--navy);
+  font-size:10.8px;
+  line-height:1.35;
+}
+.clean-group-btn span{
+  display:block;
+  margin-top:4px;
+  color:var(--blue);
+  font-size:9.3px;
+  font-weight:800;
+}
+.subgroup-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+.subgroup-btn{
+  border:1px solid #dce9ef;
+  border-radius:12px;
+  padding:10px;
+  background:#fbfdfe;
+  text-align:left;
+}
+.subgroup-btn b{display:block;color:var(--navy);font-size:10.5px}
+.subgroup-btn small{display:block;color:var(--blue);font-size:9px;margin-top:4px}
+@media(max-width:780px){
+  .clean-group-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:520px){
+  .clean-group-grid,.subgroup-grid{grid-template-columns:1fr}
+}
+
+
+/* ===== Functional course-group progress ===== */
+.group-progress-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+.group-progress-card{
+  padding:13px 14px;
+  border-radius:15px;
+  border:1px solid rgba(212,229,238,.94);
+  background:linear-gradient(145deg,rgba(255,255,255,.76),rgba(247,252,254,.60));
+  box-shadow:0 8px 20px rgba(6,29,58,.04), inset 0 1px 0 rgba(255,255,255,.84);
+}
+.group-progress-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+}
+.group-progress-head b{
+  color:var(--navy);
+  font-size:11.5px;
+  line-height:1.35;
+}
+.group-progress-head span{
+  flex:0 0 auto;
+  color:var(--blue);
+  font-size:10px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.group-mini-track{
+  height:7px;
+  margin-top:9px;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(12,76,118,.08);
+}
+.group-mini-fill{
+  height:100%;
+  width:0;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#0d5d93,#1aa6c4);
+  transition:width .3s ease;
+}
+.group-progress-foot{
+  margin-top:7px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:9px;
+  color:var(--muted);
+  font-size:9.5px;
+  line-height:1.4;
+}
+.group-progress-foot strong{
+  color:var(--ok);
+  font-size:9.5px;
+}
+.group-progress-foot strong.pending{
+  color:var(--warn);
+}
+@media(max-width:720px){
+  .group-progress-grid{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -1514,7 +1669,7 @@ summary:focus-visible{
         <button class="example" data-q="soil mechanics">soil mechanics</button>
         <button class="example" data-q="what do I need for CEE430">what do I need for CEE430?</button>
         <button class="example" data-q="after CEE350 what can I take">after CEE350 what can I take?</button>
-        <button class="example" data-q="what can I take now">what can I take now?</button>
+        <button class="example" data-q="show my degree progress">show my degree progress</button>
         <button class="example" data-q="GED for batch 261">GED for batch 261</button>
       </div>
     </div>
@@ -1523,7 +1678,7 @@ summary:focus-visible{
   <main>
     <section class="dashboard">
       <div class="metric"><span>Completed</span><b id="mCompleted">0</b><small>courses</small></div>
-      <div class="metric"><span>Eligible now</span><b id="mEligible">0</b><small>courses</small></div>
+      <div class="metric"><span>Degree progress</span><b id="mDegreePercent">0%</b><small>of 158 credits</small></div>
       <div class="metric"><span>Credits completed</span><b id="mCredits">0</b><small>of 158</small></div>
       <div class="metric"><span>Credits remaining</span><b id="mCreditsRemaining">158</b><small>to 158</small></div>
     </section>
@@ -1535,7 +1690,7 @@ summary:focus-visible{
       </div>
       <div class="toolbar-actions">
         <button class="btn primary" id="manageProgress">Manage completed courses</button>
-        <button class="btn" id="showEligible">Show eligible courses</button>
+        <button class="btn" id="showGroupProgress">View course-group progress</button>
       </div>
     </div>
 
@@ -1565,19 +1720,19 @@ summary:focus-visible{
         <div class="requirement-card">
           <div class="req-label">Internship</div>
           <div class="req-value" id="internshipProgress">Not completed</div>
-          <div class="req-detail">CEE 498 is mandatory and carries 0 credit.</div>
+          <div class="req-detail" id="internshipDetail">CEE 498 is mandatory and carries 0 credit.</div>
         </div>
 
         <div class="requirement-card">
           <div class="req-label">Capstone sequence</div>
           <div class="req-value" id="capstoneProgress">0 / 3 credits</div>
-          <div class="req-detail">CEE 499A → CEE 499B → CEE 499C, 1 credit each.</div>
+          <div class="req-detail" id="capstoneDetail">CEE 499A → CEE 499B → CEE 499C, 1 credit each.</div>
         </div>
 
         <div class="requirement-card">
-          <div class="req-label">CEE 499A readiness</div>
-          <div class="req-value" id="capstoneReadiness">Not ready yet</div>
-          <div class="req-detail">Requires all 300-level core courses or 100 completed credits.</div>
+          <div class="req-label">CEE 492 readiness</div>
+          <div class="req-value" id="cee492Readiness">Not ready yet</div>
+          <div class="req-detail" id="cee492ReadinessDetail">Requires 90 completed credits.</div>
         </div>
       </div>
     </section>
@@ -1592,18 +1747,14 @@ summary:focus-visible{
     </section>
 
     
-    <section class="panel compact-panel" id="eligiblePanel">
+    <section class="panel compact-panel" id="groupProgressPanel">
       <div class="compact-head">
         <div>
-          <h3>What can I take now?</h3>
-          <p>Courses that match your completed-course progress.</p>
-        </div>
-        <div class="compact-actions">
-          <span class="count-pill" id="eligibleCountBadge">0 courses</span>
-          <button class="btn" id="toggleEligible">View all</button>
+          <h3>Course Group Progress</h3>
+          <p>See how much of each BSCEE requirement group you have completed.</p>
         </div>
       </div>
-      <div id="eligibleGrid" class="eligible-compact"></div>
+      <div id="groupProgressGrid" class="group-progress-grid"></div>
     </section>
 
     <section class="panel compact-panel">
@@ -1613,7 +1764,7 @@ summary:focus-visible{
           <p>Choose a civil engineering area to explore related courses.</p>
         </div>
       </div>
-      <div id="areaGrid" class="area-pills"></div>
+      <div id="areaGrid" class="clean-group-grid"></div>
     </section>
 
 
@@ -1690,29 +1841,59 @@ summary:focus-visible{
 </footer>
 
 <script>
-const COURSES = [{"Course Code": "CEE 100", "Course Title": "Introduction to Civil and Environmental Engineering", "Credit": 0, "Category": "Orientation", "Prerequisite": "None", "Description": "An introduction to the civil and environmental engineering profession, its major branches, professional responsibilities, ethics, codes, and sustainability."}, {"Course Code": "CEE 110", "Course Title": "Computer Aided Drawing (CAD) for Engineers", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "None", "Description": "Engineering drawing fundamentals, projections, sections, structural details, and an introduction to CAD."}, {"Course Code": "MAT 116", "Course Title": "Pre-Calculus", "Credit": 0, "Category": "Mathematics", "Prerequisite": "None", "Description": "Algebra, functions, polynomial and logarithmic topics, trigonometry, sequences, induction, and the binomial theorem."}, {"Course Code": "ENG 102", "Course Title": "Introduction to Composition", "Credit": 3, "Category": "General Education", "Prerequisite": "None", "Description": "Academic reading and writing with emphasis on planning, organization, cohesion, coherence, and clear expression."}, {"Course Code": "ENV 107", "Course Title": "Environmental Science", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "None", "Description": "Environmental systems, ecology, population, pollution, waste management, climate issues, water, energy, and sustainable development."}, {"Course Code": "CHE 101", "Course Title": "Chemistry I", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "None", "Description": "Fundamental chemistry including atomic structure, bonding, stoichiometry, thermochemistry, equilibrium, kinetics, gases, and solutions."}, {"Course Code": "CHE 101L", "Course Title": "Chemistry Lab I", "Credit": 1, "Category": "Basic & Applied Sciences", "Prerequisite": "CHE 101", "Description": "Introductory laboratory work covering measurement, chemical proportions, titration, density, and basic analytical techniques."}, {"Course Code": "ENG 103", "Course Title": "Intermediate Composition", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Develops analytical reading and academic writing through expressive, persuasive, and referential writing, with emphasis on planning, organization, cohesion, and coherence."}, {"Course Code": "MAT 120", "Course Title": "Calculus & Analytical Geometry I", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 116", "Description": "Limits, differentiation, applications of derivatives, integration, analytic geometry, and exponential/logarithmic functions."}, {"Course Code": "MAT 125", "Course Title": "Introduction to Linear Algebra", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 120", "Description": "Covers systems of linear equations, Gaussian elimination, determinants, matrices and matrix operations, vector spaces, linear combinations, independence, basis, dimension, null space, rank, and related linear-algebra methods."}, {"Course Code": "PHY 107", "Course Title": "General Physics I", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "MAT 120", "Description": "Mechanics, energy, momentum, rotation, gravitation, oscillations, waves, and introductory thermodynamics."}, {"Course Code": "PHY 107L", "Course Title": "Physics I Lab", "Credit": 1, "Category": "Basic & Applied Sciences", "Prerequisite": "PHY 107", "Description": "Laboratory experiments in measurement, forces, oscillation, pendulums, springs, and static equilibrium."}, {"Course Code": "MAT 130", "Course Title": "Calculus & Analytical Geometry II", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 120", "Description": "Advanced integration, hyperbolic functions, improper integrals, polar coordinates, parametric equations, and analytic geometry."}, {"Course Code": "PHY 108", "Course Title": "General Physics II", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "PHY 107; MAT 130", "Description": "Electricity and magnetism, electric fields, circuits, magnetic forces, induction, AC systems, and Maxwell-related concepts."}, {"Course Code": "PHY 108L", "Course Title": "Physics II Lab", "Credit": 1, "Category": "Basic & Applied Sciences", "Prerequisite": "PHY 108", "Description": "Experiments with electrical equipment, Ohm’s law, capacitors, RC time constants, and magnetic induction."}, {"Course Code": "MAT 250", "Course Title": "Calculus III / Advanced Calculus", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 130", "Description": "Multivariable calculus, multiple integrals, vector fields, line and surface integrals, and major vector-calculus theorems."}, {"Course Code": "MAT 350", "Course Title": "Engineering Mathematics", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 250", "Description": "Ordinary differential equations, Laplace transforms, power-series solutions, and Bessel functions."}, {"Course Code": "MAT 361", "Course Title": "Probability and Statistics", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 250", "Description": "Probability, random variables, statistical distributions, estimation, hypothesis testing, regression, and correlation."}, {"Course Code": "ENV 311", "Course Title": "Geology and Geomorphology", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "None", "Description": "Covers rocks and minerals, structural geology, faults and folds, erosional landforms, the geology of Bangladesh, fluvial geomorphology, floodplains, deltas, alluvial fans, river basins, and the geomorphic characteristics of rivers in Bangladesh."}, {"Course Code": "ENV 373", "Course Title": "Environmental Impact Assessment", "Credit": 3, "Category": "Engineering Tools / Environment", "Prerequisite": "None", "Description": "Environmental and social impact assessment methods, scoping, alternatives, impact prediction, mitigation, monitoring, participation, and EIA reporting."}, {"Course Code": "CEE 209", "Course Title": "Environmental Chemistry", "Credit": 3, "Category": "Environmental Engineering", "Prerequisite": "ENV 107; CHE 101", "Description": "Chemical processes in air, water, and soil, pollutant behavior, environmental sampling, monitoring, and analytical techniques."}, {"Course Code": "CEE 271L", "Course Title": "Environmental Engineering Lab I", "Credit": 1, "Category": "Environmental Engineering", "Prerequisite": "CEE 209", "Description": "Laboratory measurement of important water-quality parameters and interpretation of results for environmental engineering applications."}, {"Course Code": "CEE 213", "Course Title": "Surveying & Introduction to GIS", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 110", "Description": "Surveying methods, leveling, traversing, curves, areas and volumes, GPS, remote sensing, hydrographic surveying, and GIS fundamentals."}, {"Course Code": "CEE 213L", "Course Title": "Surveying & Introduction to GIS Lab", "Credit": 1, "Category": "Engineering Tools", "Prerequisite": "CEE 110", "Description": "Field-survey practice and introductory GIS software applications."}, {"Course Code": "CEE 210", "Course Title": "Engineering Mechanics", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "MAT 120", "Description": "Statics and dynamics including forces, moments, equilibrium, trusses, friction, centroids, inertia, work, energy, and momentum."}, {"Course Code": "CEE 214", "Course Title": "Engineering Materials", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CHE 101; CEE 210", "Description": "Properties and engineering use of concrete, steel, aggregates, asphalt, masonry, wood, coatings, and composites."}, {"Course Code": "CEE 214L", "Course Title": "Engineering Materials Lab", "Credit": 1, "Category": "Engineering Tools", "Prerequisite": "CEE 214", "Description": "Laboratory characterization of aggregates, cement, concrete, and other common civil engineering materials."}, {"Course Code": "CEE 310", "Course Title": "Quantity Survey and Cost Analysis", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 213; CEE 214", "Description": "Quantity estimation, rate analysis, detailed building estimates, specifications, and cost analysis for civil engineering works."}, {"Course Code": "CEE 215", "Course Title": "Numerical Analysis & Computer Programming", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "MAT 130", "Description": "Numerical methods for engineering problems and introductory structured/object-oriented programming, including MATLAB-based work."}, {"Course Code": "CEE 211", "Course Title": "Fluid Mechanics", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 210; MAT 130", "Description": "Fluid properties, hydrostatics, conservation laws, flow equations, pipe flow, dimensional analysis, and flow measurement."}, {"Course Code": "CEE 211L", "Course Title": "Fluid Mechanics Lab", "Credit": 1, "Category": "Engineering Tools", "Prerequisite": "CEE 210; MAT 130", "Description": "Hands-on experiments involving pressure, Bernoulli’s principle, flow measurement, weirs, pipe losses, and fluid friction."}, {"Course Code": "CEE 212", "Course Title": "Solid Mechanics", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 210; MAT 130", "Description": "Internal forces, stress and strain, beams, deflection, torsion, stress transformation, and column stability."}, {"Course Code": "CEE 212L", "Course Title": "Solid Mechanics Lab", "Credit": 1, "Category": "Engineering Tools", "Prerequisite": "CEE 212", "Description": "Material and structural tests including tension, compression, impact, bending, hardness, springs, and column buckling."}, {"Course Code": "CEE 260", "Course Title": "Hydrology", "Credit": 3, "Category": "Water Resources", "Prerequisite": "CEE 211", "Description": "Hydrologic processes including precipitation, evaporation, infiltration, runoff, hydrographs, groundwater flow, wells, and risk analysis."}, {"Course Code": "CEE 240", "Course Title": "Introduction to Soil Mechanics and Foundation Engineering", "Credit": 3, "Category": "Geotechnical Engineering", "Prerequisite": "CEE 212; CEE 214", "Description": "Soil classification, compaction, permeability, seepage, effective stress, consolidation, shear strength, and lateral earth pressure."}, {"Course Code": "CEE 240L", "Course Title": "Soil Mechanics Lab", "Credit": 1, "Category": "Geotechnical Engineering", "Prerequisite": "CEE 240", "Description": "Laboratory testing of soils including grain-size analysis, Atterberg limits, compaction, shear, permeability, and consolidation."}, {"Course Code": "CEE 340", "Course Title": "Advanced Foundation Engineering", "Credit": 3, "Category": "Geotechnical Engineering", "Prerequisite": "CEE 240L", "Description": "Subsoil investigation, shallow and deep foundations, bearing capacity, settlement, slope stability, and retaining structures."}, {"Course Code": "CEE 250", "Course Title": "Introduction to Transportation Engineering", "Credit": 3, "Category": "Transportation Engineering", "Prerequisite": "CEE 212", "Description": "Transportation systems, geometric design, pavement materials and design, traffic loading, railways, waterways, construction, and maintenance."}, {"Course Code": "CEE 250L", "Course Title": "Transportation Engineering Lab", "Credit": 1, "Category": "Transportation Engineering", "Prerequisite": "CEE 250", "Description": "Laboratory work on highway materials, aggregates, asphalt, mix design, and material characterization."}, {"Course Code": "CEE 350", "Course Title": "Traffic Analysis and Design", "Credit": 3, "Category": "Transportation Engineering", "Prerequisite": "CEE 250", "Description": "Traffic flow, capacity analysis, roadway and intersection design, control devices, planning, transit systems, and safety."}, {"Course Code": "CEE 330", "Course Title": "Structural Analysis and Design I", "Credit": 3, "Category": "Structural Engineering", "Prerequisite": "CEE 212", "Description": "Structural determinacy, arches, cables, influence lines, moving loads, indeterminate analysis, energy methods, and virtual work."}, {"Course Code": "CEE 330L", "Course Title": "Structural Analysis and Design Lab", "Credit": 1, "Category": "Structural Engineering", "Prerequisite": "CEE 330", "Description": "Computer-based structural analysis using stiffness methods and professional analysis software."}, {"Course Code": "CEE 331", "Course Title": "Structural Analysis and Design II", "Credit": 3, "Category": "Structural Engineering", "Prerequisite": "CEE 330L", "Description": "Indeterminate structural analysis using moment distribution, flexibility, stiffness, and matrix methods."}, {"Course Code": "CEE 335", "Course Title": "Reinforced Concrete Design I", "Credit": 3, "Category": "Structural Engineering", "Prerequisite": "CEE 212", "Description": "Fundamentals of reinforced-concrete behavior and design of beams, slabs, shear, anchorage, and common RC systems."}, {"Course Code": "CEE 335L", "Course Title": "Reinforced Concrete Design Lab", "Credit": 1, "Category": "Structural Engineering", "Prerequisite": "CEE 335", "Description": "Software-based analysis and design of concrete structures and components using major structural design codes."}, {"Course Code": "CEE 430", "Course Title": "Reinforced Concrete Design II", "Credit": 3, "Category": "Structural Engineering", "Prerequisite": "CEE 330; CEE 335L", "Description": "Design of columns, footings, rafts, pile caps, retaining walls, seismic detailing, shear walls, and prestressed-concrete concepts."}, {"Course Code": "CEE 360", "Course Title": "Open-Channel Hydraulics", "Credit": 3, "Category": "Water Resources", "Prerequisite": "CEE 260", "Description": "Free-surface flow, gradually and rapidly varied flow, unsteady flow, channel networks, and hydraulic structure design."}, {"Course Code": "CEE 360L", "Course Title": "Open-Channel Hydraulics Lab", "Credit": 1, "Category": "Water Resources", "Prerequisite": "CEE 360", "Description": "Open-channel experiments and numerical/modeling work including hydraulic jumps, weirs, GVF, and HEC-RAS applications."}, {"Course Code": "CEE 460", "Course Title": "Groundwater Hydraulics", "Credit": 3, "Category": "Water Resources", "Prerequisite": "CEE 360", "Description": "Aquifers, porous-media flow, well hydraulics, pumping tests, groundwater quality, contamination, and transport."}, {"Course Code": "CEE 370", "Course Title": "Water Supply and Treatment", "Credit": 3, "Category": "Environmental Engineering", "Prerequisite": "CEE 209; CEE 271L; CEE 211", "Description": "Water sources, water demand, pipelines and pumps, water quality, treatment processes, and municipal distribution-system design."}, {"Course Code": "CEE 373", "Course Title": "Sanitation and Wastewater Engineering", "Credit": 3, "Category": "Environmental Engineering", "Prerequisite": "CEE 370", "Description": "Wastewater collection, sewer systems, treatment processes, sludge handling, drainage, and sanitation engineering."}, {"Course Code": "CEE 371L", "Course Title": "Environmental Engineering Lab II", "Credit": 1, "Category": "Environmental Engineering", "Prerequisite": "CEE 271L; CEE 370; CEE 373", "Description": "Advanced environmental engineering laboratory and applied work related to wastewater, sanitation, and environmental management."}, {"Course Code": "CEE 470", "Course Title": "Solid and Hazardous Waste Engineering", "Credit": 3, "Category": "Environmental Engineering", "Prerequisite": "CEE 373", "Description": "Solid-waste generation, storage, collection, transport, treatment, disposal, resource recovery, and hazardous-waste management."}, {"Course Code": "CEE 415", "Course Title": "Socioeconomic Aspects of Development Projects", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 350; ENV 373; CEE 310", "Description": "Development paradigms, socio-economic indicators, participatory planning, community involvement, gender, and institutional issues."}, {"Course Code": "CEE 431", "Course Title": "Introduction to Structural Dynamics", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331", "Description": "Dynamic response of single- and multi-degree-of-freedom structural systems, including vibration and earthquake response."}, {"Course Code": "CEE 432", "Course Title": "Composite Structures", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331; CEE 430", "Description": "Steel-concrete composite construction, shear connectors, composite beams, columns, and interaction behavior."}, {"Course Code": "CEE 433", "Course Title": "Finite Element Methods", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331", "Description": "Finite-element modeling for structural mechanics, including truss, beam, frame, plate, and shell-type problems."}, {"Course Code": "CEE 434", "Course Title": "Advanced Reinforced Concrete Design", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331; CEE 430", "Description": "Advanced RC design topics such as strut-and-tie models, slabs, shear walls, serviceability, and water-retaining structures."}, {"Course Code": "CEE 435", "Course Title": "Prestressed Concrete", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 430", "Description": "Prestressing systems, losses, flexure, shear, bond, bearing, deflection, cable layout, and prestressed-section design."}, {"Course Code": "CEE 437", "Course Title": "Behavior and Design of Metal Structures", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331", "Description": "Steel design principles, tension and compression members, connections, beams, stability, and plate girders."}, {"Course Code": "CEE 439", "Course Title": "Earthquake-Resistant Design", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331; CEE 340", "Description": "Structural dynamics, earthquake ground motion, design spectra, seismic load paths, proportioning, and ductile detailing."}, {"Course Code": "CEE 441", "Course Title": "Advanced Geotechnical Engineering", "Credit": 3, "Category": "Group B: Geotechnical Engineering", "Prerequisite": "CEE 340", "Description": "Advanced foundation case studies, seismic geotechnics, soil-structure interaction, liquefaction, retaining systems, and vibration."}, {"Course Code": "CEE 423", "Course Title": "Earth Retaining Structures", "Credit": 3, "Category": "Group B: Geotechnical Engineering", "Prerequisite": "CEE 340", "Description": "Retaining walls, sheet piles, braced cuts, cofferdams, caissons, dewatering, and lateral-load foundation problems."}, {"Course Code": "CEE 442", "Course Title": "Earthen Dam and Slope Stability", "Credit": 3, "Category": "Group B: Geotechnical Engineering", "Prerequisite": "CEE 340", "Description": "Slope stability methods, seepage, earthen dams, uplift, piping, filters, and static/dynamic stability assessment."}, {"Course Code": "CEE 424", "Course Title": "Advanced Soil Mechanics", "Credit": 3, "Category": "Group B: Geotechnical Engineering", "Prerequisite": "CEE 340", "Description": "Unsaturated soil behavior, consolidation, shear strength, soil dynamics, earthquake effects, and liquefaction."}, {"Course Code": "CEE 450", "Course Title": "Road and Traffic Safety Engineering", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Road-safety policy, audits, crash data, black-spot analysis, pedestrian/cyclist safety, traffic calming, and engineering countermeasures."}, {"Course Code": "CEE 452", "Course Title": "Pavement Analysis, Design and Construction", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Pavement response, materials, distresses, performance, maintenance, flexible/rigid design, drainage, overlays, and construction methods."}, {"Course Code": "CEE 454", "Course Title": "Advanced Traffic Engineering", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Advanced traffic-flow, capacity, control, intersection design, traffic studies, data collection, and statistical analysis."}, {"Course Code": "CEE 458", "Course Title": "Transportation Systems Engineering and Planning", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Transportation-system modeling, demand analysis, transit, urban planning, management, safety, and Bangladesh-focused case studies."}, {"Course Code": "CEE 459", "Course Title": "Geometric Analysis and Design of Roads", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Geometric roadway design including visible elements, intersections, freeways, interchanges, and design-software applications."}, {"Course Code": "CEE 463", "Course Title": "Integrated Water Resources Planning and Management", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 360", "Description": "Integrated water-resource planning with economic, environmental, institutional, participatory, operational, and systems-analysis perspectives."}, {"Course Code": "CEE 465", "Course Title": "River Engineering", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 360", "Description": "Alluvial-river behavior, morphology, river training, bank protection, sediment transport, dredging, flooding, forecasting, and flood management."}, {"Course Code": "CEE 467", "Course Title": "Irrigation and Drainage Engineering", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 460", "Description": "Irrigation-water requirements, canal design, irrigation structures, pumps, water management, drainage systems, and land drainage."}, {"Course Code": "CEE 473", "Course Title": "Coastal and Estuarine Analysis", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 360", "Description": "Coastal processes, waves, currents, sediment transport, estuarine systems, pollution transport, and Bangladesh coastal-zone applications."}, {"Course Code": "CEE 475", "Course Title": "Water Resources and Environmental Modelling", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 215; CEE 360", "Description": "Environmental-system modeling, calibration, validation, prediction, mass/energy balances, reactors, and contaminant fate and transport."}, {"Course Code": "CEE 471", "Course Title": "Pollution Control", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 470", "Description": "Pollution sources and impacts plus engineering methods to prevent and control air, water, soil, noise, radioactive, and hazardous pollution."}, {"Course Code": "CEE 472", "Course Title": "Climate Change and Disaster Management", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 470", "Description": "Climate change, mitigation, hazards, vulnerability, resilience, disaster risk management, preparedness, recovery, and community-based approaches."}, {"Course Code": "CEE 474", "Course Title": "Green Building and Infrastructure", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 335; CEE 350; CEE 470", "Description": "Sustainable building and infrastructure design covering site, transport, energy, materials, water, indoor quality, waste, durability, and climate adaptation."}, {"Course Code": "CEE 477", "Course Title": "Ecological Engineering", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 215; CEE 373; CEE 360", "Description": "Ecological principles applied to engineering, conservation, ecosystem management, ecological impacts, and restoration."}, {"Course Code": "CEE 479", "Course Title": "Air Quality Engineering", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 209; CEE 370", "Description": "Air pollutants, emissions, atmospheric chemistry, dispersion, health impacts, regulations, control technologies, and global air-quality issues."}, {"Course Code": "CEE 410", "Course Title": "Construction Engineering", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "CEE 310; CEE 430", "Description": "Construction processes, contracting, scheduling, resource allocation, project organization, documentation, management, and control."}, {"Course Code": "CEE 427", "Course Title": "Advanced Procurement Systems", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "CEE 410", "Description": "Construction procurement methods, public procurement rules, e-GP, international procurement, and sustainable/strategic procurement."}, {"Course Code": "CEE 425", "Course Title": "GIS and Remote Sensing", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "CEE 213; CEE 350", "Description": "GIS data models and analysis, spatial data capture, remote-sensing basics, sensors, and engineering applications."}, {"Course Code": "CEE 466", "Course Title": "Urban Planning", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "CEE 335; CEE 250; CEE 415", "Description": "Urban-planning concepts, planning processes, surveys, analysis, objectives, constraints, policy, evaluation, and implementation."}, {"Course Code": "CEE 490", "Course Title": "Special Topic", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "None specified", "Description": "A department-approved special topic selected according to current student and faculty needs."}, {"Course Code": "CEE 492", "Course Title": "Undergraduate Research", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "90 credits completed", "Description": "A supervised research/thesis course involving a substantial civil-engineering or closely related research problem."}, {"Course Code": "CEE 498", "Course Title": "Internship", "Credit": 0, "Category": "Internship", "Prerequisite": "All BSCEE Core CEE courses", "Description": "A mandatory internship providing supervised practical experience in a professional engineering work environment."}, {"Course Code": "CEE 499A", "Course Title": "Engineering Project I", "Credit": 1, "Category": "Capstone Project", "Prerequisite": "All 300-level core courses completed OR 100 credits", "Description": "First stage of a year-long civil/environmental engineering capstone design project."}, {"Course Code": "CEE 499B", "Course Title": "Engineering Project II", "Credit": 1, "Category": "Capstone Project", "Prerequisite": "CEE 499A", "Description": "Second stage of the capstone design sequence, continuing analysis, design, implementation, and project development."}, {"Course Code": "CEE 499C", "Course Title": "Engineering Project III", "Credit": 1, "Category": "Capstone Project", "Prerequisite": "CEE 499B", "Description": "Final stage of the capstone design sequence, completing design work, documentation, and presentation."}, {"Course Code": "ECO 101", "Course Title": "Introduction to Microeconomics", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Introduces the methods and principles of microeconomics, including markets, consumer behavior, production, costs, market structures, and efficiency in allocation and production."}, {"Course Code": "ECO 104", "Course Title": "Introduction to Macroeconomics", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Introduces macroeconomic analysis through national income accounting, unemployment, inflation, output and price determination, money and banking, fiscal and monetary policy, trade deficits, and exchange rates."}, {"Course Code": "ACT 201", "Course Title": "Introduction to Financial Accounting", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Introduces the accounting model and financial statements, including accounting processes, assets and liabilities, stockholders' equity, revenues and expenses, depreciation, inventory pricing, and the accounting cycle."}, {"Course Code": "MGT 210", "Course Title": "Principles of Management", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Covers the environment, approaches, principles, and processes of management, including planning, organizing, control, motivation, teamwork, group dynamics, and leadership."}, {"Course Code": "SOC 101", "Course Title": "Introduction to Sociology", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Introduces key sociological concepts and explains how societies grow and change, how major institutions influence one another and individual life, and how social conflict and planned or unplanned change occur."}, {"Course Code": "PSY 210", "Course Title": "Psychology", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "An approved Arts and Social Sciences GED option in Psychology for DCEE students. Students should check the current NSU course outline for the detailed topic list."}, {"Course Code": "POL 210", "Course Title": "Human Rights & Politics", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Examines the history and development of human-rights ideas, fundamental rights, comparative perspectives, national and international law, and political, economic, social, cultural, individual, and collective rights."}, {"Course Code": "PHI 101", "Course Title": "Introduction to Philosophy", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Explores basic philosophical questions about mind and brain, knowledge, free will, justice, the existence of God, mortality, and the nature and function of philosophy."}, {"Course Code": "LAW 200", "Course Title": "Legal Environment of Business", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Introduces the role and application of law in business, including the legal environment of commerce, taxation, competition, labor-management relations, contracts, dispute resolution, and related business-law issues."}, {"Course Code": "BEN 205", "Course Title": "Bangla Language and Literature", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Develops Bengali language skills through prose styles, grammar, syntax, vocabulary, and integrated language practice, while introducing major trends and writers in modern Bengali literature."}, {"Course Code": "HIS 103", "Course Title": "Emergence of Bangladesh", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Studies the political and historical development of Bangladesh, including the partition of India, Language Movement, major constitutional and political developments, autonomy movements, and the background to Bangladesh's emergence."}, {"Course Code": "ENG 105", "Course Title": "Advanced Composition", "Credit": 3, "Category": "Arts and Social Sciences (GED)", "Prerequisite": "None", "Description": "Builds advanced analytical reading and writing skills with emphasis on sentence structure, organization, coherence, technical reports, project proposals, presentations, and effective written, oral, and visual communication."}];
+const COURSES = [{"Course Code": "CEE 100", "Course Title": "Introduction to Civil & Environmental Engineering", "Credit": 3, "Category": "Orientation Courses", "Prerequisite": "None", "Description": "History and development of Civil and Environmental Engineering; the five major divisions and their activities; scope and pattern of jobs for civil and environmental engineers; codes, ethics, professional responsibilities, and sustainable development."}, {"Course Code": "CEE 110", "Course Title": "Computer Aided Drawing (CAD) for Engineers", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "None", "Description": "Introduction to lettering, numbering and heading; plane geometry; projection; development and true shape; cube, pyramid, cone and prism; section and true shape; isometric drawing; oblique drawing; plan, elevation and section of engineering structures; reinforcement details; introduction to computer-aided design."}, {"Course Code": "MAT 116", "Course Title": "Pre-calculus", "Credit": 3, "Category": "Orientation Courses", "Prerequisite": "None", "Description": "Sets, real number system, algebraic expressions, systems of equations, functions and relations, quadratic functions, synthetic division, zeros of polynomial functions, exponential and logarithmic functions, trigonometric functions and graphs, analytic trigonometry, applications of trigonometry, mathematical induction, binomial theorem, sequences and series."}, {"Course Code": "ENG 102", "Course Title": "Introduction to Composition", "Credit": 3, "Category": "Orientation Courses", "Prerequisite": "None", "Description": "Continued work on analytic reading and on fluency and control of the writing process; development of expressive, persuasive and referential writing with emphasis on planning, organization, cohesion and coherence."}, {"Course Code": "ENV 107", "Course Title": "Environmental Science", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "None", "Description": "Major components of the environment; earth and biogeochemical cycles; population and environment; biodiversity; lithosphere; atmosphere; hydrosphere; urban air pollution and acid rain; global warming and ozone depletion; water chemistry and pollution; solid and hazardous waste management; alternative energy sources; environmental health and toxicology; sustainable development."}, {"Course Code": "CHE 101", "Course Title": "Chemistry I", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "None", "Description": "Fundamental principles of chemistry including measurement, atomic and molecular structure, periodicity, chemical reactions, chemical bonding, stoichiometry, thermochemistry, chemical equilibrium and kinetics, gas laws and solutions, with laboratory skills for chemistry problem solving."}, {"Course Code": "CHE 101L", "Course Title": "Chemistry I Lab.", "Credit": 1, "Category": "Basic & Applied Sciences", "Prerequisite": "CHE 101", "Description": "Analytical-balance use, law of definite proportions, estimation of Avogadro's number, standardization of HCl, acid-base titration and density determination."}, {"Course Code": "ENG 103", "Course Title": "Intermediate Composition", "Credit": 3, "Category": "Arts and Social Sciences", "Prerequisite": "None", "Description": "Continued work on analysis reading and on fluency and control of the writing process; development of expressive, persuasive and referential writing with emphasis on planning, organization, cohesion and coherence."}, {"Course Code": "MAT 120", "Course Title": "Calculus and Analytic Geometry I", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 116", "Description": "A first course in calculus and analytic geometry covering coordinates, graphs and lines; functions and limits; differentiation; applications of differentiation; integration; logarithmic and exponential functions."}, {"Course Code": "MAT 125", "Course Title": "Linear Algebra", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 120; MAT 116", "Description": "Basic concepts and techniques of linear algebra including systems of linear equations, matrices and inverses, determinants, vector spaces, eigenvalues and eigenvectors, and Markov processes."}, {"Course Code": "PHY 107", "Course Title": "Physics I", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "MAT 120", "Description": "Vectors, equations of motion, Newton's laws, conservation laws of energy and momentum, work-energy theorem, extension of linear into rotational motion, gravitation, simple harmonic motion, travelling waves, calorimetry and thermal equilibrium, first and second laws of thermodynamics."}, {"Course Code": "PHY 107L", "Course Title": "Physics Lab. I", "Credit": 1, "Category": "Basic & Applied Sciences", "Prerequisite": "PHY 107", "Description": "Measurements and statistical error; force table; Atwood machine; Hooke's law; mass-spring oscillation; simple pendulum; compound pendulum and static equilibrium."}, {"Course Code": "MAT 130", "Course Title": "Calculus and Analytic Geometry II", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 120", "Description": "Second course in calculus and analytic geometry covering applications of definite integrals, hyperbolic and inverse trigonometric functions, techniques of integration, improper integrals, L'Hospital's Rule, analytic geometry, polar coordinates and parametric equations."}, {"Course Code": "PHY 108", "Course Title": "Physics II", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "PHY 107; MAT 130", "Description": "Electricity and magnetism including Coulomb's law, electric field and Gauss's law, potential, capacitance, dielectric and magnetic forces, AC circuits, electric and potential-continuous systems, inductance, alternating fields and current, Maxwell's equations and magnetic properties of matter."}, {"Course Code": "PHY 108L", "Course Title": "Physics Lab. II", "Credit": 1, "Category": "Basic & Applied Sciences", "Prerequisite": "PHY 108", "Description": "Introduction to electrical equipment; verification of Ohm's law; charging and discharging of capacitors; time constant of an RC circuit with resistor and capacitor in series; magnetic induction."}, {"Course Code": "MAT 250", "Course Title": "Calculus and Analytic Geometry-IV", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 130", "Description": "Partial derivatives; functions of two variables; limits and continuity; directional derivatives and gradients; tangent planes and normal vectors; maxima and minima; multiple integrals; line integrals; Green's theorem; surface integrals; divergence theorem; Stokes' theorem."}, {"Course Code": "MAT 350", "Course Title": "Engineering Mathematics", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 250", "Description": "First-order ordinary differential equations, linear differential equations with constant coefficients, Laplace transformations, power-series solutions of differential equations and Bessel functions."}, {"Course Code": "MAT 361", "Course Title": "Introduction to Probability and Statistics", "Credit": 3, "Category": "Mathematics", "Prerequisite": "MAT 250", "Description": "Introduction to statistics; descriptive statistics; summarizing data sets; probability; random variables; joint distributions; conditional distributions; moment generating functions; Bernoulli, binomial, Poisson, hypergeometric, uniform, normal, gamma, t, F and chi-square distributions; sampling distributions, parameter estimation, hypothesis testing, regression and analysis of variance."}, {"Course Code": "ENV 311", "Course Title": "Geology and Geomorphology", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "None", "Description": "Rocks and minerals; common rock-forming minerals; physical properties and mineralogy; rock types and cycle; structural geology; faults, folds and fold types; erosion processes; geology of Bangladesh; fluvial geomorphology; channel development and widening; valley shape; stream terraces; alluvial flood plains, deltas, alluvial fans and deposits; coastal deposits; glacial deposits; lacustrine deposits and aeolian deposits; river-basin geomorphology."}, {"Course Code": "ENV 373", "Course Title": "Environmental Impact Assessment", "Credit": 3, "Category": "Civil Engineering Core — Environmental Engineering", "Prerequisite": "CEE 213; CEE 214", "Description": "Concepts of environmental and social impact assessment; project cycle, scoping, initial environmental examination and EIA methods; impact-identification matrix, network and checklist methods, modelling and simulation; environmental indices for air, water and land; prediction and assessment of impacts; decision methods; environmental monitoring plans."}, {"Course Code": "CEE 209", "Course Title": "Environmental Chemistry", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "ENV 107; CHE 101", "Description": "Fundamental application of chemical principles to environmental study; interaction between life and environment; air and water pollution; soil pollution and radioactivity; industrial-waste impact; regulatory agencies; selected environmental topics and oral presentation."}, {"Course Code": "CEE 271L", "Course Title": "Environmental Engineering Lab. I", "Credit": 1, "Category": "Civil Engineering Core — Environmental Engineering", "Prerequisite": "CEE 209; CEE 209L", "Description": "Application of basic chemistry and chemical calculations to measure physical, chemical and biological parameters of water such as pH, conductivity, turbidity, color, chloride, total dissolved solids, dissolved oxygen, biological oxygen demand and chemical oxygen demand."}, {"Course Code": "CEE 213", "Course Title": "Surveying & Introduction to GIS", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 110", "Description": "Types of surveying; chain surveying; traverse surveying; levelling and contouring; calculation of areas and volumes; heights and distances; curves; modern surveying equipment; tacheometry; astronomical surveying; photogrammetry; terrestrial photogrammetry; aerial photogrammetry; remote sensing; GPS; hydrographic surveying and GIS introduction."}, {"Course Code": "CEE 213L", "Course Title": "Surveying & Introduction to GIS Lab", "Credit": 1, "Category": "Engineering Tools", "Prerequisite": "CEE 110", "Description": "GIS software in the GIS lab and field survey."}, {"Course Code": "CEE 210", "Course Title": "Engineering Mechanics", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "MAT 120", "Description": "Statics: force vectors and units, coplanar forces, particle equilibrium, rigid-body equilibrium, centroids, distributed loading, moments of inertia. Dynamics: kinematics and kinetics, velocity and acceleration, particles and rigid bodies, work, energy, momentum."}, {"Course Code": "CEE 214", "Course Title": "Engineering Materials", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CHE 101; CEE 210", "Description": "Mechanical behavior of materials; variability; atomic structures and properties; properties and selection criteria; applications and uses of steel, aluminum, mineral aggregates, cement, asphalt, concrete, masonry, wood, protective coating materials and composites; design of concrete mix; laboratory experiments and testing of devices, steel, coarse and fine aggregates, cement, concrete, brick and wood."}, {"Course Code": "CEE 214L", "Course Title": "Engineering Materials Lab.", "Credit": 1, "Category": "Engineering Tools", "Prerequisite": "CEE 214", "Description": "Laboratory experiments and characterization of common civil engineering materials including sieve analysis, specific gravity and absorption of aggregates, normal consistency and setting time of cement, slump of fresh mixed Portland cement concrete, mixing and curing concrete cylinders, compressive strength, nondestructive testing and tensile strength of concrete."}, {"Course Code": "CEE 310", "Course Title": "Quantity Survey and Cost Estimates", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 213; CEE 214", "Description": "Analysis of rates; detailed estimate of all items of work of a building; septic tank; specifications of materials for the above constructions."}, {"Course Code": "CEE 215", "Course Title": "Numerical Analysis & Computer Programming", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "MAT 130", "Description": "Numerical solution of algebraic and transcendental equations; systems of linear equations; curve fitting by least squares; finite difference; interpolation; numerical differentiation and integration; numerical solution of differential equations; computer-system basics; programming-language concepts; structured and object-oriented programming."}, {"Course Code": "CEE 211", "Course Title": "Fluid Mechanics", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 210; MAT 130", "Description": "Fundamental concepts in fluid mechanics; fluid properties; hydrostatics; conservation of mass and momentum using differential and integral balances; fluid kinematics and flow concepts; continuity equations; energy and momentum equations; shear stresses and velocity profiles; laminar and turbulent flows; incompressible flow; similitude and dimensional analysis; viscous flow in pipes; drag and lift; fluid measurement."}, {"Course Code": "CEE 211L", "Course Title": "Fluid Mechanics Lab.", "Credit": 1, "Category": "Engineering Tools", "Prerequisite": "CEE 210; MAT 130", "Description": "Laboratory experiments on center of pressure in fluid, Bernoulli's theorem, fluid measurement in orifices, external mouthpiece, venturimeter, V-notch weir, sharp-crested weir and head loss due to sudden contraction and sudden expansion."}, {"Course Code": "CEE 212", "Course Title": "Solid Mechanics", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 210; MAT 130", "Description": "Methods of structural analysis of beams and frames; internal forces; axial force, shear force and bending-moment diagrams of statically determinate beams; deflection of beams; stresses and strains in solid bodies; constitutive relationships; states of stress and strain; transformation of stresses and strains; instability of columns."}, {"Course Code": "CEE 212L", "Course Title": "Solid Mechanics Lab.", "Credit": 1, "Category": "Engineering Tools", "Prerequisite": "CEE 212", "Description": "Tension test of mild steel, compression test of timber specimen, impact test of metal specimen, test of helical spring, direct shear test of metal specimens, static bending test of beam, hardness test and buckling test of slender column."}, {"Course Code": "CEE 260", "Course Title": "Hydrology", "Credit": 3, "Category": "Basic & Applied Sciences", "Prerequisite": "CEE 211", "Description": "Global water and energy cycles and the earth system including atmosphere, oceans, land and biosphere; hydrologic science and applications; water-balance concepts; precipitation, evaporation, transpiration, infiltration and storm runoff; hydrograph and unit hydrograph; groundwater flow, hydraulic wells; probabilistic analysis and risk estimation for hydrologic variables."}, {"Course Code": "CEE 240", "Course Title": "Introduction to Soil Mechanics & Foundation Engineering", "Credit": 3, "Category": "Civil Engineering Core — Geotechnical Engineering", "Prerequisite": "CEE 212; CEE 214", "Description": "Introduction to geotechnical engineering and soil mechanics; soil formation and deposits; index properties; soil classifications; phase relationship; soil compaction; permeability and seepage; total and effective stresses; stress distribution; one-dimensional consolidation; shear strength of soil; lateral earth pressure."}, {"Course Code": "CEE 240L", "Course Title": "Soil Mechanics Lab", "Credit": 1, "Category": "Civil Engineering Core — Geotechnical Engineering", "Prerequisite": "CEE 240", "Description": "Laboratory tests of soil including field identification; specific gravity of soil solids; sieve analysis; hydrometer analysis; Atterberg limits; compaction; maximum and minimum density of sandy soil; unconfined compression; direct shear; permeability by constant-head and falling-head methods; consolidation."}, {"Course Code": "CEE 340", "Course Title": "Advanced Foundation Engineering", "Credit": 3, "Category": "Civil Engineering Core — Geotechnical Engineering", "Prerequisite": "CEE 240L", "Description": "Subsoil investigation; types of foundations; bearing-capacity settlement of shallow foundations; bearing capacity and settlement of pile foundations; slope stability; earth-retaining structures."}, {"Course Code": "CEE 250", "Course Title": "Introduction to Transportation Engineering", "Credit": 3, "Category": "Civil Engineering Core — Transportation Engineering", "Prerequisite": "CEE 212", "Description": "Transportation systems; transportation economics; land use, vehicle and human characteristics in transportation; geometric design of roadways and railways; roadway and railway materials; bituminous-mix design; traffic loading and volume; design of flexible and rigid pavements; pavement construction, distresses and maintenance; introduction to railway and waterways."}, {"Course Code": "CEE 250L", "Course Title": "Transportation Engineering Lab", "Credit": 1, "Category": "Civil Engineering Core — Transportation Engineering", "Prerequisite": "CEE 250", "Description": "Laboratory experiments on highway materials, asphalt concrete-mix design and characterization of highway materials."}, {"Course Code": "CEE 350", "Course Title": "Traffic Analysis and Design", "Credit": 3, "Category": "Civil Engineering Core — Transportation Engineering", "Prerequisite": "CEE 250; CEE 250L", "Description": "Traffic fundamentals; traffic engineering; traffic-flow characteristics; travel-demand forecasting; analysis and design of capacity of urban and rural roadway segments and intersections; traffic-control devices; systems and warrants; transportation planning; public transportation systems."}, {"Course Code": "CEE 330", "Course Title": "Structural Analysis and Design - I", "Credit": 3, "Category": "Civil Engineering Core — Structural Engineering", "Prerequisite": "CEE 212; CEE 212L", "Description": "Stability and determinacy of structures; wind and earthquake loads; arch analysis; cable structures; influence lines; moving loads; approximate analysis of statically indeterminate structures; elastic strain energy and external work; virtual-work principle; deflection of beams, trusses and frames."}, {"Course Code": "CEE 330L", "Course Title": "Structural Analysis and Design Lab", "Credit": 1, "Category": "Civil Engineering Core — Structural Engineering", "Prerequisite": "CEE 330", "Description": "Algorithms for implementing direct stiffness method in computer; hands-in practice on truss and frame analyses by professional software."}, {"Course Code": "CEE 331", "Course Title": "Structural Analysis and Design – II", "Credit": 3, "Category": "Civil Engineering Core — Structural Engineering", "Prerequisite": "CEE 330L", "Description": "Analysis of statically indeterminate beams and frames by Moment Distribution Method; flexibility method; stiffness method; stiffness matrix, member stiffness and stiffness transformations; assembly of stiffness matrices and solution for beams, frames and trusses."}, {"Course Code": "CEE 335", "Course Title": "Reinforced Concrete Design - I", "Credit": 3, "Category": "Civil Engineering Core — Structural Engineering", "Prerequisite": "CEE 212", "Description": "Materials and fundamental behavior of reinforced concrete; loads and design philosophies; analysis of beam section under stages of loading; singly reinforced, doubly reinforced and T-beams according to USD methods; shear and diagonal tension; bond and anchorage; transformation of stress and strain; instability and design by ACI coefficients; column-supported slab design."}, {"Course Code": "CEE 335L", "Course Title": "Reinforced Concrete Design Lab.", "Credit": 1, "Category": "Civil Engineering Core — Structural Engineering", "Prerequisite": "CEE 335", "Description": "Analysis of concrete building frame by professional software; design of slab bridge, deck girder bridge and balanced cantilever bridge; design of concrete building components such as stair and water tanks; BNBC, ACI and AASHTO codes."}, {"Course Code": "CEE 430", "Course Title": "Reinforced Concrete Design - II", "Credit": 3, "Category": "Civil Engineering Core — Structural Engineering", "Prerequisite": "CEE 330; CEE 335L", "Description": "Design of columns; strength-interaction diagrams for uniaxial bending and reciprocal-load method under biaxial bending; foundations, individual and combined footings, rafts and pile caps; retaining walls; concrete building systems; seismic detailing; structural forms; shear walls; introduction to prestressed concrete."}, {"Course Code": "CEE 360", "Course Title": "Open-Channel Hydraulics", "Credit": 3, "Category": "Civil Engineering Core — Water Resources Engineering", "Prerequisite": "CEE 260", "Description": "Advanced hydraulics of free-surface flow in rivers and open channels; theory and numerical solution techniques and their applications to gradually and rapidly varied non-uniform flows, unsteady flow and flow in open-channel networks; design of channels and flow through hydraulic structures."}, {"Course Code": "CEE 360L", "Course Title": "Open-Channel Hydraulics Lab", "Credit": 1, "Category": "Civil Engineering Core — Water Resources Engineering", "Prerequisite": "CEE 360", "Description": "Open-channel hydraulics lab experiments on hydraulic jump and flow over broad and sharp-crested weirs; computation of GVF using numerical methods; regression analysis; HEC-RAS modelling software for river-flow analysis, channel-flow analysis with bridges and culverts, channel design and modification and floodplain modelling."}, {"Course Code": "CEE 460", "Course Title": "Groundwater Hydraulics", "Credit": 3, "Category": "Civil Engineering Core — Water Resources Engineering", "Prerequisite": "CEE 360", "Description": "Physical properties of groundwater and aquifers; principles and fundamental equations of porous-media flow and mass transport; well hydraulics and pumping-test analysis; role of groundwater in the hydrologic cycle and groundwater quality and contamination."}, {"Course Code": "CEE 370", "Course Title": "Water Supply and Treatment", "Credit": 3, "Category": "Civil Engineering Core — Environmental Engineering", "Prerequisite": "CEE 209; CEE 271L; CEE 211; CEE 209L", "Description": "Human need of water; potable-water source and development and protection; applied hydraulics of pipelines and pumps; potable-water needs; water-quality regulatory requirements; physical and chemical water-treatment process design and operation; rural water-supply options; design and operation of urban municipal water-distribution systems."}, {"Course Code": "CEE 373", "Course Title": "Sanitation and Wastewater Engineering", "Credit": 3, "Category": "Civil Engineering Core — Environmental Engineering", "Prerequisite": "CEE 370", "Description": "Wastewater characteristics and treatment systems; sanitary sewer and storm-drainage systems; wastewater characteristics; primary, secondary and sludge-treatment systems and disposal options; analysis and design of sewer systems."}, {"Course Code": "CEE 371L", "Course Title": "Environmental Engineering Lab. II", "Credit": 1, "Category": "Civil Engineering Core — Environmental Engineering", "Prerequisite": "CEE 271L; CEE 370; CEE 373", "Description": "Introduction to wastewater engineering; estimation of wastewater; wastewater collection systems; hydraulics of sewer; design, construction and maintenance of sanitary sewer and storm-drainage systems; sewer appurtenances; plumbing system; wastewater characteristics; wastewater treatment and disposal; sludge treatment and disposal; sanitation and health; low-cost sanitation technology; septic tank; sustainability and environmental management."}, {"Course Code": "CEE 470", "Course Title": "Solid and Hazardous Waste Engineering", "Credit": 3, "Category": "Civil Engineering Core — Environmental Engineering", "Prerequisite": "CEE 373", "Description": "Sources and types of solid wastes; physical and chemical properties; solid-waste generation; on-site handling, storage and processing; collection; transfer stations and transport; ultimate disposal methods; resources and energy recovery; soil pollution; industrial solid waste collection and disposal; hazardous-waste management."}, {"Course Code": "CEE 415", "Course Title": "Socioeconomic Aspects of Development Projects", "Credit": 3, "Category": "Engineering Tools", "Prerequisite": "CEE 350; ENV 373; CEE 310", "Description": "Paradigms of development and sustainable development; society-development-environmental linkage; socio-economic indicators; participatory planning of development projects; rapid rural appraisal, participatory rural appraisal, focus-group discussion, key-person interview; community-based operation and maintenance of projects; gender and institutional issues."}, {"Course Code": "CEE 431", "Course Title": "Introduction to Structural Dynamics", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331", "Description": "General principles of dynamics; single-degree-of-freedom systems; free vibrations; response to harmonic and periodic excitations; earthquake response of linear systems; multi-degree-of-freedom systems; earthquake response of linearly elastic buildings."}, {"Course Code": "CEE 432", "Course Title": "Composite Structures", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331; CEE 430", "Description": "Introduction to steel-concrete composite structures; advantages of composite construction; interaction between steel and concrete; shear connectors; elastic analysis of composite beams; beam-column connections; behavior of composite columns; axial load capacity and interaction diagrams."}, {"Course Code": "CEE 433", "Course Title": "Finite Element Methods", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331", "Description": "Introduction to computational mechanics; mathematical models and numerical simulations; variational methods, weak form and Ritz method; second-order differential equations in one dimension; structural-mechanics applications; truss elements, beam elements and frame elements; isoparametric elements in two dimensions; triangular and rectangular elements; FEM for plates and shells."}, {"Course Code": "CEE 434", "Course Title": "Advanced Reinforced Concrete Design", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331; CEE 430", "Description": "Application of Strut and Tie Model in reinforced-concrete disturbed regions; analysis and design of slab using two collapse-load methods; yield-line method and Strip Method; evaluation of function structural walls and design of shear walls; design of framed structures; calculate deflections at serviceability limit state; design-preliminary requirements for water-retaining structures."}, {"Course Code": "CEE 435", "Course Title": "Prestressed Concrete", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 430", "Description": "Prestressed-concrete materials; prestressing system; loss of prestress; analysis of sections for flexure, shear, bond and bearing; beam deflections and cable layout; partial prestress; design of pre-stressed sections."}, {"Course Code": "CEE 437", "Course Title": "Behavior and Design of Metal Structures", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331", "Description": "Fundamentals of steel-design philosophies by AISC; steel and properties; tension members and connections by bolts and welds; compression members; stability of plates; torsion and torsional buckling; beams, lateral-torsional buckling; plate girders."}, {"Course Code": "CEE 439", "Course Title": "Earthquake-resistant Design", "Credit": 3, "Category": "Group A: Structural Engineering", "Prerequisite": "CEE 331; CEE 340", "Description": "Theory and application of structural dynamics for single and multiple degree-of-freedom models of buildings subjected to earthquake ground motion; characteristics of earthquake ground motion and design spectra; concepts of overall seismic design of buildings; load paths, proportioning and ductile detailing."}, {"Course Code": "CEE 441", "Course Title": "Advanced Geotechnical Engineering", "Credit": 3, "Category": "Group B: Geotechnical Engineering", "Prerequisite": "CEE 340", "Description": "Critical study of case histories of projects in foundation engineering; current procedure for design and construction of foundations, embankments and waterfront structures; seismic-hazard analysis; cyclic response of soils and rock; wave propagation; liquefaction and post-liquefaction behavior; seismic soil-structure interaction; foundations and underground structures; seismic design of retaining walls; underground structures and tunnels; construction and machine vibrations; blasting."}, {"Course Code": "CEE 443", "Course Title": "Earth Retaining Structures", "Credit": 3, "Category": "Group B: Geotechnical Engineering", "Prerequisite": "CEE 340", "Description": "Foundation of structures subjected to lateral loads; rigid and flexible earth-retaining structures; mechanically stabilized retaining wall; sheet-pile walls; braced cuts; cofferdams; caissons; dewatering and slurry-wall construction."}, {"Course Code": "CEE 442", "Course Title": "Earthen Dam and Slope Stability", "Credit": 3, "Category": "Group B: Geotechnical Engineering", "Prerequisite": "CEE 340", "Description": "Methods of stability analysis including Taylor's method, Felleneous method and Bishop's methods; Morgenstern and Price's method; stability of natural and human-made slope; use of geo-textile; flow-net diagram; soil-water energy; seepage through earth dam, sheet pile and cofferdam; caissons and composite section; uplifting pressure on dam; stability analysis for static and dynamic load; piping; design of filter material."}, {"Course Code": "CEE 444", "Course Title": "Advanced Soil Mechanics", "Credit": 3, "Category": "Group B: Geotechnical Engineering", "Prerequisite": "CEE 340", "Description": "Unsaturated soil mechanics; behavior of soil on fully and partially saturated conditions; consolidation of soil; shear strength under partially saturated conditions; shear strength of soil for earthquake loading; soil dynamics and earthquake geotechnics; liquefaction problems."}, {"Course Code": "CEE 450", "Course Title": "Road and Traffic Safety Engineering", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Road and traffic safety engineering; needs, policies, methods and procedures for enhancing road safety; road-safety policies; governmental and local arrangements; road-safety audit; accident-data collection, reporting, database maintenance and data analysis; identification of hazardous locations; pedestrian and bicycle safety; rail crossings and work-zone safety."}, {"Course Code": "CEE 452", "Course Title": "Pavement Analysis, Design and Construction", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Stress, strain and deflections of pavements; traffic-volume analysis; pavement materials characterization; pavement distresses and performance; pavement maintenance; design of flexible and rigid pavements; empirical, mechanistic-empirical and mechanistic methods; drainage design; overlay design; road-construction methods and practices."}, {"Course Code": "CEE 454", "Course Title": "Advanced Traffic Engineering", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Fundamental principles and practices of traffic engineering; road-user, vehicle and roadway characteristics; traffic-engineering function; concepts of highway capacity and traffic-flow theory; traffic-control devices; intersection control and signal timing; analysis of roadway and intersection capacity; traffic-engineering studies including volume, speed and travel time."}, {"Course Code": "CEE 458", "Course Title": "Transportation Systems Engineering and Planning", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Overview of transportation systems; transportation-system modelling; travel-characteristics analysis; traffic predictions; transportation-system management; public-passenger transportation; transit planning; urban-transportation planning; transportation-safety case studies; transportation-system planning and management in Bangladesh."}, {"Course Code": "CEE 459", "Course Title": "Geometric Analysis and Design of Roads", "Credit": 3, "Category": "Group C: Transportation Engineering", "Prerequisite": "CEE 350", "Description": "Analysis and design of visible elements of roadway; design controls; at-grade intersections, freeways and interchanges; use of design software; laboratory component covering design labs/experiments related to theory topics."}, {"Course Code": "CEE 463", "Course Title": "Integrated Water Resources Planning and Management", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 360", "Description": "Basic concepts in integrated water-resources management; economic, environmental and institutional aspects; participation of beneficiaries; formation of users group; fisheries management; strategic planning; system analysis approach; conceptual framework and models; analytical techniques; operation and maintenance of water-resources systems."}, {"Course Code": "CEE 465", "Course Title": "River Engineering", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 360", "Description": "Behavior of alluvial rivers; river pattern and morphological processes; river training and bank-protection works; navigation and dredging; sediment movement in river channels, bed forms and flow regimes; flood and causes; methods of flood management; structural and nonstructural measures; reservoirs, levees and flood zoning; flood-hazard mapping, flood forecasting and warning; flood damage in urban and rural areas."}, {"Course Code": "CEE 467", "Course Title": "Irrigation and Drainage Engineering", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 460", "Description": "Importance of irrigation; sources and quality of irrigation water; soil-water relationship; consumptive use and estimation of water requirements; methods of irrigation; design of irrigation-canal systems; irrigation structures and pumps; problems of irrigated land; irrigation-water management; importance of land drainage; drainage systems and their design."}, {"Course Code": "CEE 473", "Course Title": "Coastal and Estuarine Analysis", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 360", "Description": "Definitions and systems view of the coast; abiotic subsystems; classification of coasts, waves and current; sediment transport; two-dimensional flow analysis; biotic subsystems; coastal and estuarine ecosystems; fate and transport of pollutants in marine environment; bio-accumulation; risk from multiple stressors; Bangladesh coast physiographic and ecological features; Bangladesh Coastal Zone policy."}, {"Course Code": "CEE 475", "Course Title": "Water Resources and Environmental Modelling", "Credit": 3, "Category": "Group D: Water Resources Engineering", "Prerequisite": "CEE 215; CEE 360", "Description": "Definition and classification of model; concept of scale and discretization; basic concepts of modelling: conceptualization, data collection, calibration, validation and prediction; mathematical description and software implementation of mass/energy balance in water, soil and atmospheric systems; reactor processes; fate and transport of chemicals in environmental media."}, {"Course Code": "CEE 471", "Course Title": "Pollution Control", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 470", "Description": "Important environmental pollutants, their sources and impacts on surrounding ecosystem, infrastructures and planet; concepts and engineering principles for preventing and controlling air, water and soil, noise and radioactive pollution; control methods and technologies and their use in short- and long-term pollution problems; basics of relevant environmental laws and regulations."}, {"Course Code": "CEE 472", "Course Title": "Climate Change and Disaster management", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 470", "Description": "Earth's climate and biosphere; causes of climate change; global warming and greenhouse effects; carbon footprint; CO2 sequestration; mitigation; economics of climate change; environmental legislation; hazards; disaster-management risk; conceptual framework of disaster-risk management; disaster preparedness; emergency rescue and relief needs; long-term recovery; rehabilitation and reconstruction; community-based disaster management; social and environmental impact assessment; damage assessment."}, {"Course Code": "CEE 474", "Course Title": "Green Building and Infrastructure", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 335; CEE 350; CEE 470", "Description": "Green-building movement; principles and scope of sustainable design; importance of place; site, transportation and land-use issues; sustainable-site design, analysis and assessment; sustainable transportation patterns and site-development strategies; energy-efficient design; green materials selection; water and site design; sustainable-site development patterns; outdoor-water conservation; on-site storm-water management; indoor environmental quality and health."}, {"Course Code": "CEE 477", "Course Title": "Ecological Engineering", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 215; CEE 373; CEE 360", "Description": "Ecological concepts and applications in assessment, conservation and management of ecological systems; important attributes and processes at individual, community and system levels; ecological implications of engineering structures and projects; ecological restoration and engineering."}, {"Course Code": "CEE 479", "Course Title": "Air Quality Engineering", "Credit": 3, "Category": "Group E: Environmental Engineering", "Prerequisite": "CEE 209; CEE 370", "Description": "Solving air-pollution problems using a multidisciplinary approach; effects of air pollutants on human health and environment; origins of atmospheric pollutants and emission methods; atmospheric emissions from anthropogenic sources; atmospheric chemistry and pollutant-removal processes; meteorological phenomena and pollutant-dispersion modelling; laws and regulations; technological methods for air-pollution control; regional and global issues."}, {"Course Code": "CEE 410", "Course Title": "Construction Engineering", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "CEE 310; CEE 430", "Description": "Introduction to construction processes; contracting and bonding; project definition; scheduling and control models; material, labor and equipment allocation; optimal schedules; project organization; documentation and reporting systems; management and control."}, {"Course Code": "CEE 427", "Course Title": "Advance Procurement Systems", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "CEE 410; CEE 310; CEE 430", "Description": "Different procurement methods used within local and international construction industries; LS, DBB, DB, CM, BOT, milestone-based; public procurement rules; national public-procurement methods; international procurement methods; e-GP; emerging concepts such as sustainable procurement and strategic procurement."}, {"Course Code": "CEE 425", "Course Title": "GIS and Remote Sensing", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "CEE 213; CEE 350", "Description": "Introduction to Geographic Information Systems and GIS applications; data structures and scheduling and control models; data capture and sources; nature and characteristics of spatial data and objects; basics of remote sensing; characteristics of remote sensors and remote-sensing applications in academic disciplines and professional industries."}, {"Course Code": "CEE 426", "Course Title": "Urban Planning", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "CEE 335; CEE 250; CEE 415; CEE 350", "Description": "Contemporary planning concepts and principles; nature, purpose and scope of urban planning; planning process and decision-making in a democratic society; methodological aspects of designing a planning program; identification of objectives and constraints; planning policy, plans and policies preparation; evaluation and implementation; law components with focus on land-use zoning/regulations related to covered topics."}, {"Course Code": "CEE 490", "Course Title": "Special Topic", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "None specified", "Description": "Special Topic as decided by the faculty and the department based on student needs."}, {"Course Code": "CEE 492", "Course Title": "Undergraduate Research", "Credit": 3, "Category": "Group F: Special Topic", "Prerequisite": "90 credits completed", "Description": "A research-based thesis course giving students the opportunity to work on a comprehensive research work demonstrating mastery of design and/or study of a civil-engineering or closely related problem; work performed under department-approved supervision; publishable and/or presentable results expected."}, {"Course Code": "CEE 498", "Course Title": "Internship", "Credit": 0, "Category": "Internship", "Prerequisite": "All BSCEE Core CEE courses", "Description": "A mandatory non-credit internship providing experiential learning in an external organization, such as government or non-government organization or industry; six-week duration; links classroom learning and student interest to practical knowledge in a realistic work environment; requires confidential/professional-conduct agreement, journal/log of activities, supervisor evaluation and regular meetings with academic supervisor."}, {"Course Code": "CEE 499A", "Course Title": "Engineering Project I", "Credit": 1, "Category": "Capstone Project", "Prerequisite": "All 300-level core courses completed OR 100 credits; 90 credits completed", "Description": "A detailed analysis and design of a civil/environmental engineering project to devise an innovative solution for a real-world problem."}, {"Course Code": "CEE 499B", "Course Title": "Engineering Project II", "Credit": 1, "Category": "Capstone Project", "Prerequisite": "CEE 499A", "Description": "A detailed analysis and design of a civil/environmental engineering project to devise an innovative solution for a real-world problem."}, {"Course Code": "CEE 499C", "Course Title": "Engineering Project III", "Credit": 1, "Category": "Capstone Project", "Prerequisite": "CEE 499B", "Description": "A detailed analysis and design of a civil/environmental engineering project to devise an innovative solution for a real-world problem."}, {"Course Code": "ECO 101", "Course Title": "Introduction to Microeconomics", "Credit": 3, "Category": "Arts and Social Sciences", "Prerequisite": "None", "Description": "Methods and principles of microeconomics including markets, theory of consumer behaviour, production theory, costs of production, market structure and efficiency in allocation and production."}, {"Course Code": "ECO 104", "Course Title": "Introduction to Macroeconomics", "Credit": 3, "Category": "Arts and Social Sciences", "Prerequisite": "None", "Description": "Introduces the principles of macroeconomic analysis and its analytical methods with current institutional and empirical issues. Topics include national income accounting, unemployment, inflation, determination of output and price level, money and banking, monetary and fiscal policies, budget and trade deficits, and exchange rates."}, {"Course Code": "ACT 201", "Course Title": "Introduction to Financial Accounting", "Credit": 3, "Category": "Arts and Social Sciences", "Prerequisite": "None", "Description": "An introduction to the accounting model and financial statements, emphasizing the concepts and terminology needed to understand corporate financial reports. Topics include accounting processes for service and merchandising enterprises, current assets and liabilities, long-term assets, stockholders' equity, revenues and expenses, depreciation methods, inventory pricing, and the accounting cycle."}, {"Course Code": "MGT 210", "Course Title": "Principles of Management", "Credit": 3, "Category": "Arts and Social Sciences", "Prerequisite": "None", "Description": "Basic discussion of environments, approaches, principles and process of management; planning, organizing and control processes; motivation, teamwork, group dynamics and leadership in business and non-business organizations."}, {"Course Code": "SOC 101", "Course Title": "Introduction to Sociology", "Credit": 3, "Category": "Arts and Social Sciences", "Prerequisite": "None", "Description": "Examination of how societies grow and change; reciprocal effects of economic, political, familial and scientific institutions on each other and on individual life; changes and social conflict; problems of bureaucratic growth and unplanned social change."}, {"Course Code": "PSY 210", "Course Title": "Psychology", "Credit": 3, "Category": "Arts and Social Sciences", "Prerequisite": "None", "Description": "An approved Arts and Social Sciences GED option in Psychology for DCEE students. Students should check the current NSU course outline for the detailed topic list."}, {"Course Code": "POL 210", "Course Title": "Human Rights & Politics", "Credit": 3, "Category": "Arts and Social Sciences", "Prerequisite": "None", "Description": "History and development of ideas concerning human rights; fundamental or basic rights; comparative perspectives on human rights; women's and children's rights; national and international law; human rights in political, economic, social and cultural contexts; human-rights conflicts with economic development or environmental protection."}, {"Course Code": "PHI 101", "Course Title": "Introduction to Philosophy", "Credit": 3, "Category": "Arts and Social Sciences", "Prerequisite": "None", "Description": "Introduces major philosophical questions and methods of philosophical inquiry, including the nature of mind and its relation to the brain, knowledge, free will, justice, the existence of God, morality, and the nature and function of philosophy."}, {"Course Code": "LAW 200", "Course Title": "Legal Environment of Business", "Credit": 3, "Category": "Arts and Social Sciences", "Prerequisite": "None", "Description": "Nature, formation and application of legal principles in business; roles of law in society; legal environment of business with focus on government taxation, regulation of commerce, competition and labor-management relations, concepts of property and its creation and transfer."}, {"Course Code": "BEN 205", "Course Title": "Bangla Language and Literature", "Credit": 3, "Category": "Arts and Social Sciences", "Prerequisite": "None", "Description": "Styles of prose, standard, colloquial and dialect; review and practice of basic and syntax and introduction to language skills; development of integrated language skills with special focus on mechanics, grammar and vocabulary."}, {"Course Code": "HIS 103", "Course Title": "Emergence of Bangladesh", "Credit": 3, "Category": "Arts and Social Sciences", "Prerequisite": "None", "Description": "Bengal to Bangladesh; geographical features, land and people; political background of Partition of India 1947; Language Movement; Constitution of 1954 and the United Front; 21-point movement; Constitution of 1956; Nature and difficulties in implementation; military rule and Basic Democracy; six-point program; mass movement; role of political autonomy and rights."}, {"Course Code": "ENG 105", "Course Title": "Advanced Composition", "Credit": 3, "Category": "Arts and Social Sciences", "Prerequisite": "None", "Description": "Introduces research methodology, persuasion and argumentation, with emphasis on writing well-developed argumentative essays and developing academic research and referencing skills."}];
 const GED_RULES = [{"Batch Group": "Up to Batch 253", "Mandatory Courses": "ENG 103", "Choose From": "ECO 101; ECO 104; ACT 201; MGT 210; SOC 101; PSY 210; POL 210; PHI 101; LAW 200; BEN 205; HIS 103; ENG 105", "Total GED Courses": 4, "Total GED Credits": 12, "Rule": "ENG 103 is mandatory. Choose any 3 courses from the listed GED options. BEN 205 and HIS 103 are elective, not mandatory."}, {"Batch Group": "Batch 254–260", "Mandatory Courses": "Not specified", "Choose From": "Not specified", "Total GED Courses": null, "Total GED Credits": null, "Rule": "The chairman's email provided does not state the GED rule for this batch range. Confirm with DCEE before publishing a rule."}, {"Batch Group": "Batch 261 onward", "Mandatory Courses": "ENG 103; ECO 101; ACT 201", "Choose From": "ECO 104; MGT 210; SOC 101; PSY 210; POL 210; PHI 101; LAW 200; BEN 205; HIS 103; ENG 105", "Total GED Courses": 4, "Total GED Credits": 12, "Rule": "ENG 103, ECO 101, and ACT 201 are mandatory. Choose 1 additional GED course from the listed options."}];
 const CATEGORY_INFO = {"Structural Engineering": "Structural courses focus on how buildings, bridges, frames, and other structures carry loads safely and efficiently.", "Geotechnical Engineering": "Geotechnical courses focus on soil behavior, foundations, slopes, retaining systems, and the interaction between structures and the ground.", "Transportation Engineering": "Transportation courses cover highways, traffic, pavement, mobility, planning, geometric design, and transportation systems.", "Water Resources": "Water-resources courses cover hydrology, hydraulics, rivers, groundwater, irrigation, drainage, and water-management systems.", "Environmental Engineering": "Environmental courses cover water and wastewater treatment, sanitation, solid waste, pollution control, environmental assessment, and sustainability.", "Engineering Tools": "Engineering-tool courses build the mechanics, computing, surveying, materials, drawing, and analysis skills used across civil engineering.", "Mathematics": "Mathematics courses build the quantitative foundation used in engineering analysis, modelling, statistics, and design.", "Basic & Applied Sciences": "Basic and applied science courses provide the physics, chemistry, geology, and environmental-science foundation needed for civil engineering.", "Arts and Social Sciences (GED)": "GED courses broaden communication, social-science, humanities, management, and general analytical skills alongside engineering study."};
 
 const PREFIXES = ["CEE","MAT","PHY","CHE","ENV","ENG","ECO","ACT","MGT","SOC","PSY","POL","PHI","LAW","BEN","HIS"];
-const STORAGE_KEY = "nsu_cee_offline_completed_v2";
+const STORAGE_KEY = "nsu_cee_offline_completed_v3";
 
-function rawCourseKey(c) {
-  return compact(codeOf(c)) + "::" + normalize(titleOf(c));
+function normalizeLegacyCorrectedCode(code){
+  const k = compact(code);
+  if (k === "CEE423") return "CEE443";
+  if (k === "CEE424") return "CEE444";
+  if (k === "CEE466") return "CEE426";
+  return k;
+}
+
+function currentCourseCodeSet() {
+  return new Set(COURSES.map(c => normalizeLegacyCorrectedCode(compact(codeOf(c)))));
 }
 
 function migrateCompletedProgress() {
+  const validCodes = currentCourseCodeSet();
+
+  // v3: code-only storage
   const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-  if (current.length) return new Set(current);
+  if (current.length) {
+    const clean = [...new Set(
+      current
+        .map(x => normalizeLegacyCorrectedCode(String(x).split("::")[0]))
+        .filter(code => validCodes.has(code))
+    )];
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(clean));
+    return new Set(clean);
+  }
 
-  const old = JSON.parse(localStorage.getItem("nsu_cee_offline_completed_v1") || "[]");
-  const migrated = [];
+  // v2: composite "CODE::TITLE" keys
+  const v2 = JSON.parse(localStorage.getItem("nsu_cee_offline_completed_v2") || "[]");
+  if (v2.length) {
+    const migrated = [...new Set(
+      v2
+        .map(x => normalizeLegacyCorrectedCode(String(x).split("::")[0]))
+        .filter(code => validCodes.has(code))
+    )];
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+    return new Set(migrated);
+  }
 
-  old.forEach(oldKey => {
-    const matches = COURSES.filter(c => compact(codeOf(c)) === compact(oldKey));
-    if (matches.length === 1) migrated.push(rawCourseKey(matches[0]));
-    // If an old saved code maps to more than one course, do not guess which one.
-  });
+  // v1: plain course codes
+  const v1 = JSON.parse(localStorage.getItem("nsu_cee_offline_completed_v1") || "[]");
+  const migrated = [...new Set(
+    v1
+      .map(x => normalizeLegacyCorrectedCode(x))
+      .filter(code => validCodes.has(code))
+  )];
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
   return new Set(migrated);
@@ -1741,7 +1922,11 @@ function prereqOf(c) { return c["Prerequisite"]; }
 function descriptionOf(c) { return c["Description"]; }
 
 function courseKey(c) {
-  return rawCourseKey(c);
+  return normalizeLegacyCorrectedCode(compact(codeOf(c)));
+}
+
+function savedCodeFromKey(key) {
+  return normalizeLegacyCorrectedCode(String(key || "").split("::")[0]);
 }
 
 function isCourseCompleted(c) {
@@ -1749,16 +1934,27 @@ function isCourseCompleted(c) {
 }
 
 function isCodeCompleted(code) {
-  const target = compact(code);
-  return COURSES.some(c =>
-    compact(codeOf(c)) === target &&
-    completed.has(courseKey(c))
-  );
+  return completed.has(normalizeLegacyCorrectedCode(compact(code)));
+}
+
+function normalizeSavedProgressToCurrentCourses() {
+  const validCodes = currentCourseCodeSet();
+  const normalized = [...new Set(
+    [...completed]
+      .map(savedCodeFromKey)
+      .filter(code => validCodes.has(code))
+  )];
+
+  completed.clear();
+  normalized.forEach(code => completed.add(code));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...completed]));
 }
 
 function saveCompletedProgress() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify([...completed]));
 }
+
+normalizeSavedProgressToCurrentCourses();
 
 function prettyCode(s) {
   const x = compact(s);
@@ -1797,6 +1993,11 @@ function isElectiveCategory(c) {
   return /^GROUP [A-F]:/i.test(categoryOf(c));
 }
 
+function electiveGroupLetter(c) {
+  const m = String(categoryOf(c) || "").match(/^Group\s+([A-E]):/i);
+  return m ? m[1].toUpperCase() : null;
+}
+
 function core300Courses() {
   return COURSES.filter(c =>
     /^CEE 3\d{2}[A-Z]?$/i.test(codeOf(c)) &&
@@ -1824,17 +2025,17 @@ function courseStatus(c) {
   const special = specialRequirement(c);
   if (special) {
     const norm = normalize(special);
-    if (norm.includes("90 CREDITS")) {
-      return completedCredits() >= 90
-        ? {type:"eligible",label:"Eligible by credit rule",missing:[]}
-        : {type:"manual",label:"Credit requirement",missing:["90 credits completed"]};
-    }
     if (norm.includes("100 CREDITS") || norm.includes("300 LEVEL CORE")) {
       const byCredit = completedCredits() >= 100;
       const byCore = core300Courses().every(x => isCourseCompleted(x));
       return (byCredit || byCore)
         ? {type:"eligible",label:"Eligible by program rule",missing:[]}
         : {type:"manual",label:"Program requirement",missing:["All 300-level core courses or 100 credits"]};
+    }
+    if (norm.includes("90 CREDITS")) {
+      return completedCredits() >= 90
+        ? {type:"eligible",label:"Eligible by credit rule",missing:[]}
+        : {type:"manual",label:"Credit requirement",missing:["90 credits completed"]};
     }
     if (norm.includes("ALL BSCEE CORE CEE COURSES")) {
       const ok = coreCEEForInternship().every(x => isCourseCompleted(x));
@@ -1932,7 +2133,7 @@ function detectArea(q) {
 function detectIntent(q) {
   const raw = normalize(q);
   return {
-    eligibleNow: /WHAT CAN I TAKE|ELIGIBLE NOW|AVAILABLE NOW|COURSES CAN I TAKE/.test(raw),
+    degreeProgress: /MY DEGREE PROGRESS|DEGREE PROGRESS|GRADUATION PROGRESS|SHOW MY PROGRESS/.test(raw),
     after: /AFTER|UNLOCK|WHAT COMES NEXT|NEXT COURSE/.test(raw),
     need: /WHAT DO I NEED|PREREQ|PREREQUISITE|REQUIRE|BEFORE/.test(raw),
     credits: /CREDIT|CREDITS/.test(raw),
@@ -2089,23 +2290,39 @@ function renderCourseAnswer(c,intent={}) {
   answer.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
-function renderEligibleAnswer() {
-  const grid = document.getElementById("eligibleGrid");
-  const btn = document.getElementById("toggleEligible");
+function renderDegreeProgressAnswer() {
+  const credits = completedCredits();
+  const pct = Math.min(Math.round((credits / DEGREE_CREDIT_TARGET) * 100),100);
+  const remaining = Math.max(DEGREE_CREDIT_TARGET - credits,0);
 
-  answer.classList.remove("show");
+  answer.classList.add("show");
+  answerHeader(
+    `BSCEE degree progress: ${credits} / ${DEGREE_CREDIT_TARGET} credits`,
+    `${pct}% completed · ${remaining} credits remaining`
+  );
 
-  if (grid) {
-    grid.classList.add("expanded");
-  }
-  if (btn && btn.style.display !== "none") {
-    btn.textContent = "Show less";
-  }
+  const aDone = isCodeCompleted("CEE 499A");
+  const bDone = isCodeCompleted("CEE 499B");
+  const cDone = isCodeCompleted("CEE 499C");
+  const internshipDone = isCodeCompleted("CEE 498");
+  const elective = electiveRequirementStatus();
 
-  document.getElementById("eligiblePanel").scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
+  document.getElementById("answerContent").innerHTML = `
+    <div class="course-card">
+      <div class="overview">
+        <div><span>Completed courses</span><b>${uniqueCompletedCourses().length}</b></div>
+        <div><span>Capstone</span><b>${[aDone,bDone,cDone].filter(Boolean).length} / 3</b></div>
+        <div><span>Internship</span><b>${internshipDone ? "Completed" : "Pending"}</b></div>
+      </div>
+      <div class="next-box">
+        <b>Electives:</b> ${elective.total} / 4 slots completed.
+        ${elective.satisfied
+          ? " Elective requirement is completed."
+          : " Complete 2 courses from one Group A–E area; remaining slots can come from other Group A–E courses, CEE 492, or CEE 498."}
+      </div>
+    </div>`;
+
+  answer.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
 function renderAreaAnswer(area) {
@@ -2208,7 +2425,7 @@ function ask() {
   suggestions.classList.remove("show");
   const intent = detectIntent(q);
 
-  if (intent.eligibleNow) return renderEligibleAnswer();
+  if (intent.degreeProgress) return renderDegreeProgressAnswer();
   if (intent.ged) return renderGEDAnswerFromQuery(q);
   if (intent.area && !extractCode(q)) return renderAreaAnswer(intent.area);
 
@@ -2253,7 +2470,7 @@ function showSuggestions(q) {
 function eligibleCourses() {
   return COURSES.filter(c => {
     if (isCourseCompleted(c)) return false;
-    if (categoryOf(c) === "Arts and Social Sciences (GED)") return false;
+    if (["Arts and Social Sciences","Arts and Social Sciences (GED)","General Education"].includes(categoryOf(c))) return false;
     return courseStatus(c).type === "eligible";
   });
 }
@@ -2261,15 +2478,73 @@ function eligibleCourses() {
 
 const DEGREE_CREDIT_TARGET = 158;
 
+/*
+  Degree structure from the BSCEE curriculum:
+  University & School Core courses = 63 credits
+    - Orientation = 9 credits
+    - Mathematics = 18 credits
+    - Basic & Applied Sciences = 24 credits
+    - Arts & Social Sciences = 12 credits
+  Program Core Courses = 83 credits
+    - Engineering Tools = 31 credits
+    - Civil Engineering Core = 49 credits
+    - Capstone Design Project = 3 credits
+  Electives = 12 credits
+  Internship = 0 credits
+  Total graduation requirement = 158 credits
+
+  These values are used in background progress calculations only.
+*/
+const DEGREE_GROUP_REQUIREMENTS = {
+  orientation: { total: 9, counted: 9 },
+  mathematics: 18,
+  basicAppliedSciences: 24,
+  artsSocialSciences: 12,
+  engineeringTools: 31,
+  civilEngineeringCore: 49,
+  capstone: 3,
+  electives: 12,
+  internship: 0,
+  total: 158
+};
+
+function completedCreditsByCategory(categoryNames) {
+  const names = Array.isArray(categoryNames) ? categoryNames : [categoryNames];
+  return COURSES
+    .filter(c => isCourseCompleted(c) && names.includes(categoryOf(c)))
+    .reduce((sum,c) => sum + creditOf(c), 0);
+}
+
+function countedOrientationCredits() {
+  const earned = completedCreditsByCategory("Orientation Courses");
+  return Math.min(earned, DEGREE_GROUP_REQUIREMENTS.orientation.total);
+}
+
+function degreeProgressCredits() {
+  // Count every completed course credit toward the 158-credit BSCEE total.
+  // This keeps the main dashboard consistent with the completed-courses checklist.
+  return Math.min(completedCredits(), DEGREE_CREDIT_TARGET);
+}
+
 function uniqueCompletedCourses() {
   return COURSES.filter(c => isCourseCompleted(c));
 }
 
 function electiveRequirementStatus() {
-  const completedElectives = uniqueCompletedCourses().filter(c => electiveGroupLetter(c));
+  /*
+    Elective rule used by this navigator:
+    - Complete at least 2 courses from one Group A–E area.
+    - The remaining 2 elective slots may be fulfilled by:
+        • courses from other Group A–E areas,
+        • CEE 492, and/or
+        • CEE 498 Internship.
+    Therefore, if both CEE 492 and CEE 498 are completed,
+    only 2 courses from one Group A–E area are needed.
+  */
+  const completedGroupElectives = uniqueCompletedCourses().filter(c => electiveGroupLetter(c));
   const counts = {A:0,B:0,C:0,D:0,E:0};
 
-  completedElectives.forEach(c => {
+  completedGroupElectives.forEach(c => {
     const g = electiveGroupLetter(c);
     if (g) counts[g] += 1;
   });
@@ -2280,14 +2555,152 @@ function electiveRequirementStatus() {
   });
 
   const primaryCount = counts[primary] || 0;
-  const otherCount = Object.keys(counts)
+  const primarySlots = Math.min(primaryCount, 2);
+
+  const otherGroupCount = Object.keys(counts)
     .filter(g => g !== primary)
     .reduce((sum,g) => sum + counts[g], 0);
 
-  const total = completedElectives.length;
-  const satisfied = primaryCount >= 2 && otherCount >= 2;
+  const cee492Done = isCodeCompleted("CEE 492");
+  const internshipDone = isCodeCompleted("CEE 498");
 
-  return {counts, primary, primaryCount, otherCount, total, satisfied};
+  const substituteCount =
+    otherGroupCount +
+    (cee492Done ? 1 : 0) +
+    (internshipDone ? 1 : 0);
+
+  const substituteSlots = Math.min(substituteCount, 2);
+  const total = primarySlots + substituteSlots;
+  const satisfied = primaryCount >= 2 && substituteCount >= 2;
+
+  return {
+    counts,
+    primary,
+    primaryCount,
+    primarySlots,
+    otherGroupCount,
+    cee492Done,
+    internshipDone,
+    substituteCount,
+    substituteSlots,
+    total,
+    satisfied
+  };
+}
+
+
+function completedCreditsForCategories(categories) {
+  return COURSES
+    .filter(c => categories.includes(categoryOf(c)) && isCourseCompleted(c))
+    .reduce((sum,c) => sum + creditOf(c), 0);
+}
+
+function completedCountForCategories(categories) {
+  return COURSES.filter(c => categories.includes(categoryOf(c)) && isCourseCompleted(c)).length;
+}
+
+function renderGroupProgress() {
+  const grid = document.getElementById("groupProgressGrid");
+  if (!grid) return;
+
+  const civilCoreCategories = [
+    "Civil Engineering Core — Structural Engineering",
+    "Civil Engineering Core — Geotechnical Engineering",
+    "Civil Engineering Core — Transportation Engineering",
+    "Civil Engineering Core — Water Resources Engineering",
+    "Civil Engineering Core — Environmental Engineering"
+  ];
+
+  const electiveCategories = [
+    "Group A: Structural Engineering",
+    "Group B: Geotechnical Engineering",
+    "Group C: Transportation Engineering",
+    "Group D: Water Resources Engineering",
+    "Group E: Environmental Engineering"
+  ];
+
+  const electiveStatus = electiveRequirementStatus();
+  const internshipDone = isCodeCompleted("CEE 498");
+
+  const groups = [
+    {
+      label:"Orientation Courses",
+      earned:Math.min(completedCreditsForCategories(["Orientation Courses"]),9),
+      required:9
+    },
+    {
+      label:"Mathematics",
+      earned:Math.min(completedCreditsForCategories(["Mathematics"]),18),
+      required:18
+    },
+    {
+      label:"Basic & Applied Sciences",
+      earned:Math.min(completedCreditsForCategories(["Basic & Applied Sciences"]),24),
+      required:24
+    },
+    {
+      label:"Arts and Social Sciences",
+      earned:Math.min(completedCreditsForCategories(["Arts and Social Sciences"]),12),
+      required:12
+    },
+    {
+      label:"Engineering Tools",
+      earned:Math.min(completedCreditsForCategories(["Engineering Tools"]),31),
+      required:31
+    },
+    {
+      label:"Civil Engineering Core",
+      earned:Math.min(completedCreditsForCategories(civilCoreCategories),49),
+      required:49
+    },
+    {
+      label:"CEE Elective Requirement",
+      earned:electiveStatus.total,
+      required:4,
+      completeOverride:electiveStatus.satisfied,
+      display:`${electiveStatus.total} / 4 courses`,
+      detail:
+        `2 from one Group A–E + 2 additional slots. ` +
+        `CEE 492: ${electiveStatus.cee492Done ? "counted" : "not counted"} · ` +
+        `CEE 498: ${electiveStatus.internshipDone ? "counted" : "not counted"}`
+    },
+    {
+      label:"Capstone Project",
+      earned:["CEE 499A","CEE 499B","CEE 499C"].filter(isCodeCompleted).length,
+      required:3
+    },
+    {
+      label:"Internship — CEE 498",
+      earned:internshipDone ? 1 : 0,
+      required:1,
+      display:internshipDone ? "Completed" : "Pending",
+      detail:"Mandatory · 0 credit"
+    }
+  ];
+
+  grid.innerHTML = groups.map(g => {
+    const pct = g.required > 0 ? Math.min((g.earned / g.required) * 100,100) : 0;
+    const complete = typeof g.completeOverride === "boolean"
+      ? g.completeOverride
+      : g.earned >= g.required;
+
+    const value = g.display || `${g.earned} / ${g.required} credits`;
+    const detail = g.detail || (complete ? "Requirement completed" : `${Math.max(g.required-g.earned,0)} credit${Math.max(g.required-g.earned,0)===1?"":"s"} remaining`);
+
+    return `<div class="group-progress-card">
+      <div class="group-progress-head">
+        <b>${g.label}</b>
+        <span>${value}</span>
+      </div>
+      <div class="group-mini-track">
+        <div class="group-mini-fill" style="width:${pct}%"></div>
+      </div>
+      <div class="group-progress-foot">
+        <span>${detail}</span>
+        <strong class="${complete ? "" : "pending"}">${complete ? "Complete" : "In progress"}</strong>
+      </div>
+    </div>`;
+  }).join("");
 }
 
 function updateDegreeProgress() {
@@ -2299,89 +2712,218 @@ function updateDegreeProgress() {
   document.getElementById("degreeProgressBar").style.width = pct + "%";
   document.getElementById("mCreditsRemaining").textContent = remaining;
 
+  /* ---------------- Electives ---------------- */
   const elective = electiveRequirementStatus();
   const electiveValue = document.getElementById("electiveProgress");
   const electiveDetail = document.getElementById("electiveDetail");
 
-  electiveValue.textContent = `${Math.min(elective.total,4)} / 4 courses`;
+  electiveValue.textContent = `${elective.total} / 4 courses`;
   electiveValue.className = "req-value " + (elective.satisfied ? "complete" : "pending");
 
-  if (elective.total === 0) {
-    electiveDetail.textContent = "Complete 2 electives from one Group A–E area and 2 from other group(s).";
-  } else {
+  const electiveExtras = [];
+  if (elective.otherGroupCount > 0) electiveExtras.push(`${elective.otherGroupCount} from other Group A–E area(s)`);
+  if (elective.cee492Done) electiveExtras.push("CEE 492");
+  if (elective.internshipDone) electiveExtras.push("CEE 498 Internship");
+
+  if (elective.satisfied) {
     electiveDetail.textContent =
-      `Strongest group: Group ${elective.primary} (${elective.primaryCount}/2). Other groups: ${elective.otherCount}/2.`;
+      `Completed: 2 courses from Group ${elective.primary} + ${electiveExtras.join(" + ")}.`;
+  } else {
+    const needPrimary = Math.max(2 - elective.primaryCount, 0);
+    const needSubstitute = Math.max(2 - elective.substituteCount, 0);
+
+    if (needPrimary > 0 && needSubstitute > 0) {
+      electiveDetail.textContent =
+        `Still needed: ${needPrimary} course(s) in one Group A–E area + ${needSubstitute} additional elective slot(s). CEE 492 and CEE 498 can each fill one additional slot.`;
+    } else if (needPrimary > 0) {
+      electiveDetail.textContent =
+        `Additional elective slots are satisfied. Complete ${needPrimary} more course(s) in one Group A–E area.`;
+    } else {
+      electiveDetail.textContent =
+        `Main group requirement satisfied. Need ${needSubstitute} more slot(s) from other Group A–E course(s), CEE 492, or CEE 498.`;
+    }
   }
 
+  /* ---------------- Internship ---------------- */
   const internshipDone = isCodeCompleted("CEE 498");
-  const internship = document.getElementById("internshipProgress");
-  internship.textContent = internshipDone ? "Completed" : "Not completed";
-  internship.className = "req-value " + (internshipDone ? "complete" : "pending");
+  const internshipValue = document.getElementById("internshipProgress");
+  const internshipDetail = document.getElementById("internshipDetail");
 
-  const capstoneCodes = ["CEE 499A","CEE 499B","CEE 499C"];
-  const capstoneDone = capstoneCodes.filter(code => isCodeCompleted(code)).length;
-  const capstone = document.getElementById("capstoneProgress");
-  capstone.textContent = `${capstoneDone} / 3 credits`;
-  capstone.className = "req-value " + (capstoneDone === 3 ? "complete" : "pending");
+  internshipValue.textContent = internshipDone ? "Completed" : "Not completed";
+  internshipValue.className = "req-value " + (internshipDone ? "complete" : "pending");
+  internshipDetail.textContent = internshipDone
+    ? "CEE 498 completed."
+    : "CEE 498 is mandatory and carries 0 credit.";
 
-  const capstoneA = courseByCode("CEE 499A");
-  const capstoneStatus = capstoneA ? courseStatus(capstoneA) : {type:"manual",label:"Not ready yet"};
-  const readiness = document.getElementById("capstoneReadiness");
-  const ready = ["eligible","completed"].includes(capstoneStatus.type);
-  readiness.textContent = ready ? "Requirement satisfied" : "Not ready yet";
-  readiness.className = "req-value " + (ready ? "complete" : "pending");
+  /* ---------------- Capstone A / B / C ---------------- */
+  const aDone = isCodeCompleted("CEE 499A");
+  const bDone = isCodeCompleted("CEE 499B");
+  const cDone = isCodeCompleted("CEE 499C");
+
+  const capstoneDoneCount = [aDone,bDone,cDone].filter(Boolean).length;
+  const capstoneValue = document.getElementById("capstoneProgress");
+  const capstoneDetail = document.getElementById("capstoneDetail");
+
+  capstoneValue.textContent = `${capstoneDoneCount} / 3 credits`;
+  capstoneValue.className = "req-value " + (capstoneDoneCount === 3 ? "complete" : "pending");
+
+  capstoneDetail.textContent =
+    `CEE 499A: ${aDone ? "Completed" : "Pending"} · ` +
+    `CEE 499B: ${bDone ? "Completed" : "Pending"} · ` +
+    `CEE 499C: ${cDone ? "Completed" : "Pending"}`;
+
+  /* ---------------- CEE 492 readiness ---------------- */
+  const cee492Done = isCodeCompleted("CEE 492");
+  const cee492Value = document.getElementById("cee492Readiness");
+  const cee492Detail = document.getElementById("cee492ReadinessDetail");
+
+  if (cee492Done) {
+    cee492Value.textContent = "Completed";
+    cee492Value.className = "req-value complete";
+    cee492Detail.textContent = "CEE 492 has already been completed and counts as one elective slot.";
+  } else {
+    const cee492Ready = credits >= 90;
+
+    cee492Value.textContent = cee492Ready ? "Ready" : "Not ready yet";
+    cee492Value.className = "req-value " + (cee492Ready ? "complete" : "pending");
+
+    if (cee492Ready) {
+      cee492Detail.textContent = `90-credit requirement satisfied (${credits} credits completed).`;
+    } else {
+      cee492Detail.textContent = `${credits}/90 credits completed · ${90 - credits} more credit${(90-credits)===1 ? "" : "s"} needed.`;
+    }
+  }
 }
 
 function updateDashboard() {
   const done = uniqueCompletedCourses();
-  const eligible = eligibleCourses();
+  const credits = completedCredits();
+  const pct = Math.min(Math.round((credits / DEGREE_CREDIT_TARGET) * 100),100);
 
   document.getElementById("mCompleted").textContent = done.length;
-  document.getElementById("mEligible").textContent = eligible.length;
-  document.getElementById("mCredits").textContent = completedCredits();
+  document.getElementById("mDegreePercent").textContent = pct + "%";
+  document.getElementById("mCredits").textContent = credits;
 
   updateDegreeProgress();
-
-  document.getElementById("eligibleCountBadge").textContent = `${eligible.length} course${eligible.length===1?"":"s"}`;
-
-  const grid = document.getElementById("eligibleGrid");
-  const limit = 8;
-  grid.innerHTML = eligible.length
-    ? eligible.map((c,i)=>`
-      <button class="eligible-pill${i >= limit ? " hidden-extra" : ""}" data-i="${i}">
-        <code>${codeOf(c)}</code>
-        <span title="${titleOf(c).replace(/"/g,"&quot;")}">${titleOf(c)}</span>
-        <small>${creditOf(c)} cr</small>
-      </button>`).join("")
-    : `<div class="unlock-empty">Mark completed courses to see what may be available next.</div>`;
-
-  grid.querySelectorAll(".eligible-pill").forEach((b,i)=>b.onclick=()=>renderCourseAnswer(eligible[i],{}));
-
-  const toggle = document.getElementById("toggleEligible");
-  if (eligible.length <= limit) {
-    toggle.style.display = "none";
-    grid.classList.remove("expanded");
-  } else {
-    toggle.style.display = "";
-    if (!grid.classList.contains("expanded")) toggle.textContent = "View all";
-  }
+  renderGroupProgress();
 }
 
-function buildAreaGrid() {
-  const areas = [
-    "Structural Engineering",
-    "Geotechnical Engineering",
-    "Transportation Engineering",
-    "Water Resources",
-    "Environmental Engineering",
-    "Engineering Tools"
-  ];
+const MAIN_COURSE_GROUPS = [
+  {label:"Orientation Courses", credit:"9 credits", type:"direct", categories:["Orientation Courses"]},
+  {label:"Mathematics", credit:"18 credits", type:"direct", categories:["Mathematics"]},
+  {label:"Basic & Applied Sciences", credit:"24 credits", type:"direct", categories:["Basic & Applied Sciences"]},
+  {label:"Arts and Social Sciences", credit:"12 credits required", type:"direct", categories:["Arts and Social Sciences"]},
+  {label:"Engineering Tools", credit:"31 credits", type:"direct", categories:["Engineering Tools"]},
+  {label:"Civil Engineering Core", credit:"49 credits", type:"core"},
+  {label:"CEE Elective Courses", credit:"12 credits required", type:"elective"},
+  {label:"Capstone Project", credit:"3 credits", type:"direct", categories:["Capstone Project"]},
+  {label:"Internship", credit:"0 credit", type:"direct", categories:["Internship"]}
+];
+
+const CORE_SUBGROUPS = [
+  {label:"Structural Engineering", credit:"14 credits", categories:["Civil Engineering Core — Structural Engineering"]},
+  {label:"Geotechnical Engineering", credit:"7 credits", categories:["Civil Engineering Core — Geotechnical Engineering"]},
+  {label:"Transportation Engineering", credit:"7 credits", categories:["Civil Engineering Core — Transportation Engineering"]},
+  {label:"Water Resources Engineering", credit:"7 credits", categories:["Civil Engineering Core — Water Resources Engineering"]},
+  {label:"Environmental Engineering", credit:"14 credits", categories:["Civil Engineering Core — Environmental Engineering"]}
+];
+
+const ELECTIVE_SUBGROUPS = [
+  {label:"Group A: Structural Engineering", credit:"Elective", categories:["Group A: Structural Engineering"]},
+  {label:"Group B: Geotechnical Engineering", credit:"Elective", categories:["Group B: Geotechnical Engineering"]},
+  {label:"Group C: Transportation Engineering", credit:"Elective", categories:["Group C: Transportation Engineering"]},
+  {label:"Group D: Water Resources Engineering", credit:"Elective", categories:["Group D: Water Resources Engineering"]},
+  {label:"Group E: Environmental Engineering", credit:"Elective", categories:["Group E: Environmental Engineering"]},
+  {label:"Group F: Special Topic", credit:"Special Topic", categories:["Group F: Special Topic"]}
+];
+
+function coursesForCategories(categories){
+  return COURSES.filter(c => categories.includes(String(categoryOf(c) || "").trim()));
+}
+
+function buildAreaGrid(){
   const grid = document.getElementById("areaGrid");
-  grid.innerHTML = areas.map(area => `
-    <button class="area-pill" data-area="${area}">${area}</button>
-  `).join("");
-  grid.querySelectorAll(".area-pill").forEach(btn=>btn.onclick=()=>renderAreaAnswer(btn.dataset.area));
+
+  grid.innerHTML = MAIN_COURSE_GROUPS.map((g,i)=>{
+    let count = 0;
+
+    if (g.type === "direct") {
+      count = coursesForCategories(g.categories).length;
+    } else if (g.type === "core") {
+      count = CORE_SUBGROUPS.reduce((sum,sg)=>sum+coursesForCategories(sg.categories).length,0);
+    } else if (g.type === "elective") {
+      count = ELECTIVE_SUBGROUPS.reduce((sum,sg)=>sum+coursesForCategories(sg.categories).length,0);
+    }
+
+    return `<button class="clean-group-btn" data-index="${i}">
+      <b>${g.label}</b>
+      <span>${g.credit} · ${count} course${count===1?"":"s"}</span>
+    </button>`;
+  }).join("");
+
+  grid.querySelectorAll(".clean-group-btn").forEach(btn=>{
+    btn.onclick=()=>{
+      const g = MAIN_COURSE_GROUPS[Number(btn.dataset.index)];
+
+      if (g.type === "core") return renderSubgroupMenu("Civil Engineering Core", "49 credits", CORE_SUBGROUPS);
+      if (g.type === "elective") return renderSubgroupMenu("CEE Elective Courses", "12 credits required", ELECTIVE_SUBGROUPS);
+
+      renderGroupAnswer(g.label,g.categories,g.credit);
+    };
+  });
 }
+
+function renderSubgroupMenu(title,credit,subgroups){
+  answer.classList.add("show");
+  answerHeader(title, credit);
+
+  document.getElementById("answerContent").innerHTML=`
+    <div class="course-card">
+      <div class="subgroup-grid">
+        ${subgroups.map((g,i)=>{
+          const count = coursesForCategories(g.categories).length;
+          return `<button class="subgroup-btn" data-i="${i}">
+            <b>${g.label}</b>
+            <small>${g.credit} · ${count} course${count===1?"":"s"}</small>
+          </button>`;
+        }).join("")}
+      </div>
+    </div>`;
+
+  document.querySelectorAll(".subgroup-btn").forEach((btn,i)=>{
+    btn.onclick=()=>{
+      const g=subgroups[i];
+      renderGroupAnswer(g.label,g.categories,g.credit);
+    };
+  });
+
+  answer.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function renderGroupAnswer(label,categories,creditLabel){
+  const list=coursesForCategories(categories);
+
+  answer.classList.add("show");
+  answerHeader(label,`${creditLabel} · ${list.length} course${list.length===1?"":"s"}`);
+
+  document.getElementById("answerContent").innerHTML=`
+    <div class="course-card">
+      <div class="eligible-grid">
+        ${list.map((c,i)=>`
+          <button class="small-course group-course" data-i="${i}">
+            <b>${codeOf(c)} · ${titleOf(c)}</b>
+            <span>${creditOf(c)} credit${creditOf(c)===1?"":"s"}</span>
+          </button>`).join("")}
+      </div>
+    </div>`;
+
+  document.querySelectorAll(".group-course").forEach((btn,i)=>{
+    btn.onclick=()=>renderCourseAnswer(list[i],{});
+  });
+
+  answer.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
 
 function openProgress() {
   document.getElementById("progressModal").classList.add("show");
@@ -2405,7 +2947,9 @@ function renderProgress(filter="") {
     const key = courseKey(c);
 
     return `<label class="progress-row${hidden?" hidden":""}">
-      <input type="checkbox" data-key="${key.replace(/"/g,"&quot;")}" ${completed.has(key)?"checked":""}>
+      <input type="checkbox"
+             data-key="${key}"
+             ${completed.has(key)?"checked":""}>
       <code>${codeOf(c)}</code>
       <span title="${titleOf(c).replace(/"/g,"&quot;")}">${titleOf(c)}</span>
       <small>${creditOf(c)} cr</small>
@@ -2415,6 +2959,7 @@ function renderProgress(filter="") {
   list.querySelectorAll("input[type=checkbox]").forEach(cb=>cb.onchange=()=>{
     if (cb.checked) completed.add(cb.dataset.key);
     else completed.delete(cb.dataset.key);
+
     saveCompletedProgress();
     updateDashboard();
     updateProgressSummary();
@@ -2424,7 +2969,7 @@ function renderProgress(filter="") {
 }
 
 function updateProgressSummary() {
-  document.getElementById("progressSummary").textContent = `${completed.size} course${completed.size===1?"":"s"} selected · ${completedCredits()} credits`;
+  document.getElementById("progressSummary").textContent = `${uniqueCompletedCourses().length} course${uniqueCompletedCourses().length===1?"":"s"} selected · ${completedCredits()} credits`;
 }
 
 function showGEDRule(value) {
@@ -2477,12 +3022,12 @@ document.getElementById("resetProgress").onclick = ()=>{
   renderProgress(document.getElementById("progressSearch").value);
   updateDashboard();
 };
-document.getElementById("showEligible").onclick = renderEligibleAnswer;
-document.getElementById("toggleEligible").onclick = () => {
-  const grid = document.getElementById("eligibleGrid");
-  const btn = document.getElementById("toggleEligible");
-  const expanded = grid.classList.toggle("expanded");
-  btn.textContent = expanded ? "Show less" : "View all";
+document.getElementById("showGroupProgress").onclick = () => {
+  renderGroupProgress();
+  document.getElementById("groupProgressPanel").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
 };
 document.getElementById("batchSelect").onchange = e=>showGEDRule(e.target.value);
 
